@@ -1,11 +1,17 @@
-import {AppRegistry, LogBox} from 'react-native'
-import {name as appName} from './app.json'
-import App from '@/app'
+import React from 'react';
+import { AppRegistry } from 'react-native';
+import App from './src/App';
+import { name as appName } from './app.json';
+import { Provider as StoreProvider } from "react-redux";
+import store from "./src/store/store";
 
-LogBox.ignoreLogs([
-  "[react-native-gesture-handler] Seems like you're using an old API with gesture components, check out new Gestures system!",
-  'EventEmitter.removeListener',
-  'Encountered two children with the same key'
-])
 
-AppRegistry.registerComponent(appName, () => App)
+export default function Main() {
+    return (
+        <StoreProvider store={store}>
+            <App />
+        </StoreProvider>
+    );
+}
+
+AppRegistry.registerComponent(appName, () => Main);

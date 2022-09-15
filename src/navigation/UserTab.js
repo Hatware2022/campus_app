@@ -8,6 +8,7 @@ import HomeScreen from '../user/home/screens/HomeScreen';
 import SearchScreen from '../user/search/screens/SearchScreen';
 import ProfileScreen from '../user/profile/screens/ProfileScreen';
 import EventsScreen from '../user/events/screens/EventsScreen';
+import OrganizationScreen from '../user/organization/screens/OrganizationScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -19,8 +20,8 @@ const UserTab = () => (
     tabBar={props => <BottomTab mode="user" {...props} />}
     screenOptions={{headerShown: false}}>
     <Tab.Screen name="Home" component={HomeScreen} />
-    <Tab.Screen name="Events" component={EventsScreen} />
-    <Tab.Screen name="Search" component={SearchScreen} />
+    <Tab.Screen name="Organization" component={OrganizationScreen} />
+    {/* <Tab.Screen name="Search" component={SearchScreen} /> */}
     <Tab.Screen name="Inbox" component={InboxScreen} />
     <Tab.Screen name="Profile" component={ProfileScreen} />
   </Tab.Navigator>
