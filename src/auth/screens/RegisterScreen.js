@@ -30,6 +30,11 @@ import CalendarIcon from '../../assets/icons/icon-calendar-gray.svg';
 import EyeCloseIcon from '../../assets/icons/icon-eye-close.svg';
 import EyeOpenIcon from '../../assets/icons/icon-eye-open.svg';
 import ModalCalendar from '../components/Modal/modalcalendar';
+import axios from 'axios';
+import constants from '../../utils/constants';
+
+
+
 
 /* =============================================================================
 <RegisterScreen />
@@ -39,6 +44,8 @@ const RegisterScreen = () => {
   const [policy, setPolicy] = useState(false);
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
+  const [phoneNo, setPhoneNo] = useState('');
+  const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
@@ -77,21 +84,48 @@ const RegisterScreen = () => {
     setBirthDate(temporaryDate);
   };
 
-  const _handleLogin = () => {
+  const _handleLogin = async() => {
     setSuccessMessage(null);
     setErrorMessage(null);
     if (!email || !password) {
+      alert('Please provide all fields.')
       setErrorMessage(`Please provide all fields.`);
       return;
     }
 
     if (!validator.isEmail(email)) {
+      alert('joi')
       setErrorMessage(`Please provide a valid email address.`);
       return;
     }
 
-    userService.login(email, password).then(result => {
+    let data ={
+      "name":userName, 
+      "email":email, 
+      "password":password,
+      "dateOfBirth":birthDate,
+      "mobileNumber":'1239028214',
+    }
+
+    // let response = await axios({
+    //   url:  `${constants.API_URL}/registration/signup`,
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     "Accept": "application/json"
+    //   },
+    //   data
+    // });
+
+    // alert(JSON.stringify(response))
+    // console.log(response.data.error)
+
+
+    userService.register(userName, email, password,birthDate,phoneNo).then(result => {
+      alert(JSON.stringify(result))
+      console.log(result)
       if (result.error) {
+        alert(JSON.stringify(result.error.message))
         setErrorMessage(result.error);
         return;
       }
@@ -132,10 +166,10 @@ const RegisterScreen = () => {
             <TextInput
             style={styles.lableinput}
             placeholderTextColor={'#6B7476'}
-              placeholder="Enter your email here"
-              value={email}
+              placeholder="Enter your username here"
+              value={userName}
               onChangeText={value => {
-                setEmail(value);
+                setUserName(value);
               }}
             />
           </View>
@@ -159,9 +193,9 @@ const RegisterScreen = () => {
             style={styles.lableinput}
           placeholderTextColor={'#6B7476'}
               placeholder="Enter your phone number here"
-              value={email}
+              value={phoneNo}
               onChangeText={value => {
-                setEmail(value);
+                setPhoneNo(value);
               }}
             />
           </View>
@@ -244,7 +278,7 @@ const RegisterScreen = () => {
         </View>
       </Content>
 
-      <Button title="Confirm" onPress={_handleLogin} bottom disabled={false} />
+      <Button title="Confirm" onPress={()=>_handleLogin()} bottom disabled={false} />
 
       <ModalCalendar
         title="Day of birth"

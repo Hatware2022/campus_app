@@ -96,6 +96,33 @@ export default class {
         return result;
     }
 
+    static register = async (userName, email, password,dateOfBirth,mobileNumber) => {
+        let result = {
+            data: null,
+            error: null
+        };
+
+        const data = {
+            "name":userName, 
+            "email":email, 
+            "password":password,
+            "dateOfBirth":dateOfBirth,
+            "mobileNumber":'1239028214',
+        };
+
+        await axios.post(`${constants.API_URL}/registration/signup`, data)
+            .then(resp => {
+                if (resp.status === 200) {
+                    result.data = resp;
+                }
+            })
+            .catch(err => {
+                result.error = err.response.data;
+            });
+
+        return result;
+    }
+
     static updatePassword = async (token, currentPassword, newPassword) => {
         let result = {
             data: null,
