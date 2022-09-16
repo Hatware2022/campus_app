@@ -10,6 +10,7 @@ import OrganizationTab from './OrganizationTab';
 import HomeScreen from '../home/screens/HomeScreen';
 import AppIntroScreen from '../auth/screens/AppIntroScreen';
 import LoginScreen from '../auth/screens/LoginScreen';
+import CreateProfile from '../auth/screens/CreateProfile';
 import SignUpScreen from '../auth/screens/SignUpScreen';
 import RegisterScreen from '../auth/screens/RegisterScreen';
 import SplashScreen from '../auth/screens/SplashScreen';
@@ -73,6 +74,7 @@ const AppNavigation = () => {
             component={ForgotPasswordScreen}
           />
 
+          <Stack.Screen name="CreateProfile" component={CreateProfile} />
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="UserTab" component={UserTab} />
           <Stack.Screen name="OrganizationTab" component={OrganizationTab} />
