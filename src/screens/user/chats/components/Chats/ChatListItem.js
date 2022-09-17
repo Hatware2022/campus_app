@@ -82,11 +82,11 @@ const ChatListItem = props => {
 				<View style={styles.actionButtonContainer}>
 					<Touchable style={styles.likeButton}>
 						<LikeIcon onPress={_handleLike} />
-						<Text style={styles.likeButtonText}>{props.data.likes.length}</Text>
+						<Text style={styles.likeButtonText}>{props?.data?.likes?.length}</Text>
 					</Touchable>
 					<Touchable style={styles.commentButton}>
 						<CommentIcon />
-						<Text style={styles.commentButtonText}>{props.data.comments.length}</Text>
+						<Text style={styles.commentButtonText}>{props?.data?.comments?.length}</Text>
 					</Touchable>
 				</View>
 

@@ -82,7 +82,9 @@ const ChatListItem = props => {
       </View>
       <Gap height={16} />
 
-      <Text>{props.data.detail}</Text>
+      {/* <Text>{props.data.detail}</Text> */}
+      <Image source={props.data.imageUrl} />
+      <Text>{props.data.content}</Text>
 
       <View style={styles.tagContainer}>
         {props.data.tags.map(k => {
@@ -98,13 +100,13 @@ const ChatListItem = props => {
         <Touchable style={styles.likeButton}>
           <LikeIcon onPress={_handleLike} />
           <Text customStyle={styles.likeButtonText}>
-            {props.data.likes.length}
+            {props?.data?.likes?.length === 0 || '0'}
           </Text>
         </Touchable>
         <Touchable style={styles.commentButton}>
           <CommentIcon />
           <Text customStyle={styles.commentButtonText}>
-            {props.data.comments.length}
+            {props?.data?.comments?.length === 0 || '0'}
           </Text>
         </Touchable>
       </View>

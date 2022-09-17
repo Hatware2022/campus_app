@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   successHelper: {
     color: Colors.green,
     marginBottom: 10
-  }
+  },
 })
 
 export default styles

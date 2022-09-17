@@ -19,9 +19,10 @@ const TextV2 = ({
   if (link) color = 'blue';
   const fontColor = React.useMemo(() => {
     const colorList = {
-      black: Colors.text,
-      //   gray: Colors.GRAY_TEXT_NEW,
-      //   red: Colors.PRIMARY,
+      // black: Colors.text,
+      black:'#000',
+        // gray: Colors.GRAY_TEXT_NEW,
+        red: Colors.PRIMARY,
       //   blue: Colors.LINK,
       //   dark: Colors.DARKER,
     };

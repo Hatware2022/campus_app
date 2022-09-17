@@ -98,13 +98,13 @@ const PostListItem = props => {
         <Touchable style={styles.likeButton}>
           <LikeIcon onPress={_handleLike} />
           <Text customStyle={styles.likeButtonText}>
-            {props.data.likes.length}
+            {props?.data?.likes?.length}
           </Text>
         </Touchable>
         <Touchable style={styles.commentButton}>
           <CommentIcon />
           <Text customStyle={styles.commentButtonText}>
-            {props.data.comments.length}
+            {props?.data?.comments?.length}
           </Text>
         </Touchable>
       </View>
