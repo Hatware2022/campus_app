@@ -23,6 +23,7 @@ import postService from '../../../services/post';
 import moment from 'moment';
 import {useNavigation, useIsFocused, useRoute} from '@react-navigation/native';
 import ModalFilter from '../../../auth/components/Modal/modalfilter';
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
 /* =============================================================================
 <ChatsScreen />
@@ -97,7 +98,7 @@ const ChatsScreen = () => {
   };
 
   const renderItem = ({item}) => <ChatListItem data={item} reload={reload} />;
-
+ 
   return (
     <Container backgroundColor={Colors.white250} style={{padding: 16}}>
       <StatusBar backgroundColor={Colors.primary} barStyle="light-content" />
@@ -107,6 +108,7 @@ const ChatsScreen = () => {
           left={<SearchIcon />}
           value={keyword}
           onChange={setKeyword}
+          style={{height:35,paddingTop:8}}
           placeholder="Search posts here"
         />
         <TouchableOpacity
@@ -132,14 +134,18 @@ const ChatsScreen = () => {
             horizontal
             alignItems="center"
             justifyContent="space-between">
-            <Text size="big" family="semi">
+               <Text color={'black'} customStyle={{fontWeight:'bold'}}  size="big">
+            {/* <Text size="big" color={'black'} customStyle={{color:'black'}} family="semi"> */}
               Posts
             </Text>
+            <View horizontal>
             <TouchableOpacity
               style={styles.buttonPost}
               onPress={_moveToCreatePost}>
-              <Text size="small">Create Post +</Text>
+              <Text color={'red'} customStyle={{fontWeight:'bold'}}  size="medium">Create Post </Text>
             </TouchableOpacity>
+            <AntDesign name="pluscircle" size={20} color={Colors.primary} style={{marginTop:9,marginLeft:-7}} />
+            </View>
             {/* <ChatForm reload={reload} /> */}
           </View>
         }
@@ -191,6 +197,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderColor: Colors.white300,
   },
+  buttonPostTxt:{
+    color:Colors.primary
+  }
 });
 
 export default ChatsScreen;
