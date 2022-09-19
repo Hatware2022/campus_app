@@ -62,7 +62,7 @@ const ChatListItem = props => {
       });
   };
 
-  return (
+return (
     <Touchable onPress={_moveToChatComments} style={styles.container}>
       <View style={styles.topContainer}>
         {user && (
@@ -100,13 +100,13 @@ const ChatListItem = props => {
         <Touchable style={styles.likeButton}>
           <LikeIcon onPress={_handleLike} />
           <Text customStyle={styles.likeButtonText}>
-            {props?.data?.likes?.length === 0 || '0'}
+            {props?.data?.likes || '0'}
           </Text>
         </Touchable>
         <Touchable style={styles.commentButton}>
           <CommentIcon />
           <Text customStyle={styles.commentButtonText}>
-            {props?.data?.comments?.length === 0 || '0'}
+            {props?.data?.comments?.length ? props?.data?.comments?.length : '0'}
           </Text>
         </Touchable>
       </View>
