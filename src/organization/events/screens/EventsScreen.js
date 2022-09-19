@@ -58,6 +58,7 @@ const EventsScreen = () => {
     userService.getById(session.get(keys.token), tokenData._id).then(result => {
       if (result.data && result.data.success === true) {
         let r = result.data.data;
+        console.log('rEvents====>',r)
         setRecord(r);
       }
     });

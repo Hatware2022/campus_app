@@ -17,22 +17,23 @@ import Gap from '../../../../common/Gap';
 const ClubListItem = ({data}) => {
   const navigation = useNavigation();
   const [joinClub, setJoinClub] = useState(false);
+  const previousData = data
 
   const _moveToDetails = () => {
-    navigation.navigate('ClubDetails', {data});
+    navigation.navigate('ClubDetails', {item: previousData});
   };
 
   return (
     <Touchable onPress={_moveToDetails} style={styles.container}>
       <View center>
-        <Avatar size={81} source={DemoImage} />
+        <Avatar size={81} source={data?.imageUrl} />
         <Text size="big" family="semi" customStyle={styles.name}>
-          {data.name}
+          {data?.title}
         </Text>
       </View>
 
       <View style={styles.descriptionContainer}>
-        <Text>{data.description}</Text>
+        <Text>{data?.bio}</Text>
       </View>
 
       <Text customStyle={styles.tagTitle} size="small" family="semi">
@@ -40,12 +41,13 @@ const ClubListItem = ({data}) => {
       </Text>
 
       <View style={styles.tagContainer}>
-        {data.tags.map((item, index) => (
+        {data?.tags.map((item, index) => (
           <Tag key={index} text={item} redBorder />
         ))}
       </View>
       <Gap height={16} />
       <ClubMember
+        data={data}
         joinClub={joinClub}
         onPress={() => setJoinClub(!joinClub)}
         onPressGroup={() => console.log('create club screen')}

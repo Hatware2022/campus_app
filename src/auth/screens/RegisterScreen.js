@@ -122,7 +122,7 @@ const RegisterScreen = () => {
 
 
     userService.register(userName, email, password,birthDate,phoneNo).then(result => {
-      alert(JSON.stringify(result))
+      console.log(JSON.stringify(result))
       console.log(result)
       if (result.error) {
         alert(JSON.stringify(result.error.message))
@@ -140,6 +140,7 @@ const RegisterScreen = () => {
         session.set(keys.isLoggedIn, 'true');
 
         let tokenData = utils.decodeJwt(result.data.token);
+        console.log('tokenData.role kiya hia',tokenData);
         if (tokenData.role === 'user') {
           session.set(keys.loginType, 'user');
           navigation.navigate('UserTab');

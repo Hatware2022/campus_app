@@ -10,6 +10,16 @@ import Entypo from 'react-native-vector-icons/Entypo'
 import Octicons from 'react-native-vector-icons/Octicons'
 import * as Colors from '../../config/colors';
 import {useIsFocused, useNavigation, useRoute} from '@react-navigation/native';
+import {
+  Container,
+  Card,
+  // View,
+  Content,
+  Button,
+  Touchable,
+  SimpleRadioButton,
+} from '../../common';
+import PlusIcon from '../../assets/icons/icon-tiktok.svg'
 
 
 
@@ -118,13 +128,11 @@ export default function CreateProfile() {
 
           <View style={styles.multiContainer}>
 
-            <TouchableOpacity>
-
-              <MaterialCommunityIcons name='checkbox-blank-outline' size={RFValue(20)} color='#E3E8EB' style={{marginRight:RFValue(12)}}/>
-
-            </TouchableOpacity>
-
-            <Text style={styles.regularText}>Display gender on profile</Text>
+            <SimpleRadioButton
+              label="Display gender on profile"
+              selected={null}
+              onChange={() => {}}
+            />
 
           </View>
           
@@ -200,15 +208,16 @@ export default function CreateProfile() {
 
         </View>
 
+        <View style={styles.buttonContainer}>
+          
+          <TouchableOpacity  style={styles.btn}>
+            <Text style={styles.btnTitle}>Confirm Change</Text>
+          </TouchableOpacity>
+
+        </View>
+        
       </ScrollView>
 
-      <View style={styles.buttonContainer}>
-        
-        <TouchableOpacity  style={styles.btn}>
-          <Text style={styles.btnTitle}>Confirm Change</Text>
-        </TouchableOpacity>
-
-      </View>
 
 
     </View>

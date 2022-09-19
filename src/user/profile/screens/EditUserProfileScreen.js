@@ -69,9 +69,14 @@ const EditUserProfileScreen = () => {
     setSuccessMessage(null);
   }, []);
 
+  useEffect(() => {
+    
+    reload();
+  }, []);
+
   const reload = () => {
     const tokenData = utils.decodeJwt(session.get(keys.token));
-    if (!tokenData) return;
+    if (tokenData) return;
     userService.getById(session.get(keys.token), tokenData._id).then(result => {
       if (result.data && result.data.success === true) {
         let r = result.data.data;
@@ -94,9 +99,7 @@ const EditUserProfileScreen = () => {
     });
   };
 
-  useEffect(() => {
-    reload();
-  }, []);
+  
 
   const _update = () => {
     setErrorMessage(null);

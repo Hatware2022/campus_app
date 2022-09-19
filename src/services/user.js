@@ -29,7 +29,7 @@ export default class {
             error: null
         };
 
-        await axios.get(`${constants.API_URL}/users/byId/${userId}`,
+        await axios.get(`${constants.API_URL}/users/${userId}`,
         { headers: { 'Authorization': token }})
             .then(resp => {
                 if (resp.status === 200) {

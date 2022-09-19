@@ -178,9 +178,7 @@ const ProfilesScreen = () => {
             />
           }
         />
-        <TouchableOpacity onPress={()=>{navigation.navigate('CreateProfile')}}>
-          <Text>Create Profile</Text>
-        </TouchableOpacity>
+        
       </View>
 
       <ModalFilter
