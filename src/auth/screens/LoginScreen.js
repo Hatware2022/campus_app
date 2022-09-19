@@ -82,15 +82,13 @@ const LoginScreen = () => {
 
     userService.login(email, password).then(result => {
       if (result.error) {
-        setErrorMessage(result.error);
+        setErrorMessage(result?.error?.message || '');
         return;
       }
-
       if (result.data && result.data.success === false) {
-        setErrorMessage(result.data.message);
+        setErrorMessage(result?.data?.message || '');
         return;
       }
-
       if (result.data && result.data.success === true) {
         session.set(keys.token, result.data.token);
         session.set(keys.isLoggedIn, 'true');
@@ -155,14 +153,15 @@ const LoginScreen = () => {
       </Content>
 
       <Button title="Login" onPress={_handleLogin} bottom disabled={false} />
+      {errorMessage && (
+            <Text style={globalStyles.errorHelper}>{errorMessage}</Text>
+          )}
+          {successMessage && (
+            <Text style={globalStyles.successHelper}>{successMessage}</Text>
+          )}
     </Container>
 
-    //       {errorMessage && (
-    //         <Text style={globalStyles.errorHelper}>{errorMessage}</Text>
-    //       )}
-    //       {successMessage && (
-    //         <Text style={globalStyles.successHelper}>{successMessage}</Text>
-    //       )}
+  
   );
 };
 
