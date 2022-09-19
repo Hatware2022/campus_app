@@ -60,12 +60,7 @@ const TabBar = ({
                   : styles.inactive,
                 itemStyle,
               ]}>
-              <View
-                style={
-                  index === navigationState.index
-                    ? styles.activeTextContainer
-                    : styles.textContainer
-                }>
+              <View>
                 <Text
                   color={Colors.background}
                   size="big"
@@ -96,6 +91,15 @@ const styles = StyleSheet.create({
   textContainer: {
     borderBottomWidth: 3,
     borderBottomColor: Colors.primary,
+  },
+  active:{
+    borderBottomWidth: 3,
+    borderBottomColor: Colors.background,
+    height:31
+  },
+  inactive: {
+    // borderBottomWidth: 3,
+    // borderBottomColor: 'blue'
   },
   activeTextContainer: {
     borderBottomWidth: 3,
