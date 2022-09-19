@@ -9,8 +9,13 @@ export default class {
             error: null
         };
 
-        await axios.get(`${constants.API_URL}/group/all`, 
-            { headers: { 'Authorization': token }})
+        await axios.get(`${constants.API_URL}/group`, 
+            { headers: 
+                { 
+                    'Authorization': token, 
+                    'slug': constants.SLUG,
+                }
+            })
             .then(resp => {
                 if (resp.status === 200) {
                     result.data = resp.data;

@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet,StatusBar} from 'react-native';
 import {Avatar, Container} from '../../common';
 
 import LogoIcon from '../../assets/images/splashcampus.png';
@@ -23,6 +23,7 @@ const SplashScreen = () => {
 
   return (
     <Container backgroundColor={Colors.primary} safeArea center>
+    <StatusBar backgroundColor={Colors.primary} barStyle="light-content" />
       <FastImage
         resizeMode={FastImage.resizeMode.contain}
         style={styles.image}

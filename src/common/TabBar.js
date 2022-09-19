@@ -93,9 +93,9 @@ const styles = StyleSheet.create({
     borderBottomColor: Colors.primary,
   },
   active:{
-    borderBottomWidth: 3,
+    borderBottomWidth: 4,
     borderBottomColor: Colors.background,
-    height:31
+    height:31,
   },
   inactive: {
     // borderBottomWidth: 3,

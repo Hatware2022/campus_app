@@ -22,14 +22,14 @@ const GroupListItem = ({data}) => {
     <Touchable onPress={_moveToDetails} style={styles.container}>
       <Avatar size={48} source={data.image} />
       <View flex={1} justifyContent="center" marginHorizontal={12}>
-        <Text family="semi">{data.name}</Text>
+        <Text family="semi">{data.title}</Text>
         <Gap height={4} />
         <Text size="small" numberOfLines={1}>
-          {data.desc}
+          {data.description}
         </Text>
       </View>
       <View horizontal alignItems="center">
-        <Text>{data.people}</Text>
+        <Text>{data.members.length}</Text>
         <PeopleIcon />
       </View>
 

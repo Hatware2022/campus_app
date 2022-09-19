@@ -127,9 +127,7 @@ const GroupsScreen = () => {
       <View style={styles.container}>
         {/* <GroupsFilter /> */}
         <FlatList
-          data={dummyData}
-          // data={records}
-
+          data={records}
           style={styles.list}
           renderItem={renderItem}
           keyExtractor={item => item.id}

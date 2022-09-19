@@ -1,11 +1,10 @@
 import * as React from 'react';
-import {StyleSheet, Pressable, ActivityIndicator, View} from 'react-native';
+import {StyleSheet, Pressable, ActivityIndicator, View,TouchableOpacity} from 'react-native';
 
 import Text from '../common/TextV2';
 
 import * as Colors from '../config/colors';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 /* =============================================================================
 <Button />
