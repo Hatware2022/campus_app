@@ -5,6 +5,7 @@ import Text from '../common/TextV2';
 
 import * as Colors from '../config/colors';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 /* =============================================================================
 <Button />
@@ -35,7 +36,7 @@ const Button = ({
         type === 'alert' && styles.flexOne,
         containerStyle,
       ]}>
-      <Pressable
+      <TouchableOpacity
         onPress={onPress}
         disabled={disabled}
         style={[
@@ -80,7 +81,7 @@ const Button = ({
         ) : (
           children
         )}
-      </Pressable>
+      </TouchableOpacity>
     </View>
   );
 };
