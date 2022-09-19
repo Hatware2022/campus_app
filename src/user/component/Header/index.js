@@ -41,11 +41,15 @@ const Header = ({title, rightIcon, onPressRightIcon}) => {
 
 const styles = StyleSheet.create({
   headerContainer: {
-    padding: 16,
+    // padding: 16,
+    height: 50,
     backgroundColor: Colors.primary,
+    alignItems:'center',
+    justifyContent:'center',
   },
   iconBack: {
-    marginRight: 16,
+    marginRight: 13,
+    marginLeft: 15,    
   },
 });
 
