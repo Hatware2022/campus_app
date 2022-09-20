@@ -63,7 +63,10 @@ const styles = StyleSheet.create({
       iconBack: {
         marginRight: 16,
       },
-      
+      registerTxt:{
+        color:Colors.text, 
+        fontWeight:'bold'
+      },
 
 });
 

@@ -162,7 +162,7 @@ const RegisterScreen = () => {
       <Content>
         <View
           style={{backgroundColor: Colors.background, flex: 1, padding: 16}}>
-          <Text  style={styles.lableuser}>User Name</Text>
+          <Text customStyle={styles.registerTxt} style={styles.lableuser}>User Name</Text>
           <View>
             <TextInput
             style={styles.lableinput}
@@ -175,7 +175,7 @@ const RegisterScreen = () => {
             />
           </View>
 
-          <Text style={styles.lableuser}>Email</Text>
+          <Text customStyle={styles.registerTxt} style={styles.lableuser}>Email</Text>
           <View>
             <TextInput
             style={styles.lableinput}
@@ -188,7 +188,7 @@ const RegisterScreen = () => {
             />
           </View>
 
-          <Text style={styles.lableuser}>Phone Number</Text>
+          <Text customStyle={styles.registerTxt} style={styles.lableuser}>Phone Number</Text>
           <View>
             <TextInput
             style={styles.lableinput}
@@ -201,7 +201,7 @@ const RegisterScreen = () => {
             />
           </View>
 
-          <Text style={styles.lableuser}>Day of birth</Text>
+          <Text customStyle={styles.registerTxt} style={styles.lableuser}>Day of birth</Text>
           <Touchable
           style={styles.lableinput}
           placeholderTextColor={'#6B7476'}
@@ -211,15 +211,15 @@ const RegisterScreen = () => {
                 ? moment(birthDate).format('MMM DD YYYY')
                 : 'Click to enter day of birth'}
             </Text>
-            <CalendarIcon style={styles.eyeicon} />
+            <CalendarIcon style={[styles.eyeicon,{marginTop:12,marginRight:-10}]} />
           </Touchable>
 
-          <Text style={styles.lableuser}>Password</Text>
+          <Text customStyle={styles.registerTxt} style={styles.lableuser}>Password</Text>
           <View>
             <TextInput
               style={styles.lableinput}
               placeholderTextColor={'#6B7476'}
-              secureTextEntry
+              secureTextEntry={eye}
               placeholder="Enter your password"
               value={password}
               onChangeText={value => {
@@ -231,8 +231,7 @@ const RegisterScreen = () => {
             </Touchable>
            
           </View>
-
-          <Text style={styles.lableuser}>Confirm Password</Text>
+          <Text customStyle={styles.registerTxt} style={styles.lableuser}>Confirm Password</Text>
           <View>
             <TextInput
               style={styles.lableinput}
@@ -258,7 +257,7 @@ const RegisterScreen = () => {
               <Text
                 family="medium"
                 color={Colors.primary}
-                customStyle={{textDecorationLine: 'underline'}}>
+                customStyle={{textDecorationLine: 'underline',fontWeight:'bold'}}>
                 term & condition
               </Text>
             }
@@ -271,7 +270,7 @@ const RegisterScreen = () => {
               <Text
                 family="medium"
                 color={Colors.primary}
-                customStyle={{textDecorationLine: 'underline'}}>
+                customStyle={{textDecorationLine: 'underline',fontWeight:'bold'}}>
                 data policy
               </Text>
             }
