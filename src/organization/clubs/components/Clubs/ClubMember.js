@@ -42,7 +42,7 @@ const ClubMember = ({onPress, onPressGroup, joinClub, data}) => {
           textStyle={styles.textLeaveButton}
         />
       ) : (
-        <Button title="Join Club" style={styles.joinButton} onPress={onPress} />
+        <Button title="Join Club" style={styles.joinButton} textStyle={{ fontWeight:'bold'}} onPress={onPress} />
       )}
     </View>
   );

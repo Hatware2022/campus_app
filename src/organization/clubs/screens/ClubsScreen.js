@@ -162,6 +162,8 @@ const styles = StyleSheet.create({
   },
   title: {
     marginVertical: 16,
+    fontWeight:'bold',
+    fontSize:16
   },
   listContent: {
     paddingBottom: 20,

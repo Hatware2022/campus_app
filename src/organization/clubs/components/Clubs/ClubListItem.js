@@ -72,8 +72,10 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   name: {
-    marginTop: 8,
+    marginTop: 10,
     textAlign: 'center',
+    fontSize:16,
+    fontWeight:'bold'
   },
   descriptionContainer: {
     padding: 8,
@@ -82,7 +84,9 @@ const styles = StyleSheet.create({
     marginVertical: 16,
   },
   tagTitle: {
+    fontSize:14,
     marginBottom: 8,
+    fontWeight:'bold'
   },
   tagContainer: {
     flexDirection: 'row',
