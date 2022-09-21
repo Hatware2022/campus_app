@@ -69,14 +69,15 @@ export default class {
             error: null
         };
 
-        await axios.put(`${constants.API_URL}/post/${id}`, data,
+        await axios.post(`${constants.API_URL}/post/like/${id}`,
             { headers: { 'Authorization': token }})
             .then(resp => {
-                if (resp.status === 200) {
+                if (resp.status === 201) {
                     result.data = resp.data;
                 }
             })
             .catch(err => {
+                console.log(err.response)
                 result.error = err.response.data;
             });
 
