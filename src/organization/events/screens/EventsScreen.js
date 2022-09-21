@@ -183,6 +183,7 @@ const EventsScreen = () => {
         onCloseModal={() => setViewFilter(false)}
         onYes={() => setViewFilter(false)}
       />
+      <TouchableOpacity onPress={()=> {navigation.navigate('CreateProfile')}}><Text>create profile</Text></TouchableOpacity>
     </Container>
   );
 };
