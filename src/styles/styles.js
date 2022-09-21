@@ -67,6 +67,21 @@ const styles = StyleSheet.create({
         color:Colors.text, 
         fontWeight:'bold'
       },
+      backgroundColorOtp:{backgroundColor:'#E5E5E5'},
+      otpTitle:{
+        fontFamily:'Rubik',
+        fontStyle:'normal',
+        fontWeight:'400',
+        fontSize:14,
+        lineHeight:18,
+        color:'#6B7476',
+        paddingHorizontal:10,
+        marginTop:20
+    },
+    otpDirection:{flexDirection:'row',alignSelf:'center'},
+    codeInputContainer:{width:72,height:72,backgroundColor:'#FAFAFA',borderRadius:10,marginRight:10,marginTop:20},
+    codeInput:{alignSelf:'center',height:72,width:72,textAlign:'center'},
+    otpNotRecieved:{color:'#6B7476',fontSize:14,marginLeft:10,marginTop:20}
 
 });
 

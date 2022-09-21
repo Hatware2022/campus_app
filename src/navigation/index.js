@@ -13,6 +13,7 @@ import LoginScreen from '../auth/screens/LoginScreen';
 import CreateProfile from '../auth/screens/CreateProfile';
 import SignUpScreen from '../auth/screens/SignUpScreen';
 import RegisterScreen from '../auth/screens/RegisterScreen';
+import OtpScreen from '../auth/screens/OtpScreen'
 import SplashScreen from '../auth/screens/SplashScreen';
 import ForgotPasswordScreen from '../auth/screens/ForgotPasswordScreen';
 import ChatScreen from '../chat/screens/ChatScreen';
@@ -69,6 +70,7 @@ const AppNavigation = () => {
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="SignUp" component={SignUpScreen} />
           <Stack.Screen name="Register" component={RegisterScreen} />
+          <Stack.Screen name='otpScreen' component={OtpScreen} />
           <Stack.Screen
             name="ForgotPassword"
             component={ForgotPasswordScreen}

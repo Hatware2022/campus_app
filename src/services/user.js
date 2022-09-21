@@ -113,7 +113,7 @@ export default class {
 
         await axios.post(`${constants.API_URL}/registration/signup`, data)
             .then(resp => {
-                if (resp.status === 200) {
+                if (resp.status === 201) {
                     result.data = resp;
                 }
             })
@@ -191,6 +191,58 @@ export default class {
                 }
             })
             .catch(err => {
+                result.error = err.response.data;
+            });
+
+        return result;
+    }
+
+    static forgetPassword = async (token, file) => {
+        let result = {
+            data: null,
+            error: null
+        };
+
+        const data = {
+            email: email,
+            password: password
+        };
+
+        await axios.post(`${constants.API_URL}/users/login`, data)
+            .then(resp => {
+                if (resp.status === 200) {
+                    // console.log("resp: ", JSON.stringify(resp));
+                    result.data = resp.data;
+                }
+            })
+            .catch(err => {
+                // console.log("err: ", JSON.stringify(err));
+                result.error = err.response.data;
+            });
+
+        return result;
+    }
+
+    static sendOtp = async (email, code) => {
+        let result = {
+            data: null,
+            error: null
+        };
+
+        const data = {
+            email: email,
+            otp: code
+        };
+alert(JSON.stringify(code))
+        await axios.post(`${constants.API_URL}/registration/verifyRegistration`, data)
+            .then(resp => {
+                if (resp.status === 201) {
+                    // console.log("resp: ", JSON.stringify(resp));
+                    result.data = resp.data;
+                }
+            })
+            .catch(err => {
+                // console.log("err: ", JSON.stringify(err));
                 result.error = err.response.data;
             });
 

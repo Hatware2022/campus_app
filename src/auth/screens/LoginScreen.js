@@ -91,10 +91,10 @@ const LoginScreen = () => {
         return;
       }
       if (result.data && result.data.success === true) {
-        session.set(keys.token, result.data.token);
+        session.set(keys.token, result.data.userData.token);
         session.set(keys.isLoggedIn, 'true');
 
-        let tokenData = utils.decodeJwt(result.data.token);
+        let tokenData = utils.decodeJwt(result.data.userData.token);
         if (tokenData.role === 'user') {
           if (rememberMe) {
             console.log('trueee');
@@ -150,16 +150,17 @@ const LoginScreen = () => {
             selected={rememberMe}
             onChange={() => setRememberMe(!rememberMe)}
           />
-        </View>
-      </Content>
-
-      <Button title="Login" onPress={_handleLogin} bottom disabled={false} />
-      {errorMessage && (
+                {errorMessage && (
             <Text style={globalStyles.errorHelper}>{errorMessage}</Text>
           )}
           {successMessage && (
             <Text style={globalStyles.successHelper}>{successMessage}</Text>
           )}
+        </View>
+      </Content>
+
+      <Button title="Login" onPress={_handleLogin} bottom disabled={false} />
+
     </Container>
 
   
