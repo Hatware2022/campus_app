@@ -94,9 +94,21 @@ const RegisterScreen = () => {
     }
 
     if (!validator.isEmail(email)) {
-      alert('joi')
+      alert('Please provide a valid email address.')
       setErrorMessage(`Please provide a valid email address.`);
       return;
+    }
+
+    if(userName.length < 5){
+      alert('userName should be 5(five) digits long')
+    }
+
+    if(birthDate === null){
+      alert('Date of birth should not be empty')
+    }
+
+    if(phoneNo === ""){
+      alert('Phone Number should not be empty')
     }
 
     let data ={
@@ -104,7 +116,7 @@ const RegisterScreen = () => {
       "email":email, 
       "password":password,
       "dateOfBirth":birthDate,
-      "mobileNumber":'1239028214',
+      "mobileNumber":phoneNo,
     }
 
     // let response = await axios({
@@ -122,7 +134,7 @@ const RegisterScreen = () => {
 
 
     userService.register(userName, email, password,birthDate,phoneNo).then(result => {
-      console.log(JSON.stringify(result))
+      console.log("result.data",result.data.data)
       console.log(result)
       if (result.error) {
         alert(JSON.stringify(result.error.message))
@@ -130,23 +142,26 @@ const RegisterScreen = () => {
         return;
       }
 
-      if (result.data && result.data.success === false) {
+      if (result.data && result.data.data && result.data.data.success === false) {
         setErrorMessage(result.data.message);
         return;
       }
 
-      if (result.data && result.data.success === true) {
-        session.set(keys.token, result.data.token);
-        session.set(keys.isLoggedIn, 'true');
+      if (result.data && result.data.data && result.data.data.success === true) {
+alert('Check your mail for vefication of your account')
+navigation.navigate('otpScreen',{email:email})
+// navigation.goBack()
+        // session.set(keys.token, result.data.token);
+        // session.set(keys.isLoggedIn, 'true');
 
-        let tokenData = utils.decodeJwt(result.data.token);
-        console.log('tokenData.role kiya hia',tokenData);
-        if (tokenData.role === 'user') {
-          session.set(keys.loginType, 'user');
-          navigation.navigate('UserTab');
-        } else if (tokenData.role === 'organization') {
-          navigation.navigate('Home');
-        }
+        // let tokenData = utils.decodeJwt(result.data.token);
+        // console.log('tokenData.role kiya hia',tokenData);
+        // if (tokenData.role === 'user') {
+        //   session.set(keys.loginType, 'user');
+        //   navigation.navigate('UserTab');
+        // } else if (tokenData.role === 'organization') {
+        //   navigation.navigate('Home');
+        // }
       }
     });
   };
@@ -278,7 +293,10 @@ const RegisterScreen = () => {
         </View>
       </Content>
 
-      <Button title="Confirm" onPress={()=>_handleLogin()} bottom disabled={false} />
+      <Button title="Confirm" 
+      // onPress={()=>navigation.navigate('otpScreen',{email:email})}
+      onPress={()=>_handleLogin()}
+       bottom disabled={false} />
 
       <ModalCalendar
         title="Day of birth"
