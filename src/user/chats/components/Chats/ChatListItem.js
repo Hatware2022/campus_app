@@ -43,19 +43,18 @@ const ChatListItem = props => {
     if (!tokenData) return;
 
     let arr = Array.from(props.data.likes) || [];
-    if (arr.find(k => k.userId === tokenData.id)) return;
+    if (arr.find(k => k.userId === tokenData._id)) return;
 
     arr.push({
-      userId: tokenData.id,
+      userId: tokenData._id,
       date: moment().format(),
     });
     let t = {
       ...props.data,
       likes: arr,
     };
-
     postService
-      .update(session.get(keys.token), props.data.id, t)
+      .update(session.get(keys.token), props.data._id, t)
       .then(result => {
         if (result.data && result.data.success === true) {
           props.reload();
@@ -104,9 +103,7 @@ return (
             {props?.data?.likes || '0'}
           </Text>
         </Touchable>
-        <Touchable style={styles.commentButton} 
-        // onPress={()=>navigation.navigate('GroupPostComments', {post: props.data})}
-        >
+        <Touchable style={styles.commentButton}>
           <CommentIcon />
           <Text customStyle={styles.commentButtonText}>
             {props?.data?.comments?.length ? props?.data?.comments?.length : '0'}

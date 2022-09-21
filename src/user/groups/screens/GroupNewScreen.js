@@ -1,7 +1,12 @@
-import React, {useState, useRef} from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, TextInput, Pressable} from 'react-native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+
 import {View, Container, Content, Tag, Button} from '../../../common';
 import Text from '../../../common/TextV2';
+import groupService from '../../../services/group';
+import session from '../../../store/session';
+import keys from '../../../store/keys';
 
 import DemoImage from '../../../assets/images/empty-image.png';
 
@@ -17,6 +22,8 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 <GroupNewScreen />
 ============================================================================= */
 const GroupNewScreen = () => {
+  const isFocused = useIsFocused();
+  const navigation = useNavigation();
   const [tags, setTags] = useState([
     'Lost & Found',
     'Ride Share',
@@ -25,11 +32,23 @@ const GroupNewScreen = () => {
     'General',
     'Other',
   ]);
-  const [valuePost, setValuePost] = useState('');
+  const [groupName, setGroupName] = useState('');
   const [tag, setTag] = useState(['']);
   const insets = useSafeAreaInsets();
 
-  // const selectTag = useRef([]);
+  const handleSubmit = () => {
+    groupService.create(session.get(keys.token), JSON.stringify({
+      "title": groupName,
+      "members": [],
+      "type": "public",
+      "description": "Vanilla group"
+    })).then((res) => {
+      const {data} = res;
+      if(data?.success) {
+        navigation.pop();
+      }
+    }).catch((_err) => {})
+  }
 
   const _safeArea = {
     marginBottom: 16 + insets.bottom,
@@ -39,19 +58,19 @@ const GroupNewScreen = () => {
     <Container>
       <Header title={'Create New Group'} />
       <Content backgroundColor={Colors.white100} padding={16}>
-        <Text family="semi">Post</Text>
+        <Text family="semi">Group Name</Text>
         <View style={styles.containerPost}>
           <TextInput
             multiline
-            placeholder="Write your post here"
-            value={valuePost}
+            placeholder="Write your group name here"
+            value={groupName}
             onChangeText={value => {
-              setValuePost(value);
+              setGroupName(value);
             }}
           />
         </View>
 
-        <Text family="semi">Add Image</Text>
+        <Text family="semi">Profile Picture</Text>
         <View style={styles.containerAddImage}>
           <PictureIcon />
           <Text color={Colors.black500} customStyle={styles.textAddImage}>
@@ -65,8 +84,6 @@ const GroupNewScreen = () => {
         <View horizontal marginTop={12} style={{flexWrap: 'wrap'}}>
           {tags.map((item, index) => {
             const isSelect = tag.includes(item);
-            // console.log('selectTag', tag);
-            // console.log('selectTagselectTag', selectTag.current);
             return (
               <>
                 <Pressable
@@ -92,7 +109,7 @@ const GroupNewScreen = () => {
         <Button
           style={[styles.button, _safeArea]}
           title="Submit"
-          onPress={() => console.log('a')}
+          onPress={handleSubmit}
         />
       </View>
     </Container>

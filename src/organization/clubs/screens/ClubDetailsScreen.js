@@ -25,7 +25,6 @@ import Underline from '../../../user/component/Underline';
 ============================================================================= */
 const ClubDetailsScreen = ({ route, navigation }) => {
   const { item } = route.params;
-  console.log('item<<<======>',item)
   return (
     <Container>
       <Header title={'Club Detail'} />

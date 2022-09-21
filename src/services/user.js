@@ -97,7 +97,6 @@ export default class {
     }
 
     static register = async (userName, email, password,dateOfBirth,mobileNumber) => {
-        console.log('safa');
         let result = {
             data: null,
             error: null
@@ -233,7 +232,6 @@ export default class {
             email: email,
             otp: code
         };
-alert(JSON.stringify(code))
         await axios.post(`${constants.API_URL}/registration/verifyRegistration`, data)
             .then(resp => {
                 if (resp.status === 201) {

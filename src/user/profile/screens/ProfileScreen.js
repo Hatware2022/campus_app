@@ -35,10 +35,6 @@ const ProfileScreen = () => {
   const [viewModal, setViewModal] = useState(false);
   const tokenData = utils.decodeJwt(session.get(keys.token)) || null;
 
-  const _moveToViewProfile = () => {
-    navigation.navigate('EditUserProfile');
-  };
-
   const _safeArea = {
     paddingTop: 16 + insets.top,
   };
@@ -85,7 +81,7 @@ const ProfileScreen = () => {
           />
           <View paddingHorizontal={16} justifyContent="center">
             <Text color={Colors.whiteText} family="semi" size="big">
-              {record?.firstName} {record?.lastName}
+              {record?.name}
             </Text>
             <Text color={Colors.whiteText}>{tokenData && tokenData?.email ? tokenData?.email : ''}</Text>
           </View>

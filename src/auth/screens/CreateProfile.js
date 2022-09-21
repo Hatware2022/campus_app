@@ -326,7 +326,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection:'row', 
     width:'100%', 
-    height:RFValue(92),
+    height:RFValue(65),
     backgroundColor:Colors.primary, 
     alignItems:'center', 
     paddingHorizontal:RFValue(20)
@@ -341,9 +341,9 @@ const styles = StyleSheet.create({
   },
   heading: {
     color:'#373C3E', 
-    fontSize:RFValue(14), 
-    fontWeight:'500', 
-    fontFamily:'Rubik-Medium',
+    fontSize:RFValue(13), 
+    fontWeight:'700', 
+    fontFamily:'Rubik-Bold',
     marginTop:RFValue(16)
   },
   detail: {
@@ -360,8 +360,8 @@ const styles = StyleSheet.create({
   },
   groupHeading: {
     color:'#373C3E', 
-    fontSize:RFValue(16), 
-    fontWeight:'600', 
+    fontSize:RFValue(15), 
+    fontWeight:'700', 
     fontFamily:'Rubik-Bold',
     marginTop:RFValue(24)
   },

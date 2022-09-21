@@ -54,8 +54,14 @@ export default class {
             error: null
         };
 
-        await axios.group(`${constants.API_URL}/group/addnew`, data,
-            { headers: { 'Authorization': token }})
+        await axios.post(`${constants.API_URL}/group`, data,
+            { headers: 
+                { 
+                    'Authorization': token, 
+                    'slug': constants.SLUG,
+                    'Content-Type': 'application/json'
+                }
+            })
             .then(resp => {
                 if (resp.status === 200) {
                     result.data = resp.data;

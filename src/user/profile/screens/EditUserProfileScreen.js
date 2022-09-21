@@ -76,8 +76,8 @@ const EditUserProfileScreen = () => {
 
   const reload = () => {
     const tokenData = utils.decodeJwt(session.get(keys.token));
-    if (tokenData) return;
-    userService.getById(session.get(keys.token), tokenData._id).then(result => {
+    if (!tokenData) return;
+    userService.getById(session.get(keys.token), tokenData.id).then(result => {
       if (result.data && result.data.success === true) {
         let r = result.data.data;
 
@@ -171,8 +171,7 @@ const EditUserProfileScreen = () => {
     } catch (err) {}
   };
 
-  if (!record) return <></>;
-
+  // if (!record) return <></>;
   return (
     <Container>
       <Header title={'Your Profile'} />
@@ -180,13 +179,13 @@ const EditUserProfileScreen = () => {
       <Content bottomSafeArea paddingHorizontal={20} paddingVertical={30}>
         <View center>
           <Avatar
-            source={{uri: imageUrl ? imageUrl : null}}
+            source={{uri: record?.imageUrl ? record?.imageUrl : null}}
             size={80}
             onPress={_handleChooseFile}
           />
           <Gap height={12} />
           <Text size="big" family="semi">
-            {`${record.firstName} ${record.lastName}`}
+            {`${record?.name}`}
           </Text>
           <Gap height={16} />
           <SocialButtons data={record} />

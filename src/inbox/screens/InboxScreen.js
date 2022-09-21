@@ -150,6 +150,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     padding: 16,
     backgroundColor: Colors.primary,
+    paddingTop: 10,
   },
   container: {
     flex: 1,
@@ -162,10 +163,12 @@ const styles = StyleSheet.create({
   },
   containerSearch: {
     paddingHorizontal: 8,
-    paddingVertical: 12,
+    // paddingVertical: 1,
     borderRadius: 8,
     backgroundColor: Colors.whiteText,
-    marginTop: 7,
+    marginTop: 10,
+    // justifyContent: 'center',
+		alignItems: 'center',
   },
   textInput: {
     paddingHorizontal: 8,
