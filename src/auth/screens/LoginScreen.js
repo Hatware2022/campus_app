@@ -81,6 +81,7 @@ const LoginScreen = () => {
     }
 
     userService.login(email, password).then(result => {
+      console.log(result)
       if (result.error) {
         setErrorMessage(result?.error?.message || '');
         return;
