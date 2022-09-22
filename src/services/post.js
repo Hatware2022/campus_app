@@ -49,10 +49,10 @@ export default class {
             error: null
         };
 
-        await axios.post(`${constants.API_URL}/post/addnew`, data,
+        await axios.post(`${constants.API_URL}/post/add`, data,
             { headers: { 'Authorization': token }})
             .then(resp => {
-                if (resp.status === 200) {
+                if (resp.status === 201) {
                     result.data = resp.data;
                 }
             })
