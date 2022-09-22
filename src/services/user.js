@@ -154,7 +154,7 @@ export default class {
             error: null
         };
 
-        await axios.put(`${constants.API_URL}/users/update/${id}`, data,
+        await axios.put(`${constants.API_URL}/users/${id}`, data,
             { headers: { 'Authorization': token } })
             .then(resp => {
                 if (resp.status === 200) {

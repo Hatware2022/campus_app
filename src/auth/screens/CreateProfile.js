@@ -25,6 +25,7 @@ import ModalCreateProfile from '../../auth/components/Modal/modalcreateprofile';
 import userService from '../../services/user';
 import session from '../../store/session';
 import keys, {token} from '../../store/keys';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 
 export default function CreateProfile(props) {
@@ -49,32 +50,49 @@ export default function CreateProfile(props) {
   const [interetsSelected, setInteretsSelected] = useState()
   const [downForSelected, setDownForSelected] = useState()
   
-
-
   const gradYearList = [2022, 2023, 2024, 2025]
 
   const genderList = ['Male', 'Female', 'Non-binary']
 
-  const chooseImage = async () => {
-    // setSelectFileModal(false)
+  // const chooseImage = async () => {
+  //   // setSelectFileModal(false)
 
-    ImagePicker.openPicker({
-        width: 300,
-        height: 400,
-        cropping: true
-    }).then(image => {
-      console.log('image====>>>',image)
+  //   ImagePicker.openPicker({
+  //       width: 300,
+  //       height: 400,
+  //       cropping: true
+  //   }).then(image => {
+  //     console.log('image====>>>',image)
       
-      let ext = image.path.split('.').pop()
-      setImageName(`image.${ext}`)
-      setImagePath(image.path)
+  //     let ext = image.path.split('.').pop()
+  //     setImageName(`image.${ext}`)
+  //     setImagePath(image.path)
       
-    })
+  //   })
        
-  }
+  // }
+
+  const takephotofromLibrary = () => {
+    const options = {
+      mediaType: 'photo',
+      quality: 0.3,
+    };
+    launchImageLibrary(options, response => {
+      if (response.didCancel) {
+        // empty action
+      } else if (response.errorCode) {
+        // empty action
+      } else {
+        const source = {
+          uri: response.assets?.[0].uri,
+        };
+        setImagePath(source.uri);
+      }
+    });
+  };
 
   const interestHandler = (itemsArray) => {
-    let array = itemsArray.map((item) => {
+    let array = itemsArray?.map((item) => {
       return {
         name: item, 
         "description": `${item} is amazing`
@@ -84,7 +102,7 @@ export default function CreateProfile(props) {
   }
 
   const downForHandler = (itemsArray) => {
-    let array = itemsArray.map((item) => {
+    let array = itemsArray?.map((item) => {
       return {
         name: item, 
         "description": `${item} is amazing`
@@ -92,7 +110,7 @@ export default function CreateProfile(props) {
     }) 
     setDownForSelected(array)
   }
-  console.log('userid=========',props.route.params?.userId);
+  
   const handleCreateProfile =()=>{
 
     let data ={
@@ -161,13 +179,13 @@ export default function CreateProfile(props) {
                
           <Text style={[styles.heading,{marginTop:RFValue(0)}]}>Add Profile Image</Text>
           
-          <TouchableOpacity style={styles.addImage} onPress={()=>{chooseImage()}}>
+          <TouchableOpacity style={styles.addImage} onPress={()=>{takephotofromLibrary()}}>
 
             <View style={{flexDirection:'row'}}>
 
               <AntDesign name='picture' size={RFValue(18)} color='#B9BFC1' style={{marginRight:RFValue(13)}}/>
 
-              <Text style={styles.detail}>{imageName == '' ? 'Click to add image' : imageName}</Text>
+              <Text style={styles.detail}>Click to add image</Text>
               
             </View>
 

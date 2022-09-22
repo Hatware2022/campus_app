@@ -387,7 +387,7 @@ const EditUserProfileScreen = () => {
         <Button
           style={[styles.button, _safeArea]}
           title="Edit Profile"
-          onPress={() => navigation.navigate('UpdateProfile')}
+          onPress={() => navigation.navigate('UpdateProfile',{data: record})}
         />
       </View>
     </Container>
