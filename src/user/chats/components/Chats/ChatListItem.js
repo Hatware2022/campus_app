@@ -103,7 +103,7 @@ return (
             {props?.data?.likes || '0'}
           </Text>
         </Touchable>
-        <Touchable style={styles.commentButton}>
+        <Touchable style={styles.commentButton} onPress={()=>navigation.navigate('GroupPostComments', {post: props.data})}>
           <CommentIcon />
           <Text customStyle={styles.commentButtonText}>
             {props?.data?.comments?.length ? props?.data?.comments?.length : '0'}

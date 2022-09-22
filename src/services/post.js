@@ -28,17 +28,27 @@ export default class {
             data: null,
             error: null
         };
-
-        await axios.get(`${constants.API_URL}/post/${postId}`,
+        await axios.get(`${constants.API_URL}/post/${postId}`, 
         { headers: { 'Authorization': token }})
-            .then(resp => {
-                if (resp.status === 200) {
-                    result.data = resp.data;
-                }
-            })
-            .catch(err => {
-                result.error = err.response.data;
-            });
+        .then(resp => {
+            if (resp.status === 200) {
+                result.data = resp.data;
+            }
+        })
+        .catch(err => {
+            result.error = err.response.data;
+        });
+
+        // await axios.get(`${constants.API_URL}/post/${postId}`,
+        // { headers: { 'Authorization': token }})
+        //     .then(resp => {
+        //         if (resp.status === 200) {
+        //             result.data = resp.data;
+        //         }
+        //     })
+        //     .catch(err => {
+        //         result.error = err.response.data;
+        //     });
 
         return result;
     }
@@ -73,6 +83,48 @@ export default class {
             { headers: { 'Authorization': token }})
             .then(resp => {
                 if (resp.status === 201) {
+                    result.data = resp.data;
+                }
+            })
+            .catch(err => {
+                console.log(err.response)
+                result.error = err.response.data;
+            });
+
+        return result;
+    }
+
+    static addComment = async (token, data) => {
+        let result = {
+            data: null,
+            error: null
+        };
+
+        await axios.post(`${constants.API_URL}/post/comment`,data,
+            { headers: { 'Authorization': token }})
+            .then(resp => {
+                if (resp.status === 201) {
+                    result.data = resp.data;
+                }
+            })
+            .catch(err => {
+                console.log(err.response)
+                result.error = err.response.data;
+            });
+
+        return result;
+    }
+
+    static getComments = async (token, postId) => {
+        let result = {
+            data: null,
+            error: null
+        };
+
+        await axios.get(`${constants.API_URL}/post/comments/${postId}`,
+            { headers: { 'Authorization': token }})
+            .then(resp => {
+                if (resp.status === 200) {
                     result.data = resp.data;
                 }
             })
