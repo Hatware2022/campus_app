@@ -24,6 +24,8 @@ import Header from '../../user/component/Header';
 const OtpScreen = (props) => {
     const route = useRoute();
     const navigation = useNavigation();
+  const registrationData = props.route.params.data
+  
   const [codeDigitOne, setCodeDigitOne] = useState('');
   const [codeDigitTwo, setCodeDigitTwo] = useState('');
   const [codeDigitThree, setCodeDigitThree] = useState('');
@@ -37,7 +39,7 @@ const OtpScreen = (props) => {
         
           let code = codeDigitOne + codeDigitTwo + codeDigitThree + codeDigitFour
      
-          userService.sendOtp(route.params?.email, code).then(result => {
+          userService.sendOtp(registrationData?.email, code).then(result => {
             console.log("result.data",result)
             console.log(result)
             if (result.error) {
@@ -54,7 +56,7 @@ const OtpScreen = (props) => {
             if (result.data  && result.data.success === true) {
     //   alert('Otp verified')
 
-      navigation.navigate('CreateProfile',{userId:props.route.params?.userId})
+      navigation.navigate('CreateProfile',{userId:props.route.params?.userId, registrationData: registrationData})
             }
           });
       }

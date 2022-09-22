@@ -247,7 +247,7 @@ export default class {
         return result;
     }
 
-    static createUserProfile = async (token, id,data) => {
+    static createUserProfile = async (token, id, data) => {
         let result = {
             data: null,
             error: null

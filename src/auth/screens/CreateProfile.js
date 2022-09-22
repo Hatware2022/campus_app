@@ -31,7 +31,10 @@ export default function CreateProfile(props) {
 
   const navigation = useNavigation();
 
+  const registrationData = props.route.params?.registrationData
+  
   const [imageName, setImageName] = useState('')
+  const [imagePath, setImagePath] = useState('')
   const [description, setDescription] = useState('')
   const [isVisibal, setIsVisibal] = useState(false)
   const [typeModal, setTypeModal] = useState('')
@@ -64,45 +67,56 @@ export default function CreateProfile(props) {
       
       let ext = image.path.split('.').pop()
       setImageName(`image.${ext}`)
+      setImagePath(image.path)
       
     })
        
   }
 
-  
+  const interestHandler = (itemsArray) => {
+    let array = itemsArray.map((item) => {
+      return {
+        name: item, 
+        "description": `${item} is amazing`
+      }
+    }) 
+    setInteretsSelected(array)
+  }
+
+  const downForHandler = (itemsArray) => {
+    let array = itemsArray.map((item) => {
+      return {
+        name: item, 
+        "description": `${item} is amazing`
+      }
+    }) 
+    setDownForSelected(array)
+  }
+  console.log('userid=========',props.route.params?.userId);
   const handleCreateProfile =()=>{
 
     let data ={
-      "name": "David Withmore",
-     "bio": "A professional handsome guy",
-     "major": "BSIT",
-     "country": "Africa",
-     "city": "Ewan",
-     "address": "293 kamagong st.",
-     "mobileNumber": "9971332977",
-     "gradYear": gradYear,
-     "gender": gender,
-     "dateOfBirth": "2022-05-27",
-     "insta": instagram,
-     "tiktok": tiktok,
-     "linkedin": linkedin,
-     "interest": [
-         {
-             "name": "Programming",
-             "description": "Programming is amazing"
-         }
-     ],
-     "imageUrl": "https://www.linkedin.com/in/mohd-wajeed-ali/overlay/photo",
-     "downFor": [
-         {
-             "name": "Chemistry",
-             "description": "Chemistry is amazing"
-         }
-     ]
+
+      "name": registrationData?.name,
+      "bio": description,
+      "major": majorSelected,
+      "country": "US",
+      "city": "California",
+      "address": from,
+      "mobileNumber": registrationData?.mobileNumber,
+      "gradYear": gradYear,
+      "gender": gender,
+      "dateOfBirth": registrationData?.dateOfBirth,
+      "insta": instagram,
+      "tiktok": tiktok,
+      "linkedin": linkedin,
+      "interest": interetsSelected,
+      "imageUrl": imagePath,
+      "downFor": downForSelected
     }
 
-    userService.createUserProfile(session.get(keys.token), props.route.params?.userId,data).then(result => {
-      console.log("result.data",result)
+    userService.createUserProfile(session.get(keys.token), props.route.params?.userId, data).then(result => {
+      // console.log("result.data",result)
       console.log(result)
       if (result.error) {
         alert(JSON.stringify(result.error.message))
@@ -123,9 +137,6 @@ export default function CreateProfile(props) {
   }
 
   
-
-
-
   return (
     <View style={styles.contianer}>
       {/* <StatusBar
@@ -353,19 +364,16 @@ export default function CreateProfile(props) {
             setMajorSelected(item)
           } else
           if(typeModal == 'interets') {
-            setInteretsSelected(item)
+            interestHandler(item)
           } else 
           if (typeModal == 'down for') {
-            setDownForSelected(item)
+            downForHandler(item)
           }
-          console.log('kiya aya................',item);
 
         }}
         modalType={typeModal}
         
       />
-
-
 
     </View>
   )
@@ -488,7 +496,7 @@ const styles = StyleSheet.create({
     justifyContent:'center' 
   },
   btn: {
-    backgroundColor:'#E3E8EB', 
+    backgroundColor:'#A70032', 
     width:'100%', 
     height:RFValue(42), 
     alignItems:'center', 
@@ -496,7 +504,7 @@ const styles = StyleSheet.create({
     borderRadius:8
   },
   btnTitle: {
-    color:'#B9BFC1', 
+    color:'white', 
     fontSize:RFValue(14), 
     fontWeight:'600', 
     fontFamily:'Rubik-Medium',

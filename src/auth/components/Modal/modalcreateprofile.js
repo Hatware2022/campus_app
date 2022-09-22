@@ -197,7 +197,7 @@ const ModalCreateProfile = ({onYes, onCloseModal, isVisible, modalType,}) => {
       </View>
     )
   }
-console.log('valuedownfor=========',valuedownfor);
+
   const renderDownFor = () => {
     return (
       <View style={styles.defaultContentContainerStyle}>
@@ -341,7 +341,7 @@ console.log('valuedownfor=========',valuedownfor);
         <View horizontal>
           <Button
             title="Confirm"
-            onPress={onYes}
+            onPress={()=> onYes(valueinterest)}
             containerStyle={{flex: 1}}
           />
         </View>
@@ -349,7 +349,7 @@ console.log('valuedownfor=========',valuedownfor);
         <View horizontal>
           <Button
             title="Cancel"
-            onPress={onYes}
+            onPress={()=>onYes()}
             type="alert"
             textStyle={{
               color: Colors.black500,

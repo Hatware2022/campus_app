@@ -113,8 +113,7 @@ const RegisterScreen = () => {
 
     let data ={
       "name":userName, 
-      "email":email, 
-      "password":password,
+      "email":email,
       "dateOfBirth":birthDate,
       "mobileNumber":phoneNo,
     }
@@ -134,8 +133,8 @@ const RegisterScreen = () => {
 
 
     userService.register(userName, email, password,birthDate,phoneNo).then(result => {
-      console.log("result.data",result.data.data)
-      console.log(result)
+      // console.log("result.data",result.data.data)
+      console.log(result.data)
       if (result.error) {
         alert(JSON.stringify(result.error.message))
         setErrorMessage(result.error);
@@ -149,7 +148,7 @@ const RegisterScreen = () => {
 
       if (result.data && result.data.data && result.data.data.success === true) {
         alert('Check your mail for vefication of your account')
-        navigation.navigate('otpScreen',{email:email,userId:result.data.data.data.id})
+        navigation.navigate('otpScreen',{data:data, userId:result.data.data.data.id})
 // navigation.goBack()
         // session.set(keys.token, result.data.token);
         // session.set(keys.isLoggedIn, 'true');
