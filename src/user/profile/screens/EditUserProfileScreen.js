@@ -80,7 +80,6 @@ const EditUserProfileScreen = () => {
     userService.getById(session.get(keys.token), tokenData.id).then(result => {
       if (result.data && result.data.success === true) {
         let r = result.data.data;
-
         setRecord(r);
 
         setFirstName(r.firstName);
@@ -198,7 +197,7 @@ const EditUserProfileScreen = () => {
           </Text>
           <Gap height={12} />
           <Card>
-            <Text>{bio}</Text>
+            <Text customStyle={{minHeight:30,paddingLeft:5}}>{bio}</Text>
           </Card>
         </View>
 
@@ -223,10 +222,10 @@ const EditUserProfileScreen = () => {
           Interest
         </Text>
         <Gap height={12} />
-        <Text>Photography</Text>
+        <Text >Photography</Text>
         <Gap height={8} />
         <View padding={8} backgroundColor={Colors.white200} borderRadius={8}>
-          <Text>
+          <Text customStyle={{minHeight:30,paddingLeft:5}}>
             I’ve been taking photos for 6 years. I love doing portraits and
             brand photography.
           </Text>
@@ -236,7 +235,7 @@ const EditUserProfileScreen = () => {
         <Text>Art</Text>
         <Gap height={8} />
         <View padding={8} backgroundColor={Colors.white200} borderRadius={8}>
-          <Text>
+          <Text customStyle={{minHeight:30,paddingLeft:5}}>
             Art has always fascinated me. I love to paint and would like to get
             a group together to paint on the weekends in different locations!
           </Text>
@@ -252,7 +251,7 @@ const EditUserProfileScreen = () => {
         <Text>Movies</Text>
         <Gap height={8} />
         <View padding={8} backgroundColor={Colors.white200} borderRadius={8}>
-          <Text>
+          <Text customStyle={{minHeight:30,paddingLeft:5}}>
             I’ve been taking photos for 6 years. I love doing portraits and
             brand photography.
           </Text>
@@ -262,7 +261,7 @@ const EditUserProfileScreen = () => {
         <Text>Partying</Text>
         <Gap height={8} />
         <View padding={8} backgroundColor={Colors.white200} borderRadius={8}>
-          <Text>
+          <Text customStyle={{minHeight:30,paddingLeft:5}}>
             Art has always fascinated me. I love to paint and would like to get
             a group together to paint on the weekends in different locations!
           </Text>

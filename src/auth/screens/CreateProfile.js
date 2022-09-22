@@ -22,10 +22,12 @@ import {
 import TiktokIcon from '../../assets/icons/icon-tiktok.svg'
 import ImagePicker from 'react-native-image-crop-picker';
 import ModalCreateProfile from '../../auth/components/Modal/modalcreateprofile';
+import userService from '../../services/user';
+import session from '../../store/session';
+import keys, {token} from '../../store/keys';
 
 
-
-export default function CreateProfile() {
+export default function CreateProfile(props) {
 
   const navigation = useNavigation();
 
@@ -68,6 +70,57 @@ export default function CreateProfile() {
   }
 
   
+  const handleCreateProfile =()=>{
+
+    let data ={
+      "name": "David Withmore",
+     "bio": "A professional handsome guy",
+     "major": "BSIT",
+     "country": "Africa",
+     "city": "Ewan",
+     "address": "293 kamagong st.",
+     "mobileNumber": "9971332977",
+     "gradYear": gradYear,
+     "gender": gender,
+     "dateOfBirth": "2022-05-27",
+     "insta": instagram,
+     "tiktok": tiktok,
+     "linkedin": linkedin,
+     "interest": [
+         {
+             "name": "Programming",
+             "description": "Programming is amazing"
+         }
+     ],
+     "imageUrl": "https://www.linkedin.com/in/mohd-wajeed-ali/overlay/photo",
+     "downFor": [
+         {
+             "name": "Chemistry",
+             "description": "Chemistry is amazing"
+         }
+     ]
+    }
+
+    userService.createUserProfile(session.get(keys.token), props.route.params?.userId,data).then(result => {
+      console.log("result.data",result)
+      console.log(result)
+      if (result.error) {
+        alert(JSON.stringify(result.error.message))
+        // setErrorMessage(result.error);
+        return;
+      }
+
+      if (result.data &&  result.data.success === false) {
+        // setErrorMessage(result.data.message);
+        return;
+      }
+
+      if (result.data  && result.data.success === true) {
+      alert('Profile create ')
+      props.navigation.navigate('Login')
+      }
+    });
+  }
 
   
 
@@ -283,7 +336,7 @@ export default function CreateProfile() {
 
         <View style={styles.buttonContainer}>
           
-          <TouchableOpacity  style={styles.btn}>
+          <TouchableOpacity  style={styles.btn} onPress={()=>handleCreateProfile()}>
             <Text style={styles.btnTitle}>Confirm Change</Text>
           </TouchableOpacity>
 

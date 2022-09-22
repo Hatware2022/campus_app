@@ -148,8 +148,8 @@ const RegisterScreen = () => {
       }
 
       if (result.data && result.data.data && result.data.data.success === true) {
-alert('Check your mail for vefication of your account')
-navigation.navigate('otpScreen',{email:email})
+        alert('Check your mail for vefication of your account')
+        navigation.navigate('otpScreen',{email:email,userId:result.data.data.data.id})
 // navigation.goBack()
         // session.set(keys.token, result.data.token);
         // session.set(keys.isLoggedIn, 'true');

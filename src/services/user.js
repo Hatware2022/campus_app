@@ -246,4 +246,29 @@ export default class {
 
         return result;
     }
+
+    static createUserProfile = async (token, id,data) => {
+        let result = {
+            data: null,
+            error: null
+        };
+
+        // const data = {
+        //     currentPassword,
+        //     newPassword
+        // };
+
+        await axios.put(`${constants.API_URL}/users/${id}`, data,
+            { headers: { 'Authorization': token } })
+            .then(resp => {
+                if (resp.status === 200) {
+                    result.data = resp.data;
+                }
+            })
+            .catch(err => {
+                result.error = err.response.data;
+            });
+
+        return result;
+    }
 }

@@ -21,7 +21,7 @@ import Header from '../../user/component/Header';
 /* =============================================================================
 <OTPScreen />
 ============================================================================= */
-const OtpScreen = () => {
+const OtpScreen = (props) => {
     const route = useRoute();
     const navigation = useNavigation();
   const [codeDigitOne, setCodeDigitOne] = useState('');
@@ -54,7 +54,7 @@ const OtpScreen = () => {
             if (result.data  && result.data.success === true) {
     //   alert('Otp verified')
 
-      navigation.navigate('CreateProfile')
+      navigation.navigate('CreateProfile',{userId:props.route.params?.userId})
             }
           });
       }
