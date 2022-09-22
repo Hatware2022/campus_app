@@ -93,4 +93,44 @@ export default class {
 
         return result;
     }
+
+    static join = async (token, id) => {
+        let result = {
+            data: null,
+            error: null
+        };
+        
+        await axios.post(`${constants.API_URL}/group/join/${id}`, '',
+            { headers: { 'Authorization': token }})
+            .then(resp => {
+                if (resp.status === 200) {
+                    result.data = resp.data;
+                }
+            })
+            .catch(err => {
+                result.error = err.response.data;
+            });
+
+        return result;        
+    }
+
+    static leave = async (token, id) => {
+        let result = {
+            data: null,
+            error: null
+        };
+        
+        await axios.delete(`${constants.API_URL}/group/leave/${id}`,
+            { headers: { 'Authorization': token }})
+            .then(resp => {
+                if (resp.status === 200) {
+                    result.data = resp.data;
+                }
+            })
+            .catch(err => {
+                result.error = err.response.data;
+            });
+
+        return result;        
+    }
 }

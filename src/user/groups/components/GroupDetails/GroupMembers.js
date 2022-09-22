@@ -13,7 +13,7 @@ import * as Colors from '../../../../config/colors';
 /* =============================================================================
 <GroupMembers />
 ============================================================================= */
-const GroupMembers = ({onPress, onPressGroup, joinGroup}) => {
+const GroupMembers = ({onPress, onPressGroup, joinGroup, isUserAGroupMember}) => {
   return (
     <View style={styles.container}>
       <Touchable style={styles.memberContainer} onPress={onPressGroup}>
@@ -34,20 +34,12 @@ const GroupMembers = ({onPress, onPressGroup, joinGroup}) => {
           +27 people has joined
         </Text>
       </Touchable>
-      {joinGroup ? (
-        <Button
-          title="Leave Group"
-          style={styles.leaveButton}
+      <Button
+          title={isUserAGroupMember ? 'Leave Group' : 'Join Group'}
+          style={isUserAGroupMember ? styles.leaveButton : styles.joinButton}
           onPress={onPress}
-          textStyle={styles.textLeaveButton}
-        />
-      ) : (
-        <Button
-          title="Join Group"
-          style={styles.joinButton}
-          onPress={onPress}
-        />
-      )}
+          textStyle={isUserAGroupMember ? styles.textLeaveButton : styles.textJoinButton}
+      />
     </View>
   );
 };
@@ -91,6 +83,10 @@ const styles = StyleSheet.create({
   },
   textLeaveButton: {
     color: Colors.primary,
+    fontFamily: 'Rubik-Medium',
+  },
+  textJoinButton: {
+    color: Colors.white100,
     fontFamily: 'Rubik-Medium',
   },
 });

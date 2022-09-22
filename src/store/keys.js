@@ -11,5 +11,6 @@ module.exports = {
     searchKeyword: `${app}searchKeyword`,
     isFirstLaunch: `${app}isFirstLaunch`,
     user: `${app}user`,
-    loginType: `${app}loginType`
+    loginType: `${app}loginType`,
+    userId: `${app}userId`,
 };

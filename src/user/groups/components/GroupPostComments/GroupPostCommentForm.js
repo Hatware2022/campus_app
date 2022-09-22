@@ -16,7 +16,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 /* =============================================================================
 <GroupPostCommentForm />
 ============================================================================= */
-const GroupPostCommentForm = (props) => {
+const GroupPostCommentForm = () => {
   const insets = useSafeAreaInsets();
   const [comment, setComment] = useState('');
 
@@ -36,9 +36,7 @@ const GroupPostCommentForm = (props) => {
             backgroundColor: Colors.background,
             flex: 1,
           }}>
-            <View style={{marginTop:5}}>
           <EmojiIcon />
-          </View>
           <TextInput
             style={styles.input}
             placeholder="Type here"
@@ -47,7 +45,7 @@ const GroupPostCommentForm = (props) => {
             onChangeText={setComment}
           />
         </View>
-        <Touchable style={styles.button} onPress={() => props.sendMsg(comment) || setComment('')}>
+        <Touchable style={styles.button} onPress={() => console.log('a')}>
           <SendButtonIcon />
         </Touchable>
       </View>
@@ -69,8 +67,6 @@ const styles = StyleSheet.create({
     flex: 1,
     fontFamily: 'Rubik-Regular',
     marginHorizontal: 12,
-    zIndex:1000,
-    height:35,
   },
   button: {
     width: 36,

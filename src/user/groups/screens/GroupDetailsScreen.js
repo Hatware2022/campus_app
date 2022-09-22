@@ -15,6 +15,11 @@ import GroupPostListItem from '../components/GroupDetails/GroupPostListItem';
 import ArrowRedIcon from '../../../assets/icons/icon-red-arrow.svg';
 import SurfingImage from '../../../assets/images/Surfing.png';
 
+import session from '../../../store/session';
+import keys from '../../../store/keys';
+import groupService from '../../../services/group';
+
+
 import GROUP_POSTS from '../../../constants/groupPosts';
 
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -26,14 +31,15 @@ import ModalConfirm from '../../../auth/components/Modal/modalconfirm';
 <GroupDetailsScreen />
 ============================================================================= */
 const GroupDetailsScreen = () => {
+  const route = useRoute();
+  const data = route.params?.data || {};
   const [joinGroup, setJoinGroup] = useState(false);
   const [viewModalLeave, setViewModalLeave] = useState(false);
-  const route = useRoute();
+  const [isUserAGroupMember, setIsUserAGroupMember] = 
+    useState((data?.members || []).includes(session.get(keys.userId)))
   const insets = useSafeAreaInsets();
   const dummyTag = ['Sport', 'Outdoor'];
   const navigation = useNavigation();
-
-  const data = route.params?.data || {};
 
   const _safeArea = {
     paddingBottom: insets.bottom,
@@ -45,15 +51,28 @@ const GroupDetailsScreen = () => {
   };
 
   const _handleLeaveGroup = () => {
-    setViewModalLeave(false);
-    setJoinGroup(false);
+    try {
+      groupService.leave(session.get(keys.token), data.id).then((res) => {
+        const {data} = res;
+        if(data?.success) {
+          setIsUserAGroupMember(false);
+          setViewModalLeave(false);
+        }
+      }).catch((_err) => {})      
+    } catch (_err) {}
   };
 
   const _handlePressGroup = () => {
-    if (joinGroup) {
+    if (isUserAGroupMember) {
       setViewModalLeave(true);
+    } else {
+      groupService.join(session.get(keys.token), data.id).then((res) => {
+        const {data} = res;
+        if(data?.success) {
+          setIsUserAGroupMember(true);
+        }
+      }).catch((_err) => {})
     }
-    setJoinGroup(true);
   };
 
   return (
@@ -92,11 +111,10 @@ const GroupDetailsScreen = () => {
                   size="big"
                   family="semi"
                   customStyle={{lineHeight: 22, marginBottom: 4}}>
-                  {data.name}
+                  {data.title}
                 </Text>
                 <Text color={Colors.black500} customStyle={{marginBottom: 16}}>
-                  Here is a description of what this group content will be
-                  about. This can be edited by the creator only.
+                  {data.description}
                 </Text>
 
                 <View style={styles.tagContainer}>
@@ -108,6 +126,7 @@ const GroupDetailsScreen = () => {
                   joinGroup={joinGroup}
                   onPress={_handlePressGroup}
                   onPressGroup={() => navigation.navigate('GroupMember')}
+                  isUserAGroupMember={isUserAGroupMember}
                 />
               </View>
             </View>
