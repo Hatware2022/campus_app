@@ -61,6 +61,7 @@ const ProfilesScreen = () => {
   const reload = () => {
     userService.getAll(session.get(keys.token)).then(result => {
       let arr = result.data.data;
+      setRecords(arr);
       if (
         keyword.length > 0 ||
         (filters && filters.keyword && filters.keyword.length > 0)
@@ -102,7 +103,7 @@ const ProfilesScreen = () => {
           );
         }
       }
-
+      // alert(JSON.stringify(arr))
       setRecords(arr);
     });
   };
