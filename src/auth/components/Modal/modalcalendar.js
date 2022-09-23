@@ -47,7 +47,7 @@ const ModalCalendar = ({
             marginVertical: 10,
           }}
         />
-        <Text size="big" family="semi">
+        <Text customStyle={{color:'#000', fontWeight:'bold'}} size="big" family="semi">
           {title}
         </Text>
         <View style={styles.containerDatePicker}>

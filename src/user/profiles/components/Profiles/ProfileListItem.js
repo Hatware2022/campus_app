@@ -16,7 +16,7 @@ const ProfileListItem = ({data}) => {
   const navigation = useNavigation();
 
   const _moveToDetails = () => {
-    navigation.navigate('ProfileDetails', {_id: data._id});
+    navigation.navigate('ProfileDetails', {_id: data.id});
   };
 
   return (
@@ -24,19 +24,15 @@ const ProfileListItem = ({data}) => {
       <View center>
         <Avatar
           size={80}
-          source={{uri: data.imageUrl ? data.imageUrl : null}}
+          source={{uri: data?.imageUrl ? data?.imageUrl : null}}
         />
         <Text size="big" family="semi" customStyle={styles.name}>
-          {data.firstName} {data.lastName}
+          {data?.name}
         </Text>
       </View>
 
       <View style={styles.descriptionContainer}>
-        {/* <Text>{data.bio}</Text> */}
-        <Text>
-          Hi, Im Angela Belli. Im really love to go biking on the beaches. Im
-          also interested in business talks. So please visit my profile page and
-          follow my social Media.
+        <Text>{data?.bio ? data?.bio : "Hi, this is dummy data."}
         </Text>
       </View>
 
@@ -48,7 +44,7 @@ const ProfileListItem = ({data}) => {
         {data?.downFor?.map((item, index) => (
           <Tag
             key={index}
-            text={item}
+            text={item.description}
             textStyle={styles.textTag}
             style={styles.tagBox}
           />
@@ -82,6 +78,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: Colors.white200,
     marginVertical: 16,
+    alignItems:'center'
   },
   tagTitle: {
     marginBottom: 8,

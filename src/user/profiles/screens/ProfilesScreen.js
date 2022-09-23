@@ -61,6 +61,7 @@ const ProfilesScreen = () => {
   const reload = () => {
     userService.getAll(session.get(keys.token)).then(result => {
       let arr = result.data.data;
+      setRecords(arr);
       if (
         keyword.length > 0 ||
         (filters && filters.keyword && filters.keyword.length > 0)
@@ -70,9 +71,9 @@ const ProfilesScreen = () => {
       }
 
       if (sortBy === 'A-Z') {
-        arr = arr.sort((a, b) => a.firstName.localeCompare(b.firstName));
+        arr = arr.sort((a, b) => a.name.localeCompare(b.name));
       } else if (sortBy === 'Z-A') {
-        arr = arr.sort((a, b) => b.firstName.localeCompare(a.firstName));
+        arr = arr.sort((a, b) => b.name.localeCompare(a.name));
       } else if (sortBy === 'Newest') {
         arr = arr.sort((a, b) => moment(b.created_at) - moment(a.created_at));
       }
@@ -178,9 +179,7 @@ const ProfilesScreen = () => {
             />
           }
         />
-        <TouchableOpacity onPress={()=>{navigation.navigate('CreateProfile')}}>
-          <Text>Create Profile</Text>
-        </TouchableOpacity>
+        
       </View>
 
       <ModalFilter

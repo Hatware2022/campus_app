@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, StatusBar, TextInput, ScrollView, Image, TouchableOpacity } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, StatusBar, TextInput, ScrollView, Image, TouchableOpacity,   } from 'react-native'
+import React, {useState} from 'react'
 
 import {RFValue} from 'react-native-responsive-fontsize';
 import AntDesign from 'react-native-vector-icons/AntDesign'
@@ -10,19 +10,193 @@ import Entypo from 'react-native-vector-icons/Entypo'
 import Octicons from 'react-native-vector-icons/Octicons'
 import * as Colors from '../../config/colors';
 import {useIsFocused, useNavigation, useRoute} from '@react-navigation/native';
+import {
+  Container,
+  Card,
+  // View,
+  Content,
+  Button,
+  Touchable,
+  SimpleRadioButton,
+} from '../../common';
+import TiktokIcon from '../../assets/icons/icon-tiktok.svg'
+import ImagePicker from 'react-native-image-crop-picker';
+import ModalCreateProfile from '../../auth/components/Modal/modalcreateprofile';
+import userService from '../../services/user';
+import session from '../../store/session';
+import keys, {token} from '../../store/keys';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 
-
-export default function CreateProfile() {
+export default function CreateProfile(props) {
 
   const navigation = useNavigation();
 
+  const registrationData = props.route.params?.registrationData
+  
+  const [imageName, setImageName] = useState('')
+  const [imagePath, setImagePath] = useState('')
+  const [description, setDescription] = useState('')
+  const [isVisibal, setIsVisibal] = useState(false)
+  const [typeModal, setTypeModal] = useState('')
+  const [gradYear, setGradYear] = useState()
+  const [gender, setGender] = useState()
+  const [showGender, setShowGender] = useState(false)
+  const [from, setFrom] = useState()
+  const [instagram, setInstagram] = useState()
+  const [tiktok, setTiktok] = useState()
+  const [linkedin, setLinkedin] = useState()
+  const [majorSelected, setMajorSelected] = useState()
+  const [interetsSelected, setInteretsSelected] = useState()
+  const [downForSelected, setDownForSelected] = useState()
+  
+  const gradYearList = [2022, 2023, 2024, 2025]
+
+  const genderList = ['Male', 'Female', 'Non-binary']
+
+  // const chooseImage = async () => {
+  //   // setSelectFileModal(false)
+
+  //   ImagePicker.openPicker({
+  //       width: 300,
+  //       height: 400,
+  //       cropping: true
+  //   }).then(image => {
+  //     console.log('image====>>>',image)
+      
+  //     let ext = image.path.split('.').pop()
+  //     setImageName(`image.${ext}`)
+  //     setImagePath(image.path)
+      
+  //   })
+       
+  // }
+
+  const takephotofromLibrary = () => {
+    const options = {
+      mediaType: 'photo',
+      quality: 0.3,
+    };
+    launchImageLibrary(options, response => {
+      if (response.didCancel) {
+        // empty action
+      } else if (response.errorCode) {
+        // empty action
+      } else {
+        const source = {
+          uri: response.assets?.[0].uri,
+        };
+        setImagePath(source.uri);
+      }
+    });
+  };
+
+  const interestHandler = (itemsArray) => {
+    let array = itemsArray?.map((item) => {
+      return {
+        name: item, 
+        "description": `${item} is amazing`
+      }
+    }) 
+    setInteretsSelected(array)
+  }
+
+  const downForHandler = (itemsArray) => {
+    let array = itemsArray?.map((item) => {
+      return {
+        name: item, 
+        "description": `${item} is amazing`
+      }
+    }) 
+    setDownForSelected(array)
+  }
+
+  const handleValidation =()=>{
+    if(description === ""){
+      alert('Bio cannot be empty')
+    }
+    else if(majorSelected === ""){
+      alert('Major cannot be empty')
+    }
+    else if(from === ""){
+      alert('From cannot be empty')
+    }
+    else if(gradYear === ""){
+      alert('Grand Year cannot be empty')
+    }
+    else if(instagram === ""){
+      alert('Instragram cannot be empty')
+    }
+    else if(tiktok === ""){
+      alert('TikTok cannot be empty')
+    }
+    else if(linkedin === ""){
+      alert('Linkedin cannot be empty')
+    }
+    else if(interetsSelected === ""){
+      alert('Intrest cannot be empty')
+    }
+    else if(imagePath === ""){
+      alert('Image cannot be empty')
+    }
+    else if(downForSelected === ""){
+      alert('DownFor cannot be empty')
+    }
+    else{
+      handleCreateProfile()
+    }
+  }
+  
+  const handleCreateProfile =()=>{
+
+    let data ={
+
+      "name": registrationData?.name,
+      "bio": description,
+      "major": majorSelected,
+      "country": "US",
+      "city": "Ewan",
+      "address": from,
+      "mobileNumber": "9971332977",
+      "gradYear": gradYear?.[0],
+      "gender": gender,
+      "email": registrationData?.email,
+      "dateOfBirth": registrationData?.dateOfBirth,
+      "insta": instagram,
+      "tiktok": tiktok,
+      "linkedin": linkedin,
+      "interest": interetsSelected,
+      "imageUrl": imagePath,
+      "downFor": downForSelected
+    }
+    userService.createUserProfile(props.route.params?.token, props.route.params?.userId, data).then(result => {
+      // console.log("result.data",result)
+      console.log(result)
+      if (result.error) {
+        alert(JSON.stringify(result.error))
+        return;
+      }
+
+      if (result.data &&  result.data.success === false) {
+        // setErrorMessage(result.data.message);
+        return;
+      }
+
+      if (result.data  && result.data.success === true) {
+      alert('Profile create ')
+      props.navigation.navigate('Login')
+      }
+    });
+  }
+
+  
   return (
     <View style={styles.contianer}>
-      <StatusBar
+      {/* <StatusBar
         backgroundColor={Colors.primary}
         barStyle={'light-content'}  
-       />
+        translucent
+       /> */}
 
       <View style={styles.header}>
 
@@ -40,7 +214,7 @@ export default function CreateProfile() {
                
           <Text style={[styles.heading,{marginTop:RFValue(0)}]}>Add Profile Image</Text>
           
-          <TouchableOpacity style={styles.addImage}>
+          <TouchableOpacity style={styles.addImage} onPress={()=>{takephotofromLibrary()}}>
 
             <View style={{flexDirection:'row'}}>
 
@@ -64,13 +238,20 @@ export default function CreateProfile() {
             placeholder='Insert your bio here'
             style={styles.descriptionInput}
             placeholderTextColor={'#6B7476'}
+            onChangeText={setDescription}
+            value={description}
           />
         
           <Text style={styles.heading}>Major</Text>
 
-          <TouchableOpacity style={styles.major}>
+          <TouchableOpacity 
+            style={styles.major} 
+            onPress={()=>{
+              setIsVisibal(true)
+              setTypeModal('major')
+          }}>
             
-            <Text style={styles.detail}>Choose your major here</Text>
+            <Text style={styles.detail}>{majorSelected != ""? majorSelected : 'Choose your major here'}</Text>
 
             <MaterialIcons name='arrow-forward-ios' size={RFValue(20)} color='#6B7476'/>
 
@@ -79,98 +260,109 @@ export default function CreateProfile() {
           <Text style={styles.heading}>Grad Year</Text>
 
           <View style={styles.multiContainer}>
-            
-            <TouchableOpacity style={styles.option}>
-              <Text style={styles.regularText}>2022</Text>
-            </TouchableOpacity>
 
-            <TouchableOpacity style={styles.option}>
-              <Text style={styles.regularText}>2023</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.option}>
-              <Text style={styles.regularText}>2024</Text>
-            </TouchableOpacity>
-            
-            <TouchableOpacity style={styles.option}>
-              <Text style={styles.regularText}>2025</Text>
-            </TouchableOpacity>
-
+            {gradYearList.map((item)=> {
+              return (
+              <TouchableOpacity style={[styles.option,{borderColor: gradYear == item ? Colors.primary : 'gray', backgroundColor: gradYear == item ? Colors.red300 : 'transparent'}]} onPress={()=>{setGradYear(item)}}>
+                <Text style={styles.regularText}>{item}</Text>
+              </TouchableOpacity>
+            )})}
+        
           </View>
 
           <Text style={styles.heading}>Gender</Text>
 
           <View style={styles.multiContainer}>
-            
-            <TouchableOpacity style={styles.option}>
-              <Text style={styles.regularText}>Male</Text>
-            </TouchableOpacity>
 
-            <TouchableOpacity style={styles.option}>
-              <Text style={styles.regularText}>Female</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.option}>
-              <Text style={styles.regularText}>Non-binary</Text>
-            </TouchableOpacity>
+            {genderList.map((item)=> {
+              return (
+              <TouchableOpacity style={[styles.option,{borderColor: gender == item ? Colors.primary : 'gray', backgroundColor: gender == item ? Colors.red300 : 'transparent'}]} onPress={()=>{setGender(item)}}>
+                <Text style={styles.regularText}>{item}</Text>
+              </TouchableOpacity>
+            )})}
 
           </View>
 
           <View style={styles.multiContainer}>
 
-            <TouchableOpacity>
-
-              <MaterialCommunityIcons name='checkbox-blank-outline' size={RFValue(20)} color='#E3E8EB' style={{marginRight:RFValue(12)}}/>
-
-            </TouchableOpacity>
-
-            <Text style={styles.regularText}>Display gender on profile</Text>
+            <SimpleRadioButton
+              label="Display gender on profile"
+              selected={showGender}
+              onChange={() => {
+                setShowGender(!showGender)
+              }}
+            />
 
           </View>
           
           <Text style={styles.heading}>From</Text>
 
-          <TouchableOpacity style={styles.btnLink}>
+          <View style={styles.fromContainer}>
+ 
+            <TextInput
+              placeholder='Write where from here'
+              style={{width:'90%'}}
+              placeholderTextColor={'#6B7476'}
+              onChangeText={setFrom}
+              value={from}
+            />
             
-            <Text style={styles.detail}>Choose where from here</Text>
-
             <Octicons name='location' size={RFValue(20)} color='#6B7476'/>
 
-          </TouchableOpacity>
+          </View>
          
           <View style={styles.groupHead}/>
           
           <Text style={styles.groupHeading}>Social Media</Text>
 
           <Text style={styles.heading}>Instagram</Text>
-          
-          <TouchableOpacity style={styles.btnLink}>
-            
-            <Text style={styles.detail}>Paste your social mdedia link here</Text>
 
+          <View style={styles.fromContainer}>
+ 
+            <TextInput
+              placeholder='Paste your social mdedia link here'
+              style={{width:'90%'}}
+              placeholderTextColor={'#6B7476'}
+              onChangeText={setInstagram}
+              value={instagram}
+            />
+            
             <AntDesign name='instagram' size={RFValue(20)} color='#6B7476'/>
 
-          </TouchableOpacity>
+          </View>
+          
 
           <Text style={styles.heading}>TikTok</Text>
 
-          <TouchableOpacity style={styles.btnLink}>
+          <View style={styles.fromContainer}>
+ 
+            <TextInput
+              placeholder='Paste your social mdedia link here'
+              style={{width:'90%'}}
+              placeholderTextColor={'#6B7476'}
+              onChangeText={setTiktok}
+              value={tiktok}
+            />
             
-            <Text style={styles.detail}>Paste your social mdedia link here</Text>
+            <TiktokIcon style={{width:RFValue(50), height:RFValue(24)}}/>
 
-            <Image source={require('../../../src/assets/images/tiktok.png')} style={{height:RFValue(24), width:RFValue(22)}}/>
-            
-          </TouchableOpacity>
+          </View>
           
           <Text style={styles.heading}>Linkedin</Text>
-          
-          <TouchableOpacity style={styles.btnLink}>
-            
-            <Text style={styles.detail}>Paste your social mdedia link here</Text>
 
+          <View style={styles.fromContainer}>
+ 
+            <TextInput
+              placeholder='Paste your social mdedia link here'
+              style={{width:'90%'}}
+              placeholderTextColor={'#6B7476'}
+              onChangeText={setLinkedin}
+              value={linkedin}
+            />
+            
             <Entypo name='linkedin' size={RFValue(20)} color='#6B7476'/>
 
-          </TouchableOpacity>
+          </View>
 
         <View style={styles.groupHead}/>
 
@@ -178,7 +370,10 @@ export default function CreateProfile() {
 
           <Text style={styles.heading}>Interests</Text>
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=>{
+              setIsVisibal(true)
+              setTypeModal('interets')
+          }}>
 
             <Text style={styles.intrest}>Choose Interests</Text>
 
@@ -192,7 +387,10 @@ export default function CreateProfile() {
 
           <Text style={styles.heading}>Down For</Text>
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=>{
+              setIsVisibal(true)
+              setTypeModal('down for')
+          }}>
 
             <Text style={styles.intrest}>Choose Down For</Text>
 
@@ -200,16 +398,35 @@ export default function CreateProfile() {
 
         </View>
 
+        <View style={styles.buttonContainer}>
+          
+          <TouchableOpacity  style={styles.btn} onPress={()=>handleValidation()}>
+            <Text style={styles.btnTitle}>Confirm Change</Text>
+          </TouchableOpacity>
+
+        </View>
+        
       </ScrollView>
 
-      <View style={styles.buttonContainer}>
+      <ModalCreateProfile
+        isVisible={isVisibal}
+        onCloseModal={() => setIsVisibal(false)}
+        onYes={(item) => {
+          setIsVisibal(false)
+          if (typeModal == 'major') {
+            setMajorSelected(item)
+          } else
+          if(typeModal == 'interets') {
+            interestHandler(item)
+          } else 
+          if (typeModal == 'down for') {
+            downForHandler(item)
+          }
+
+        }}
+        modalType={typeModal}
         
-        <TouchableOpacity  style={styles.btn}>
-          <Text style={styles.btnTitle}>Confirm Change</Text>
-        </TouchableOpacity>
-
-      </View>
-
+      />
 
     </View>
   )
@@ -223,7 +440,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection:'row', 
     width:'100%', 
-    height:RFValue(92),
+    height:RFValue(65),
     backgroundColor:Colors.primary, 
     alignItems:'center', 
     paddingHorizontal:RFValue(20)
@@ -233,13 +450,14 @@ const styles = StyleSheet.create({
     fontWeight:'bold', 
     fontSize:20, 
     fontFamily:'Rubik-Bold',
-    marginLeft:RFValue(22)
+    marginLeft:RFValue(22),
+    
   },
   heading: {
     color:'#373C3E', 
-    fontSize:RFValue(14), 
-    fontWeight:'500', 
-    fontFamily:'Rubik-Medium',
+    fontSize:RFValue(13), 
+    fontWeight:'700', 
+    fontFamily:'Rubik-Bold',
     marginTop:RFValue(16)
   },
   detail: {
@@ -256,8 +474,8 @@ const styles = StyleSheet.create({
   },
   groupHeading: {
     color:'#373C3E', 
-    fontSize:RFValue(16), 
-    fontWeight:'600', 
+    fontSize:RFValue(15), 
+    fontWeight:'700', 
     fontFamily:'Rubik-Bold',
     marginTop:RFValue(24)
   },
@@ -331,7 +549,7 @@ const styles = StyleSheet.create({
     justifyContent:'center' 
   },
   btn: {
-    backgroundColor:'#E3E8EB', 
+    backgroundColor:'#A70032', 
     width:'100%', 
     height:RFValue(42), 
     alignItems:'center', 
@@ -339,7 +557,7 @@ const styles = StyleSheet.create({
     borderRadius:8
   },
   btnTitle: {
-    color:'#B9BFC1', 
+    color:'white', 
     fontSize:RFValue(14), 
     fontWeight:'600', 
     fontFamily:'Rubik-Medium',
@@ -364,5 +582,22 @@ const styles = StyleSheet.create({
     paddingVertical:RFValue(12), 
     marginTop:RFValue(8),
     backgroundColor:'#FAFAFA' 
+  },
+  modalContainerStyle: {
+    justifyContent: 'flex-end',
+    margin: 0
+  },
+  fromContainer: {
+    flexDirection:'row', 
+    alignItems:'center', 
+    justifyContent:'space-between', 
+    // width:'100%', backgroundColor:'red', 
+    // height:RFValue(48),  
+    borderRadius:8, 
+    paddingHorizontal:RFValue(16), 
+    // paddingVertical:RFValue(12), 
+    marginTop:RFValue(8),
+    backgroundColor:'#FAFAFA'
+    
   }
 })

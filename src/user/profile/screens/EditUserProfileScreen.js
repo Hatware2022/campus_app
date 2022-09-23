@@ -69,13 +69,17 @@ const EditUserProfileScreen = () => {
     setSuccessMessage(null);
   }, []);
 
+  useEffect(() => {
+    
+    reload();
+  }, []);
+
   const reload = () => {
     const tokenData = utils.decodeJwt(session.get(keys.token));
     if (!tokenData) return;
-    userService.getById(session.get(keys.token), tokenData._id).then(result => {
+    userService.getById(session.get(keys.token), tokenData.id).then(result => {
       if (result.data && result.data.success === true) {
         let r = result.data.data;
-
         setRecord(r);
 
         setFirstName(r.firstName);
@@ -94,9 +98,7 @@ const EditUserProfileScreen = () => {
     });
   };
 
-  useEffect(() => {
-    reload();
-  }, []);
+  
 
   const _update = () => {
     setErrorMessage(null);
@@ -168,8 +170,7 @@ const EditUserProfileScreen = () => {
     } catch (err) {}
   };
 
-  if (!record) return <></>;
-
+  // if (!record) return <></>;
   return (
     <Container>
       <Header title={'Your Profile'} />
@@ -177,13 +178,13 @@ const EditUserProfileScreen = () => {
       <Content bottomSafeArea paddingHorizontal={20} paddingVertical={30}>
         <View center>
           <Avatar
-            source={{uri: imageUrl ? imageUrl : null}}
+            source={{uri: record?.imageUrl ? record?.imageUrl : null}}
             size={80}
             onPress={_handleChooseFile}
           />
           <Gap height={12} />
           <Text size="big" family="semi">
-            {`${record.firstName} ${record.lastName}`}
+            {`${record?.name}`}
           </Text>
           <Gap height={16} />
           <SocialButtons data={record} />
@@ -196,7 +197,7 @@ const EditUserProfileScreen = () => {
           </Text>
           <Gap height={12} />
           <Card>
-            <Text>{bio}</Text>
+            <Text customStyle={{minHeight:30,paddingLeft:5}}>{bio}</Text>
           </Card>
         </View>
 
@@ -221,10 +222,10 @@ const EditUserProfileScreen = () => {
           Interest
         </Text>
         <Gap height={12} />
-        <Text>Photography</Text>
+        <Text >Photography</Text>
         <Gap height={8} />
         <View padding={8} backgroundColor={Colors.white200} borderRadius={8}>
-          <Text>
+          <Text customStyle={{minHeight:30,paddingLeft:5}}>
             I’ve been taking photos for 6 years. I love doing portraits and
             brand photography.
           </Text>
@@ -234,7 +235,7 @@ const EditUserProfileScreen = () => {
         <Text>Art</Text>
         <Gap height={8} />
         <View padding={8} backgroundColor={Colors.white200} borderRadius={8}>
-          <Text>
+          <Text customStyle={{minHeight:30,paddingLeft:5}}>
             Art has always fascinated me. I love to paint and would like to get
             a group together to paint on the weekends in different locations!
           </Text>
@@ -250,7 +251,7 @@ const EditUserProfileScreen = () => {
         <Text>Movies</Text>
         <Gap height={8} />
         <View padding={8} backgroundColor={Colors.white200} borderRadius={8}>
-          <Text>
+          <Text customStyle={{minHeight:30,paddingLeft:5}}>
             I’ve been taking photos for 6 years. I love doing portraits and
             brand photography.
           </Text>
@@ -260,7 +261,7 @@ const EditUserProfileScreen = () => {
         <Text>Partying</Text>
         <Gap height={8} />
         <View padding={8} backgroundColor={Colors.white200} borderRadius={8}>
-          <Text>
+          <Text customStyle={{minHeight:30,paddingLeft:5}}>
             Art has always fascinated me. I love to paint and would like to get
             a group together to paint on the weekends in different locations!
           </Text>
@@ -386,7 +387,7 @@ const EditUserProfileScreen = () => {
         <Button
           style={[styles.button, _safeArea]}
           title="Edit Profile"
-          onPress={() => navigation.navigate('UpdateProfile')}
+          onPress={() => navigation.navigate('UpdateProfile',{data: record})}
         />
       </View>
     </Container>

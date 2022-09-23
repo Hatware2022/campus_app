@@ -23,7 +23,8 @@ import Underline from '../../../user/component/Underline';
 /* =============================================================================
 <ClubDetailsScreen />
 ============================================================================= */
-const ClubDetailsScreen = () => {
+const ClubDetailsScreen = ({ route, navigation }) => {
+  const { item } = route.params;
   return (
     <Container>
       <Header title={'Club Detail'} />
@@ -32,7 +33,7 @@ const ClubDetailsScreen = () => {
           <Avatar source={UserImage} size={80} />
           <Gap height={8} />
           <Text size="big" family="semi">
-            Computer Science
+            {item.title}
           </Text>
 
           <SocialButtons />
@@ -49,8 +50,7 @@ const ClubDetailsScreen = () => {
 
           <Card>
             <Text>
-              Directions: Here is where you write a little bit more about what
-              you desire to get out of your time at the Company.
+              {item.bio}
             </Text>
           </Card>
         </View>
@@ -61,7 +61,7 @@ const ClubDetailsScreen = () => {
           Contact us
         </Text>
         <Gap height={16} />
-        <Text>Computerscie@gmail.com</Text>
+        <Text>{item.email}</Text>
 
         <Underline marginHorizontal={0} />
 

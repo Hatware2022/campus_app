@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet,Image} from 'react-native';
 import {Touchable, View, Avatar} from '../../../../common';
 import Text from '../../../../common/TextV2';
 
@@ -11,6 +11,7 @@ import FastImage from 'react-native-fast-image';
 
 import UserImage from '../../../../assets/images/user.png';
 import Underline from '../../../../user/component/Underline';
+// import { Image } from 'react-native-svg';
 
 /* =============================================================================
 <GroupPostDetails />
@@ -18,22 +19,32 @@ import Underline from '../../../../user/component/Underline';
 const GroupPostDetails = ({data}) => {
   return (
     <View>
-      <View style={styles.topContainer}>
-        <View style={styles.userContainer}>
-          <Avatar
+      <View style={{flexDirection:'row'}}>
+       <Avatar
             size={48}
+            style={{marginBottom:10}}
             source={{uri: data.imageUrl ? data.imageUrl : null}}
           />
           <Text customStyle={styles.name} family="semi" size="big">
             {data.name}
           </Text>
+          </View>
+      <View style={styles.topContainer}>
+     
+        <View style={styles.userContainer}>
+          
+          <Image source={{uri: data.imageUrl ? data.imageUrl : null}} style={styles.images} />
+          {console.log(JSON.stringify(data))}
+          
         </View>
-
+        
         <Text size="small" customStyle={styles.time}>
           {data.time}
         </Text>
       </View>
-
+      <Text customStyle={{marginTop:20,color:'black'}} family="semi" size="big">
+            {data.content}ssdsd
+          </Text>
       {/* create condition if image exist */}
       {/* <FastImage
         resizeMode={FastImage.resizeMode.contain}
@@ -51,7 +62,7 @@ const GroupPostDetails = ({data}) => {
           </Touchable>
           <Touchable style={styles.commentButton}>
             <CommentIcon />
-            <Text customStyle={styles.commentButtonText}>{data.comments}</Text>
+            <Text customStyle={styles.commentButtonText}>{data.comments.length}</Text>
           </Touchable>
         </View>
       </View>
@@ -72,6 +83,9 @@ const styles = StyleSheet.create({
   },
   name: {
     marginLeft: 16,
+    marginTop:10,
+    fontWeight:'bold',
+    fontSize:16
   },
   time: {
     color: Colors.black400,
@@ -112,6 +126,7 @@ const styles = StyleSheet.create({
   textDetail: {
     marginVertical: 12,
   },
+  images:{width:'100%',height:230,borderRadius:10}
 });
 
 export default GroupPostDetails;

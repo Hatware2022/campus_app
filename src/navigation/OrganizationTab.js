@@ -17,7 +17,7 @@ const Tab = createBottomTabNavigator();
 ============================================================================= */
 const OrganizationTab = () => (
   <Tab.Navigator
-    tabBar={props => <BottomTab mode="user" {...props} />}
+    tabBar={props => <BottomTab mode="organization" {...props} />}
     screenOptions={{headerShown: false}}>
     {/* <Tab.Screen name="Home" component={PostsScreen} /> */}
     <Tab.Screen name="Home" component={HomeScreen} />

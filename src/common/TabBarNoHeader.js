@@ -26,7 +26,7 @@ const TabBarNoHeader = ({
   const insets = useSafeAreaInsets();
 
   const _safeArea = {
-    height: 35 + insets.top,
+    height: 40 + insets.top,
     paddingTop: insets.top,
   };
 
@@ -45,16 +45,11 @@ const TabBarNoHeader = ({
                   : styles.inactive,
                 itemStyle,
               ]}>
-              <View
-                style={
-                  index === navigationState.index
-                    ? styles.activeTextContainer
-                    : styles.textContainer
-                }>
+              <View>
                 <Text
                   color={Colors.background}
                   size="big"
-                  customStyle={{marginBottom: 10}}>
+                  customStyle={{marginBottom: 4}}>
                   {item.title}
                 </Text>
               </View>
@@ -83,8 +78,8 @@ const styles = StyleSheet.create({
     borderBottomColor: Colors.primary,
   },
   activeTextContainer: {
-    borderBottomWidth: 3,
-    borderBottomColor: Colors.background,
+    // borderBottomWidth: 3,
+    // borderBottomColor: Colors.background,
   },
   txt: {
     fontSize: 22,
@@ -99,6 +94,15 @@ const styles = StyleSheet.create({
   image: {
     heigt: 100,
     width: 125,
+  },
+  active:{
+    borderBottomWidth: 4,
+    borderBottomColor: Colors.background,
+    height:40,
+  },
+  inactive: {
+    // borderBottomWidth: 3,
+    // borderBottomColor: 'blue'
   },
 });
 

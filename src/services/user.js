@@ -9,7 +9,7 @@ export default class {
             error: null
         };
 
-        await axios.get(`${constants.API_URL}/users/all`, 
+        await axios.get(`${constants.API_URL}/users`, 
             { headers: { 'Authorization': token }})
             .then(resp => {
                 if (resp.status === 200) {
@@ -29,7 +29,7 @@ export default class {
             error: null
         };
 
-        await axios.get(`${constants.API_URL}/users/byId/${userId}`,
+        await axios.get(`${constants.API_URL}/users/${userId}`,
         { headers: { 'Authorization': token }})
             .then(resp => {
                 if (resp.status === 200) {
@@ -112,7 +112,7 @@ export default class {
 
         await axios.post(`${constants.API_URL}/registration/signup`, data)
             .then(resp => {
-                if (resp.status === 200) {
+                if (resp.status === 201) {
                     result.data = resp;
                 }
             })
@@ -154,7 +154,7 @@ export default class {
             error: null
         };
 
-        await axios.put(`${constants.API_URL}/users/update/${id}`, data,
+        await axios.put(`${constants.API_URL}/users/${id}`, data,
             { headers: { 'Authorization': token } })
             .then(resp => {
                 if (resp.status === 200) {
@@ -184,6 +184,82 @@ export default class {
                     'Content-Type': 'multipart/form-data'
                 } 
             })
+            .then(resp => {
+                if (resp.status === 200) {
+                    result.data = resp.data;
+                }
+            })
+            .catch(err => {
+                result.error = err.response.data;
+            });
+
+        return result;
+    }
+
+    static forgetPassword = async (token, file) => {
+        let result = {
+            data: null,
+            error: null
+        };
+
+        const data = {
+            email: email,
+            password: password
+        };
+
+        await axios.post(`${constants.API_URL}/users/login`, data)
+            .then(resp => {
+                if (resp.status === 200) {
+                    // console.log("resp: ", JSON.stringify(resp));
+                    result.data = resp.data;
+                }
+            })
+            .catch(err => {
+                // console.log("err: ", JSON.stringify(err));
+                result.error = err.response.data;
+            });
+
+        return result;
+    }
+
+    static sendOtp = async (email, code) => {
+        let result = {
+            data: null,
+            error: null
+        };
+
+        const data = {
+            email: email,
+            otp: code
+        };
+        await axios.post(`${constants.API_URL}/registration/verifyRegistration`, data)
+            .then(resp => {
+                if (resp.status === 201) {
+                    // console.log("resp: ", JSON.stringify(resp));
+                    result.data = resp.data;
+                }
+            })
+            .catch(err => {
+                // console.log("err: ", JSON.stringify(err));
+                result.error = err.response.data;
+            });
+
+        return result;
+    }
+
+    static createUserProfile = async (token, id, data) => {
+        let result = {
+            data: null,
+            error: null
+        };
+
+        // const data = {
+        //     currentPassword,
+        //     newPassword
+        // };
+        // 'https://staging-api.bondo.app/api/users/createProfile/1' 
+        await axios.put(`${constants.API_URL}/users/createProfile/${id}`, data,
+            { headers: { 'Authorization': token } })
             .then(resp => {
                 if (resp.status === 200) {
                     result.data = resp.data;

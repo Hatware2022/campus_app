@@ -45,8 +45,6 @@ const ProfileDetailsScreen = () => {
     });
   }, []);
 
-  if (!record) return <></>;
-
   const _safeAreaStyle = {
     paddingTop: insets.top,
   };
@@ -62,12 +60,12 @@ const ProfileDetailsScreen = () => {
       <Content bottomSafeArea paddingHorizontal={16} paddingVertical={16}>
         <View center>
           <Avatar
-            source={{uri: record.imageUrl ? record.imageUrl : null}}
+            source={{uri: record?.imageUrl ? record?.imageUrl : null}}
             size={80}
           />
           <Gap height={12} />
           <Text size="big" family="semi">
-            {`${record.firstName} ${record.lastName}`}
+            {record?.name ? record?.name : 'Dummy'}
           </Text>
           <Gap height={16} />
 
@@ -87,18 +85,18 @@ const ProfileDetailsScreen = () => {
           </Text>
           <Gap height={12} />
           <Card>
-            <Text>{record.bio}</Text>
+            <Text>{record?.bio ? record?.bio : 'This is dummy data'}</Text>
           </Card>
         </View>
 
         <View>
-          <Card subCard leftTitle={'Major'} subContent="Biologi" />
-          <Card subCard leftTitle={'Year'} subContent="Junior" />
-          <Card subCard leftTitle={'Gender'} subContent="Male" />
+          <Card subCard leftTitle={'Major'} subContent={record?.major ? record?.major : "Biologi"} />
+          <Card subCard leftTitle={'Year'} subContent={record?.gradYear ? record?.gradYear : "Junior"} />
+          <Card subCard leftTitle={'Gender'} subContent={record?.gender ? record?.gender :"Male"} />
           <Card
             subCard
             leftTitle={'From'}
-            subContent="Burlington, Vermont, USA"
+            subContent={record?.address ? record?.address : "dummy address, USA"}
           />
 
           <View
@@ -107,24 +105,16 @@ const ProfileDetailsScreen = () => {
             marginVertical={24}
           />
 
-          {/* <View flex={1} center>
-            <Text fontFamily="Montserrat-SemiBold">
-              Major: <Text>{record.major}</Text>
-            </Text>
-          </View>
-          <View flex={1} center>
-            <Text fontFamily="Montserrat-SemiBold">
-              Year: <Text>{record.gradYear}</Text>
-            </Text>
-          </View> */}
         </View>
 
         <Text family="semi" size="big">
           Interest
         </Text>
-        {/* <TagInput label="Interests" tags={record.downFor} /> */}
+        {record?.downFor && record?.downFor.length ?
+        <TagInput label="Interests" tags={record?.downFor} />
+        :null}
         <Gap height={12} />
-        <Text>Photography</Text>
+        {/* <Text>Photography</Text>
         <Gap height={8} />
         <View padding={8} backgroundColor={Colors.white200} borderRadius={8}>
           <Text>
@@ -141,33 +131,7 @@ const ProfileDetailsScreen = () => {
             Art has always fascinated me. I love to paint and would like to get
             a group together to paint on the weekends in different locations!
           </Text>
-        </View>
-
-        {/* <View>
-					<Title type="h4" marginVertical={10}>
-						Interests
-					</Title>
-
-					<Title type="h5" marginVertical={10}>
-						Technology
-					</Title>
-					<Card>
-						<Text>
-							My old roommate and I made an app that is live in the App Store.
-							Familiar with
-						</Text>
-					</Card>
-
-					<Title type="h5" marginVertical={10}>
-						Startups
-					</Title>
-					<Card>
-						<Text>
-							I have three ideas which I want to take to market. I have
-							successfully started on business but need help with administrative
-						</Text>
-					</Card>
-				</View> */}
+        </View> */}
 
         <View
           borderWidth={1}

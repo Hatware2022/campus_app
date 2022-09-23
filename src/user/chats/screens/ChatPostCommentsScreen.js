@@ -26,6 +26,7 @@ import Header from '../../component/Header';
 const ChatPostCommentsScreen = () => {
   const route = useRoute();
   const [post, setPost] = useState(route.params?.post || null);
+  const [comments, setComments] = useState(route.params?.post?.comments || []);
 
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = () => {
@@ -34,14 +35,14 @@ const ChatPostCommentsScreen = () => {
     setRefreshing(false);
   };
 
-  useEffect(() => {
-    reload();
-  }, []);
+  // useEffect(() => {
+  //   reload();
+  // }, []);
 
   const reload = () => {
-    postService.getById(session.get(keys.token), post._id).then(result => {
+    postService.getComments(session.get(keys.token), post.id).then(result => {
       if (result.data && result.data.success === true) {
-        setPost(result.data.data);
+        // setComments(result.data.data); // data not coming accurate
       }
     });
   };
@@ -49,10 +50,9 @@ const ChatPostCommentsScreen = () => {
   return (
     <Container>
       <Header title={'Comments'} />
-
       <FlatList
         style={styles.list}
-        data={post.comments}
+        data={comments}
         renderItem={renderCommentItem}
         keyExtractor={item => item._id}
         contentContainerStyle={styles.listContent}
@@ -71,7 +71,6 @@ const ChatPostCommentsScreen = () => {
           />
         }
       />
-
       <ChatPostCommentForm data={post} reload={reload} />
     </Container>
   );

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {StyleSheet, Pressable, ActivityIndicator, View} from 'react-native';
+import {StyleSheet, Pressable, ActivityIndicator, View,TouchableOpacity} from 'react-native';
 
 import Text from '../common/TextV2';
 
@@ -35,7 +35,7 @@ const Button = ({
         type === 'alert' && styles.flexOne,
         containerStyle,
       ]}>
-      <Pressable
+      <TouchableOpacity
         onPress={onPress}
         disabled={disabled}
         style={[
@@ -80,7 +80,7 @@ const Button = ({
         ) : (
           children
         )}
-      </Pressable>
+      </TouchableOpacity>
     </View>
   );
 };

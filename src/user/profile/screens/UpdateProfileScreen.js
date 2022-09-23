@@ -16,7 +16,7 @@ import {
   Tag,
 } from '../../../common';
 import Text from '../../../common/TextV2';
-
+import {RFValue} from 'react-native-responsive-fontsize';
 import UserImage from '../../../assets/images/user.png';
 import PlusIcon from '../../../assets/icons/icon-plus-red.svg';
 import PictureIcon from '../../../assets/icons/icon-picture.svg';
@@ -42,11 +42,15 @@ import Fonts from '../../../config/fonts';
 import {useNavigation} from '@react-navigation/native';
 import {launchImageLibrary} from 'react-native-image-picker';
 import FastImage from 'react-native-fast-image';
+import ModalCreateProfile from '../../../auth/components/Modal/modalcreateprofile';
 
 /* =============================================================================
 <UpdateProfileScreen/>
 ============================================================================= */
-const UpdateProfileScreen = () => {
+const UpdateProfileScreen = (props) => {
+
+  const userData = props.route.params?.data
+
   const navigation = useNavigation();
   const [record, setRecord] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
@@ -68,6 +72,10 @@ const UpdateProfileScreen = () => {
   const [diplayGender, setDisplayGender] = useState(false);
   const [location, setLocation] = useState('');
   const [galleryImage, setGalleryImage] = useState(null);
+  const [isVisibal, setIsVisibal] = useState(false)
+  const [typeModal, setTypeModal] = useState('')
+  const [interetsSelected, setInteretsSelected] = useState()
+  const [downForSelected, setDownForSelected] = useState()
 
   const insets = useSafeAreaInsets();
 
@@ -83,22 +91,31 @@ const UpdateProfileScreen = () => {
   const _update = () => {
     setErrorMessage(null);
     setSuccessMessage(null);
+
+    let data ={
+
+      "name": userData?.name,
+      "bio": bio,
+      "major": major,
+      "country": "US",
+      "city": "California",
+      "address": location,
+      "mobileNumber": userData?.mobileNumber,
+      "gradYear": gradYear,
+      "gender": gender,
+      "dateOfBirth": userData?.dateOfBirth,
+      "insta": insta,
+      "tiktok": tiktok,
+      "linkedin": linkedin,
+      "interest": interetsSelected,
+      "imageUrl": galleryImage?.uri,
+      "downFor": downForSelected
+    }
+
     const tokenData = utils.decodeJwt(session.get(keys.token));
     if (!tokenData) return;
     userService
-      .update(session.get(keys.token), tokenData._id, {
-        firstName,
-        lastName,
-        major,
-        gradYear: gradeYear,
-        gender,
-        bio,
-        insta,
-        tiktok,
-        linkedin,
-        interest: activities,
-        downFor: interests,
-      })
+      .update(session.get(keys.token), tokenData._id, data)
       .then(result => {
         if (result.error) {
           setErrorMessage(result.error);
@@ -169,6 +186,26 @@ const UpdateProfileScreen = () => {
     });
   };
 
+  const interestHandler = (itemsArray) => {
+    let array = itemsArray?.map((item) => {
+      return {
+        name: item, 
+        "description": `${item} is amazing`
+      }
+    }) 
+    setInteretsSelected(array)
+  }
+
+  const downForHandler = (itemsArray) => {
+    let array = itemsArray?.map((item) => {
+      return {
+        name: item, 
+        "description": `${item} is amazing`
+      }
+    }) 
+    setDownForSelected(array)
+  }
+
   return (
     <Container>
       <Header title={'Edit Profile'} />
@@ -222,23 +259,20 @@ const UpdateProfileScreen = () => {
               }}
             />
           </View>
-
-          <Text family="semi" color={Colors.black500}>
+          
+          <Text family="semi" color={Colors.black600}>
             Major
           </Text>
           <Gap height={8} />
-          <View style={styles.containerMajor}>
-            <TextInput
-              placeholderTextColor={Colors.black400}
-              style={styles.input}
-              placeholder="Type your major here"
-              value={major}
-              onChangeText={value => {
-                setMajor(value);
-              }}
-            />
+          <Touchable style={styles.containerMajor} 
+          onPress={()=> {
+            setIsVisibal(true)
+            setTypeModal('major')}}>
+            <Text customStyle={styles.detail}>
+              {major? major : 'Choose your major here'}
+            </Text>
             <ArrowRightIcon />
-          </View>
+          </Touchable>
 
           {/* Grad Year */}
           <Text family="semi">Grad Year</Text>
@@ -312,7 +346,7 @@ const UpdateProfileScreen = () => {
             <TextInput
               placeholderTextColor={Colors.black400}
               style={styles.input}
-              placeholder="Choose where from here"
+              placeholder="Write where from here"
               value={location}
               onChangeText={value => {
                 setLocation(value);
@@ -338,9 +372,9 @@ const UpdateProfileScreen = () => {
               placeholderTextColor={Colors.black400}
               style={styles.input}
               placeholder="paste your social media link here"
-              value={location}
+              value={insta}
               onChangeText={value => {
-                setLocation(value);
+                setInsta(value);
               }}
             />
             <InstagramIcon />
@@ -356,9 +390,9 @@ const UpdateProfileScreen = () => {
               placeholderTextColor={Colors.black400}
               style={styles.input}
               placeholder="paste your social media link here"
-              value={location}
+              value={tiktok}
               onChangeText={value => {
-                setLocation(value);
+                setTiktok(value);
               }}
             />
             <TiktokIcon />
@@ -374,9 +408,9 @@ const UpdateProfileScreen = () => {
               placeholderTextColor={Colors.black400}
               style={styles.input}
               placeholder="paste your social media link here"
-              value={location}
+              value={linkedin}
               onChangeText={value => {
-                setLocation(value);
+                setLinkedin(value);
               }}
             />
             <LinkedinIcon />
@@ -386,7 +420,10 @@ const UpdateProfileScreen = () => {
 
           <View horizontal justifyContent="space-between" alignItems="center">
             <Text family="medium">Interest</Text>
-            <Touchable style={styles.chooseButton}>
+            <Touchable style={styles.chooseButton} onPress={()=> {
+              setIsVisibal(true)
+              setTypeModal('interets')
+            }}>
               <Text family="medium" color={Colors.primary}>
                 Choose Interest
               </Text>
@@ -397,7 +434,10 @@ const UpdateProfileScreen = () => {
 
           <View horizontal justifyContent="space-between" alignItems="center">
             <Text family="medium">Down For</Text>
-            <Touchable style={styles.chooseButton}>
+            <Touchable style={styles.chooseButton} onPress={()=>{
+              setIsVisibal(true)
+              setTypeModal('down for')
+          }}>
               <Text family="medium" color={Colors.primary}>
                 Choose Down For
               </Text>
@@ -409,9 +449,29 @@ const UpdateProfileScreen = () => {
         <Button
           style={[styles.button, _safeArea]}
           title="Confirm Change"
-          onPress={() => console.log('a')}
+          onPress={() => _update()}
         />
       </View>
+
+      <ModalCreateProfile
+        isVisible={isVisibal}
+        onCloseModal={() => setIsVisibal(false)}
+        onYes={(item) => {
+          setIsVisibal(false)
+          if (typeModal == 'major') {
+            setMajor(item)
+          } else
+          if(typeModal == 'interets') {
+            interestHandler(item)
+          } else 
+          if (typeModal == 'down for') {
+            downForHandler(item)
+          }
+
+        }}
+        modalType={typeModal}
+        
+      />
     </Container>
   );
 };
@@ -513,6 +573,12 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white100,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  detail: {
+    color:'#6B7476', 
+    fontSize:RFValue(14), 
+    fontWeight:'400', 
+    fontFamily:'Rubik-Regular'
   },
 });
 

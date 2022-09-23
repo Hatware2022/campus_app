@@ -1,19 +1,20 @@
-import React, {useState, useEffect} from 'react';
-import {StyleSheet} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, Image} from 'react-native';
 import {Touchable, View, Avatar, Card} from '../../../../common';
 import Text from '../../../../common/TextV2';
 import * as Colors from '../../../../config/colors';
 import LikeIcon from '../../../../assets/icons/app-likes.svg';
 import CommentIcon from '../../../../assets/icons/app-comments.svg';
-import DemoImage from '../../../../assets/images/empty-image.png';
+import UserImage from '../../../../assets/images/user.png';
 import {useNavigation} from '@react-navigation/native';
-import moment from 'moment';
 import userService from '../../../../services/user';
+import postService from '../../../../services/post';
 import session from '../../../../store/session';
 import keys from '../../../../store/keys';
+import moment from 'moment';
 import utils from '../../../../utils/utils';
-import postService from '../../../../services/post';
 import Gap from '../../../../common/Gap';
+import DemoImage from '../../../../assets/images/empty-image.png';
 
 /* =============================================================================
 <PostListItem />
@@ -23,13 +24,13 @@ const PostListItem = props => {
   const [user, setUser] = useState(null);
 
   const _moveToChatComments = () => {
-    navigation.navigate('PostComments', {post: props.data});
+    navigation.navigate('ChatPostComments', {post: props.data});
   };
 
   useEffect(() => {
     if (!props.data) return;
     userService
-      .getById(session.get(keys.token), props.data.userId)
+      .getById(session.get(keys.token), props.data.id)
       .then(result => {
         if (result.data && result.data.success === true) {
           let r = result.data.data;
@@ -42,11 +43,11 @@ const PostListItem = props => {
     const tokenData = utils.decodeJwt(session.get(keys.token));
     if (!tokenData) return;
 
-    let arr = Array.from(props.data.likes) || [];
-    if (arr.find(k => k.userId === tokenData._id)) return;
+    let arr = Array.from(props.data?.likes) || [];
+    if (arr.find(k => k.userId === tokenData.id)) return;
 
     arr.push({
-      userId: tokenData._id,
+      userId: tokenData.id,
       date: moment().format(),
     });
     let t = {
@@ -54,15 +55,16 @@ const PostListItem = props => {
       likes: arr,
     };
     postService
-      .update(session.get(keys.token), props.data._id, t)
+      .update(session.get(keys.token), props.data?.id)
       .then(result => {
+        console.log('_handleLike : ',result)
         if (result.data && result.data.success === true) {
           props.reload();
         }
       });
   };
 
-  return (
+return (
     <Touchable onPress={_moveToChatComments} style={styles.container}>
       <View style={styles.topContainer}>
         {user && (
@@ -72,20 +74,27 @@ const PostListItem = props => {
               source={{uri: user.imageUrl ? user.imageUrl : null}}
             />
             <Text size="big" family="semi" customStyle={styles.name}>
-              {user.firstName} {user.lastName}
+              {user?.name ? user?.name : 'dummy'}
             </Text>
           </View>
         )}
         <Text size="small" customStyle={styles.time}>
-          {moment(props.data.created_at).fromNow()}
+          {moment(props.data.createdAt).fromNow()}
         </Text>
       </View>
       <Gap height={16} />
 
-      <Text>{props.data.detail}</Text>
+
+      <Image 
+      style={{height:200,width:'98%',borderColor:'#000',borderWidth:0.1,
+      borderRadius:10,alignSelf:'center',backgroundColor:'rgba(0,0,0,0.05)'}}
+      resizeMode={'cover'}
+      source={props?.data?.imageUrl != null ? {uri: props?.data?.imageUrl} : DemoImage} />
+      <Gap height={6} />
+      <Text>{props.data?.content}</Text>
 
       <View style={styles.tagContainer}>
-        {props.data.tags.map(k => {
+        {props.data?.tags.map(k => {
           return (
             <View style={styles.tag} key={k}>
               <Text customStyle={styles.tagText}>{k}</Text>
@@ -98,149 +107,21 @@ const PostListItem = props => {
         <Touchable style={styles.likeButton}>
           <LikeIcon onPress={_handleLike} />
           <Text customStyle={styles.likeButtonText}>
-            {props?.data?.likes?.length}
+            {props?.data?.likes || '0'}
           </Text>
         </Touchable>
-        <Touchable style={styles.commentButton}>
+        <Touchable style={styles.commentButton} onPress={()=>navigation.navigate('GroupPostComments', {post: props.data})}>
           <CommentIcon />
           <Text customStyle={styles.commentButtonText}>
-            {props?.data?.comments?.length}
+            {props?.data?.comments ? props?.data?.comments?.length : '0'}
           </Text>
         </Touchable>
       </View>
     </Touchable>
-    // <Touchable onPress={_moveToChatComments} style={styles.container}>
-    //   <View style={styles.topContainer}>
-    //     {user && (
-    //       <View style={styles.userContainer}>
-    //         <Avatar
-    //           size={56}
-    //           source={{uri: user.imageUrl ? user.imageUrl : null}}
-    //         />
-    //         <Text style={styles.name}>
-    //           {user.firstName} {user.lastName}
-    //         </Text>
-    //       </View>
-    //     )}
-    //     <Text style={styles.time}>
-    //       {moment(props.data.created_at).fromNow()}
-    //     </Text>
-    //   </View>
-
-    //   <Card height={'auto'} marginVertical={5}>
-    //     <Text>{props.data.detail}</Text>
-    //   </Card>
-
-    //   <View style={styles.bottomContainer}>
-    //     <View style={styles.actionButtonContainer}>
-    //       <Touchable style={styles.likeButton}>
-    //         <LikeIcon onPress={_handleLike} />
-    //         <Text style={styles.likeButtonText}>{props.data.likes.length}</Text>
-    //       </Touchable>
-    //       <Touchable style={styles.commentButton}>
-    //         <CommentIcon />
-    //         <Text style={styles.commentButtonText}>
-    //           {props.data.comments.length}
-    //         </Text>
-    //       </Touchable>
-    //     </View>
-
-    //     <View style={styles.tagContainer}>
-    //       {props.data.tags.map(k => {
-    //         return (
-    //           <View style={styles.tag} key={k}>
-    //             <Text style={styles.tagText}>{k}</Text>
-    //           </View>
-    //         );
-    //       })}
-    //     </View>
-    //   </View>
-    // </Touchable>
   );
 };
 
 const styles = StyleSheet.create({
-  //   container: {
-  //     margin: 10,
-  //     paddingVertical: 20,
-  //     paddingHorizontal: 10,
-  //     marginHorizontal: 20,
-  //     borderRadius: 10,
-  //     shadowColor: Colors.border,
-  //     backgroundColor: Colors.background,
-  //     shadowOffset: {
-  //       width: 0,
-  //       height: 2,
-  //     },
-  //     shadowOpacity: 0.25,
-  //     shadowRadius: 3.84,
-  //     elevation: 5,
-  //   },
-  //   topContainer: {
-  //     flexDirection: 'row',
-  //     alignItems: 'flex-start',
-  //     justifyContent: 'space-between',
-  //   },
-  //   userContainer: {
-  //     marginBottom: 10,
-  //     flexDirection: 'row',
-  //     alignItems: 'center',
-  //   },
-  //   name: {
-  //     fontSize: 15,
-  //     marginLeft: 10,
-  //   },
-  //   time: {
-  //     fontSize: 13,
-  //     color: Colors.secondaryText,
-  //   },
-  //   bottomContainer: {
-  //     flexDirection: 'row',
-  //     alignItems: 'center',
-  //     justifyContent: 'space-between',
-  //   },
-  //   actionButtonContainer: {
-  //     flexDirection: 'row',
-  //     alignItems: 'center',
-  //   },
-  //   likeButton: {
-  //     flexDirection: 'row',
-  //     alignItems: 'center',
-  //     paddingRight: 10,
-  //   },
-  //   likeButtonText: {
-  //     fontSize: 12,
-  //     marginLeft: 5,
-  //     color: Colors.primary,
-  //   },
-  //   commentButton: {
-  //     paddingRight: 10,
-  //     flexDirection: 'row',
-  //     alignItems: 'center',
-  //   },
-  //   commentButtonText: {
-  //     fontSize: 12,
-  //     marginLeft: 5,
-  //   },
-  //   tagContainer: {
-  //     marginTop: 5,
-  //     flexDirection: 'row',
-  //     justifyContent: 'center',
-  //   },
-  //   tag: {
-  //     height: 31,
-  //     minWidth: 91,
-  //     borderWidth: 1,
-  //     borderRadius: 10,
-  //     marginHorizontal: 5,
-  //     alignItems: 'center',
-  //     justifyContent: 'center',
-  //     borderColor: Colors.primary,
-  //   },
-  //   tagText: {
-  //     fontSize: 14,
-  //     color: Colors.primary,
-  //   },
   container: {
     marginBottom: 16,
     padding: 16,

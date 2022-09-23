@@ -182,6 +182,7 @@ const EventsScreen = () => {
         onCloseModal={() => setViewFilter(false)}
         onYes={() => setViewFilter(false)}
       />
+
     </Container>
   );
 };

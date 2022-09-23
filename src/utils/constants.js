@@ -7,4 +7,6 @@ export default class {
     static SOCKET_SERVER = 
         `https://develop.talentiano.com:4000`;
         // `http://10.0.2.2:4000/api`;
+    
+    static SLUG = `develop`;
 }

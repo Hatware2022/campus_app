@@ -33,10 +33,7 @@ const ProfileScreen = () => {
   const insets = useSafeAreaInsets();
   const [record, setRecord] = useState(null);
   const [viewModal, setViewModal] = useState(false);
-
-  const _moveToViewProfile = () => {
-    navigation.navigate('EditUserProfile');
-  };
+  const tokenData = utils.decodeJwt(session.get(keys.token)) || null;
 
   const _safeArea = {
     paddingTop: 16 + insets.top,
@@ -54,9 +51,8 @@ const ProfileScreen = () => {
   }, [isFocused]);
 
   const reload = () => {
-    const tokenData = utils.decodeJwt(session.get(keys.token)) || null;
     if (!tokenData) return;
-    userService.getById(session.get(keys.token), tokenData._id).then(result => {
+    userService.getById(session.get(keys.token), tokenData.id).then(result => {     
       console.log('result', result);
       if (result.data && result.data.success === true) {
         let r = result.data.data;
@@ -70,7 +66,7 @@ const ProfileScreen = () => {
     navigation.navigate('Login');
   };
 
-  if (!record) return <></>;
+  // if (!record) return <></>;
 
   return (
     <Container backgroundColor={Colors.background}>
@@ -81,13 +77,13 @@ const ProfileScreen = () => {
         <View horizontal marginTop={12} alignItem="center">
           <Avatar
             size={48}
-            source={{uri: record.imageUrl ? record.imageUrl : null}}
+            source={{uri: record?.imageUrl ? record?.imageUrl : null}}
           />
           <View paddingHorizontal={16} justifyContent="center">
             <Text color={Colors.whiteText} family="semi" size="big">
-              {record.firstName} {record.lastName}
+              {record?.name}
             </Text>
-            <Text color={Colors.whiteText}>raka@gmail.com</Text>
+            <Text color={Colors.whiteText}>{tokenData && tokenData?.email ? tokenData?.email : ''}</Text>
           </View>
         </View>
       </View>

@@ -23,25 +23,13 @@ import session from '../../../store/session';
 import keys from '../../../store/keys';
 import ModalFilter from '../../../auth/components/Modal/modalfilter';
 
-const dummyData = [
-  {
-    name: 'Surf Up Group',
-    people: 27,
-    desc: 'Just like any other surfing club, we are dedicated on surfing especially in Hawaii Beach. Join us to get more info about our activity.',
-  },
-  {
-    name: 'Skateboarding',
-    people: 150,
-    desc: 'Just like any other surfing club, we are dedicated on surfing especially in Hawaii Beach. Join us to get more info about our activity.',
-  },
-];
-
 /* =============================================================================
 <GroupsScreen />
 ============================================================================= */
 const GroupsScreen = () => {
   const isFocused = useIsFocused();
   const [records, setRecords] = useState([]);
+  const [displayRecords, setDisplayRecords] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [keyword, setKeyword] = useState('');
   const [sortBy, setSortBy] = useState('Newest');
@@ -59,7 +47,17 @@ const GroupsScreen = () => {
     return () => {
       isMounted = false;
     };
-  }, [isFocused, keyword, sortBy]);
+  }, [isFocused]);
+
+  useEffect(() => {
+    if(!keyword) {
+      setDisplayRecords(records);
+    } else {
+      setDisplayRecords(records.filter((record) => 
+        record.title?.toLowerCase().includes(keyword.toLowerCase()) || 
+        record.description?.toLowerCase().includes(keyword.toLowerCase())))
+    }
+  }, [keyword, records])
 
   const reload = () => {
     groupService.getAll(session.get(keys.token)).then(result => {
@@ -98,7 +96,7 @@ const GroupsScreen = () => {
     setRefreshing(false);
   };
 
-  const _moveToCreatePost = () => {
+  const _moveToCreateGroup = () => {
     navigation.navigate('GroupNew');
   };
 
@@ -127,9 +125,7 @@ const GroupsScreen = () => {
       <View style={styles.container}>
         {/* <GroupsFilter /> */}
         <FlatList
-          data={dummyData}
-          // data={records}
-
+          data={displayRecords}
           style={styles.list}
           renderItem={renderItem}
           keyExtractor={item => item.id}
@@ -143,7 +139,7 @@ const GroupsScreen = () => {
                 Create New
               </Text>
               <TouchableOpacity
-                onPress={_moveToCreatePost}
+                onPress={_moveToCreateGroup}
                 style={styles.iconPlus}>
                 <PlusIcon />
               </TouchableOpacity>

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, TextInput} from 'react-native';
+import {StyleSheet, TextInput, StatusBar} from 'react-native';
 import {Container, Content, View, Button} from '../../common';
 import Text from '../../common/TextV2';
 
@@ -23,6 +23,7 @@ const ForgotPasswordScreen = () => {
 
   return (
     <Container>
+     <StatusBar backgroundColor={Colors.primary} barStyle="light-content" />
       <Header title={'Forgot Password'} />
 
       <Content padding={16}>

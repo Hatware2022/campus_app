@@ -94,17 +94,28 @@ const RegisterScreen = () => {
     }
 
     if (!validator.isEmail(email)) {
-      alert('joi')
+      alert('Please provide a valid email address.')
       setErrorMessage(`Please provide a valid email address.`);
       return;
     }
 
+    if(userName.length < 5){
+      alert('userName should be 5(five) digits long')
+    }
+
+    if(birthDate === null){
+      alert('Date of birth should not be empty')
+    }
+
+    if(phoneNo === "" || phoneNo.length < 10){
+      alert('Phone Number should not be empty and greater should 10 digits long')
+    }
+
     let data ={
       "name":userName, 
-      "email":email, 
-      "password":password,
+      "email":email,
       "dateOfBirth":birthDate,
-      "mobileNumber":'1239028214',
+      "mobileNumber":phoneNo,
     }
 
     // let response = await axios({
@@ -122,30 +133,34 @@ const RegisterScreen = () => {
 
 
     userService.register(userName, email, password,birthDate,phoneNo).then(result => {
-      alert(JSON.stringify(result))
-      console.log(result)
+      // console.log("result.data",result.data.data)
+      console.log(result.data)
       if (result.error) {
         alert(JSON.stringify(result.error.message))
         setErrorMessage(result.error);
         return;
       }
 
-      if (result.data && result.data.success === false) {
+      if (result.data && result.data.data && result.data.data.success === false) {
         setErrorMessage(result.data.message);
         return;
       }
 
-      if (result.data && result.data.success === true) {
-        session.set(keys.token, result.data.token);
-        session.set(keys.isLoggedIn, 'true');
+      if (result.data && result.data.data && result.data.data.success === true) {
+        alert('Check your mail for vefication of your account')
+        navigation.navigate('otpScreen',{data:data, userId:result.data.data.data.id,email,password})
+// navigation.goBack()
+        // session.set(keys.token, result.data.token);
+        // session.set(keys.isLoggedIn, 'true');
 
-        let tokenData = utils.decodeJwt(result.data.token);
-        if (tokenData.role === 'user') {
-          session.set(keys.loginType, 'user');
-          navigation.navigate('UserTab');
-        } else if (tokenData.role === 'organization') {
-          navigation.navigate('Home');
-        }
+        // let tokenData = utils.decodeJwt(result.data.token);
+        // console.log('tokenData.role kiya hia',tokenData);
+        // if (tokenData.role === 'user') {
+        //   session.set(keys.loginType, 'user');
+        //   navigation.navigate('UserTab');
+        // } else if (tokenData.role === 'organization') {
+        //   navigation.navigate('Home');
+        // }
       }
     });
   };
@@ -161,7 +176,7 @@ const RegisterScreen = () => {
       <Content>
         <View
           style={{backgroundColor: Colors.background, flex: 1, padding: 16}}>
-          <Text  style={styles.lableuser}>User Name</Text>
+          <Text customStyle={styles.registerTxt} style={styles.lableuser}>User Name</Text>
           <View>
             <TextInput
             style={styles.lableinput}
@@ -174,7 +189,7 @@ const RegisterScreen = () => {
             />
           </View>
 
-          <Text style={styles.lableuser}>Email</Text>
+          <Text customStyle={styles.registerTxt} style={styles.lableuser}>Email</Text>
           <View>
             <TextInput
             style={styles.lableinput}
@@ -187,7 +202,7 @@ const RegisterScreen = () => {
             />
           </View>
 
-          <Text style={styles.lableuser}>Phone Number</Text>
+          <Text customStyle={styles.registerTxt} style={styles.lableuser}>Phone Number</Text>
           <View>
             <TextInput
             style={styles.lableinput}
@@ -200,7 +215,7 @@ const RegisterScreen = () => {
             />
           </View>
 
-          <Text style={styles.lableuser}>Day of birth</Text>
+          <Text customStyle={styles.registerTxt} style={styles.lableuser}>Day of birth</Text>
           <Touchable
           style={styles.lableinput}
           placeholderTextColor={'#6B7476'}
@@ -210,15 +225,15 @@ const RegisterScreen = () => {
                 ? moment(birthDate).format('MMM DD YYYY')
                 : 'Click to enter day of birth'}
             </Text>
-            <CalendarIcon style={styles.eyeicon} />
+            <CalendarIcon style={[styles.eyeicon,{marginTop:12,marginRight:-10}]} />
           </Touchable>
 
-          <Text style={styles.lableuser}>Password</Text>
+          <Text customStyle={styles.registerTxt} style={styles.lableuser}>Password</Text>
           <View>
             <TextInput
               style={styles.lableinput}
               placeholderTextColor={'#6B7476'}
-              secureTextEntry
+              secureTextEntry={eye}
               placeholder="Enter your password"
               value={password}
               onChangeText={value => {
@@ -230,8 +245,7 @@ const RegisterScreen = () => {
             </Touchable>
            
           </View>
-
-          <Text style={styles.lableuser}>Confirm Password</Text>
+          <Text customStyle={styles.registerTxt} style={styles.lableuser}>Confirm Password</Text>
           <View>
             <TextInput
               style={styles.lableinput}
@@ -257,7 +271,7 @@ const RegisterScreen = () => {
               <Text
                 family="medium"
                 color={Colors.primary}
-                customStyle={{textDecorationLine: 'underline'}}>
+                customStyle={{textDecorationLine: 'underline',fontWeight:'bold'}}>
                 term & condition
               </Text>
             }
@@ -270,7 +284,7 @@ const RegisterScreen = () => {
               <Text
                 family="medium"
                 color={Colors.primary}
-                customStyle={{textDecorationLine: 'underline'}}>
+                customStyle={{textDecorationLine: 'underline',fontWeight:'bold'}}>
                 data policy
               </Text>
             }
@@ -278,7 +292,10 @@ const RegisterScreen = () => {
         </View>
       </Content>
 
-      <Button title="Confirm" onPress={()=>_handleLogin()} bottom disabled={false} />
+      <Button title="Confirm" 
+      // onPress={()=>navigation.navigate('otpScreen',{email:email})}
+      onPress={()=>_handleLogin()}
+       bottom disabled={false} />
 
       <ModalCalendar
         title="Day of birth"
