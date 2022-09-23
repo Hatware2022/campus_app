@@ -16,6 +16,8 @@ import * as Colors from '../../config/colors';
 import {useNavigation} from '@react-navigation/native';
 import {useRoute} from '@react-navigation/native';
 import Header from '../../user/component/Header';
+import session from '../../store/session';
+import keys from '../../store/keys';
 
 
 /* =============================================================================
@@ -55,8 +57,10 @@ const OtpScreen = (props) => {
       
             if (result.data  && result.data.success === true) {
     //   alert('Otp verified')
+    // session.set(keys.token, result.data.token);
+    //     session.set(keys.isLoggedIn, 'true');
 
-      navigation.navigate('CreateProfile',{userId:props.route.params?.userId, registrationData: registrationData})
+      navigation.navigate('CreateProfile',{userId:props.route.params?.userId, registrationData: registrationData,token:result.data.token})
             }
           });
       }

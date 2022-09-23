@@ -107,8 +107,8 @@ const RegisterScreen = () => {
       alert('Date of birth should not be empty')
     }
 
-    if(phoneNo === ""){
-      alert('Phone Number should not be empty')
+    if(phoneNo === "" || phoneNo.length < 10){
+      alert('Phone Number should not be empty and greater should 10 digits long')
     }
 
     let data ={
@@ -148,7 +148,7 @@ const RegisterScreen = () => {
 
       if (result.data && result.data.data && result.data.data.success === true) {
         alert('Check your mail for vefication of your account')
-        navigation.navigate('otpScreen',{data:data, userId:result.data.data.data.id})
+        navigation.navigate('otpScreen',{data:data, userId:result.data.data.data.id,email,password})
 // navigation.goBack()
         // session.set(keys.token, result.data.token);
         // session.set(keys.isLoggedIn, 'true');

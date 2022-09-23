@@ -102,6 +102,18 @@ const PostCreateScreen = () => {
   }
 
   const _handleSubmit =() => {
+    const formdatas = new FormData();
+    formdatas.append("image", galleryImage.uri);
+    postService
+    .uploadPostImage(session.get(keys.token), formdatas)
+    .then(result => {
+      // alert(JSON.stringify(result))
+      if (result.data && result.data.success === true) {
+        navigation.goBack()
+        props.reload();
+      }
+    });
+    
     let selectedTag=[]
     tags.forEach((e)=>{
       e.checked ? selectedTag.push(e.tag): null

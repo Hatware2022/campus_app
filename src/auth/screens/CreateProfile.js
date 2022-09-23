@@ -110,6 +110,42 @@ export default function CreateProfile(props) {
     }) 
     setDownForSelected(array)
   }
+
+  const handleValidation =()=>{
+    if(description === ""){
+      alert('Bio cannot be empty')
+    }
+    else if(majorSelected === ""){
+      alert('Major cannot be empty')
+    }
+    else if(from === ""){
+      alert('From cannot be empty')
+    }
+    else if(gradYear === ""){
+      alert('Grand Year cannot be empty')
+    }
+    else if(instagram === ""){
+      alert('Instragram cannot be empty')
+    }
+    else if(tiktok === ""){
+      alert('TikTok cannot be empty')
+    }
+    else if(linkedin === ""){
+      alert('Linkedin cannot be empty')
+    }
+    else if(interetsSelected === ""){
+      alert('Intrest cannot be empty')
+    }
+    else if(imagePath === ""){
+      alert('Image cannot be empty')
+    }
+    else if(downForSelected === ""){
+      alert('DownFor cannot be empty')
+    }
+    else{
+      handleCreateProfile()
+    }
+  }
   
   const handleCreateProfile =()=>{
 
@@ -119,11 +155,12 @@ export default function CreateProfile(props) {
       "bio": description,
       "major": majorSelected,
       "country": "US",
-      "city": "California",
+      "city": "Ewan",
       "address": from,
-      "mobileNumber": registrationData?.mobileNumber,
-      "gradYear": gradYear,
+      "mobileNumber": "9971332977",
+      "gradYear": gradYear?.[0],
       "gender": gender,
+      "email": registrationData?.email,
       "dateOfBirth": registrationData?.dateOfBirth,
       "insta": instagram,
       "tiktok": tiktok,
@@ -132,13 +169,11 @@ export default function CreateProfile(props) {
       "imageUrl": imagePath,
       "downFor": downForSelected
     }
-
-    userService.createUserProfile(session.get(keys.token), props.route.params?.userId, data).then(result => {
+    userService.createUserProfile(props.route.params?.token, props.route.params?.userId, data).then(result => {
       // console.log("result.data",result)
       console.log(result)
       if (result.error) {
-        alert(JSON.stringify(result.error.message))
-        // setErrorMessage(result.error);
+        alert(JSON.stringify(result.error))
         return;
       }
 
@@ -216,7 +251,7 @@ export default function CreateProfile(props) {
               setTypeModal('major')
           }}>
             
-            <Text style={styles.detail}>{majorSelected? majorSelected : 'Choose your major here'}</Text>
+            <Text style={styles.detail}>{majorSelected != ""? majorSelected : 'Choose your major here'}</Text>
 
             <MaterialIcons name='arrow-forward-ios' size={RFValue(20)} color='#6B7476'/>
 
@@ -365,7 +400,7 @@ export default function CreateProfile(props) {
 
         <View style={styles.buttonContainer}>
           
-          <TouchableOpacity  style={styles.btn} onPress={()=>handleCreateProfile()}>
+          <TouchableOpacity  style={styles.btn} onPress={()=>handleValidation()}>
             <Text style={styles.btnTitle}>Confirm Change</Text>
           </TouchableOpacity>
 

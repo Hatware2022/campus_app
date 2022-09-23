@@ -257,8 +257,8 @@ export default class {
         //     currentPassword,
         //     newPassword
         // };
-
-        await axios.put(`${constants.API_URL}/users/${id}`, data,
+        // 'https://staging-api.bondo.app/api/users/createProfile/1' 
+        await axios.put(`${constants.API_URL}/users/createProfile/${id}`, data,
             { headers: { 'Authorization': token } })
             .then(resp => {
                 if (resp.status === 200) {
