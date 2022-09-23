@@ -103,7 +103,7 @@ const ProfilesScreen = () => {
           );
         }
       }
-
+      // alert(JSON.stringify(arr))
       setRecords(arr);
     });
   };
