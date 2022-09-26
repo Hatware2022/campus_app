@@ -87,6 +87,7 @@ const PostCreateScreen = () => {
       } else {
         const source = {
           uri: response.assets?.[0].uri,
+          file:response
         };
         setGalleryImage(source);
       }
@@ -102,8 +103,12 @@ const PostCreateScreen = () => {
   }
 
   const _handleSubmit =() => {
+    console.log('galleryImagegalleryImage',galleryImage.file.assets)
+    let file =galleryImage.file.assets[0]
     const formdatas = new FormData();
-    formdatas.append("image", galleryImage.uri);
+    formdatas.append("image", file);
+    // formdatas.append("fileName", galleryImage.file.assets[0]?.fileName);
+    console.log('formdatasformdatas',formdatas)
     postService
     .uploadPostImage(session.get(keys.token), formdatas)
     .then(result => {
@@ -123,15 +128,15 @@ const PostCreateScreen = () => {
       "tags": selectedTag,
       "imageUrl": galleryImage?.uri
     }
-    postService
-    .create(session.get(keys.token), data)
-    .then(result => {
-      alert(JSON.stringify(result?.data.code))
-      if (result.data && result.data.success === true) {
-        navigation.goBack()
-        props.reload();
-      }
-    });
+    // postService
+    // .create(session.get(keys.token), data)
+    // .then(result => {
+    //   alert(JSON.stringify(result?.data.code))
+    //   if (result.data && result.data.success === true) {
+    //     navigation.goBack()
+    //     props.reload();
+    //   }
+    // });
   }
 
   return (
