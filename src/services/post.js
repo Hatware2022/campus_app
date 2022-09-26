@@ -73,8 +73,9 @@ export default class {
         return result;
     }
 
-    static uploadPostImage = async (token, formdatas) => {
-        let data =formdatas
+    static uploadPostImage = async (token, data) => {
+        // let data ={formdatas}
+        // console.log(data)
         let result = {
             data: null,
             error: null
@@ -111,7 +112,7 @@ export default class {
                 }
             })
             .catch(err => {
-                console.log(err.response)
+                console.log('Like Error',err.response)
                 result.error = err.response.data;
             });
 

@@ -14,6 +14,8 @@ import keys from '../../../../store/keys';
 import moment from 'moment';
 import utils from '../../../../utils/utils';
 import Gap from '../../../../common/Gap';
+import axios from 'axios';
+import constants from '../../../../utils/constants';
 
 /* =============================================================================
 <ChatListItem />
@@ -53,13 +55,32 @@ const ChatListItem = props => {
       ...props.data,
       likes: arr,
     };
-    postService
-      .update(session.get(keys.token), props.data._id, t)
-      .then(result => {
-        if (result.data && result.data.success === true) {
-          props.reload();
+    // alert(session.get(keys.token))
+    let aa = session.get(keys.token)
+    try {
+      let response =  axios({
+        url: `${constants.API_URL}/post/like/${props.data.id}`,
+        method: 'POST',
+        headers:{
+          'Authorization': aa,
+          // 'Content-Type': 'application/json'
         }
-      });
+      }).then((e)=>{
+                if (e.data && e.data.success === true) {
+          props.reload();
+        }});
+    } catch (error) {
+      console.log('Error while Sending Password Reset Email => ' + error);
+    }
+
+
+    // postService
+    //   .update(session.get(keys.token), props.data.id, t)
+    //   .then(result => {
+    //     if (result.data && result.data.success === true) {
+    //       props.reload();
+    //     }
+    //   });
   };
 
 return (
