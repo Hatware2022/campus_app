@@ -71,9 +71,9 @@ const ProfilesScreen = () => {
       }
 
       if (sortBy === 'A-Z') {
-        arr = arr.sort((a, b) => a.firstName.localeCompare(b.firstName));
+        arr = arr.sort((a, b) => a.name.localeCompare(b.name));
       } else if (sortBy === 'Z-A') {
-        arr = arr.sort((a, b) => b.firstName.localeCompare(a.firstName));
+        arr = arr.sort((a, b) => b.name.localeCompare(a.name));
       } else if (sortBy === 'Newest') {
         arr = arr.sort((a, b) => moment(b.created_at) - moment(a.created_at));
       }
@@ -103,7 +103,7 @@ const ProfilesScreen = () => {
           );
         }
       }
-      // alert(JSON.stringify(arr))
+
       setRecords(arr);
     });
   };
@@ -140,7 +140,7 @@ const ProfilesScreen = () => {
           data={records}
           style={styles.list}
           renderItem={renderItem}
-          keyExtractor={item => item._id}
+          keyExtractor={(item) => item._id}
           contentContainerStyle={styles.listContent}
           ListHeaderComponent={
             <>

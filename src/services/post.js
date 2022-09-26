@@ -98,7 +98,7 @@ export default class {
         return result;
     }
 
-    static update = async (token, id, data) => {
+    static update = async (token, id) => {
         let result = {
             data: null,
             error: null

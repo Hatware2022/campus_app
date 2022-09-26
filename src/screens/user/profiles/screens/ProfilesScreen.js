@@ -52,10 +52,10 @@ const ProfilesScreen = () => {
 				}
 
 				if(sortBy === "A-Z") {
-					arr = arr.sort((a, b) => a.firstName.localeCompare(b.firstName));
+					arr = arr.sort((a, b) => a.name.localeCompare(b.name));
 				}
 				else if(sortBy === "Z-A") {
-					arr = arr.sort((a, b) => b.firstName.localeCompare(a.firstName));
+					arr = arr.sort((a, b) => b.name.localeCompare(a.name));
 				}
 				else if(sortBy === "Newest") {
 					arr = arr.sort((a, b) => moment(b.created_at) - moment(a.created_at));

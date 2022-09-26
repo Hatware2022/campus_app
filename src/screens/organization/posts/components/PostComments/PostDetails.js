@@ -86,7 +86,7 @@ const PostDetails = props => {
         <View style={styles.actionButtonContainer}>
           <Touchable style={styles.likeButton}>
             <LikeIcon onPress={_handleLike} />
-            <Text style={styles.likeButtonText}>{data.likes.length}</Text>
+            <Text style={styles.likeButtonText}>{data?.likes.length}</Text>
           </Touchable>
           <Touchable style={styles.commentButton}>
             <CommentIcon />

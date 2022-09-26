@@ -18,7 +18,7 @@ const ChatPostCommentListItem = ({data}) => {
 
   useEffect(() => {
     if (!data) return;
-    userService.getById(session.get(keys.token), data.userId).then(result => {
+    userService.getById(session.get(keys.token), data.id).then(result => {
       if (result.data && result.data.success === true) {
         let r = result.data.data;
         setRecord(r);
@@ -30,7 +30,7 @@ const ChatPostCommentListItem = ({data}) => {
     <View style={styles.container}>
       {record && (
         <Avatar
-          source={{uri: record.imageUrl ? record.imageUrl : null}}
+          source={{uri: record?.imageUrl ? record?.imageUrl : null}}
           size={34}
         />
       )}
@@ -41,11 +41,11 @@ const ChatPostCommentListItem = ({data}) => {
             Hardcode Name
           </Text>
           <Text size="small" color={Colors.black400}>
-            {moment(data.date).fromNow()}
+            {moment(data?.createdAt).fromNow()}
           </Text>
         </View>
 
-        <Text customStyle={styles.comment}>{data.comment}</Text>
+        <Text customStyle={styles.comment}>{data?.comment}</Text>
 
         <View horizontal marginBottom={20}>
           <Touchable

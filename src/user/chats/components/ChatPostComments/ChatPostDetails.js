@@ -14,7 +14,7 @@ import moment from 'moment';
 import utils from '../../../../utils/utils';
 import FastImage from 'react-native-fast-image';
 import Underline from '../../../../user/component/Underline';
-import MockImage from '../../../../assets/images/mock-comment.png';
+import MockImage from '../../../../assets/images/empty-image.png';
 
 /* =============================================================================
 <ChatPostDetails />
@@ -25,7 +25,7 @@ const ChatPostDetails = props => {
 
   useEffect(() => {
     if (!data) return;
-    userService.getById(session.get(keys.token), data.userId).then(result => {
+    userService.getById(session.get(keys.token), data.id).then(result => {
       if (result.data && result.data.success === true) {
         let r = result.data.data;
         setUser(r);
@@ -35,13 +35,14 @@ const ChatPostDetails = props => {
 
   const _handleLike = () => {
     const tokenData = utils.decodeJwt(session.get(keys.token));
+    console.log('postService ',tokenData)
     if (!tokenData) return;
 
-    let arr = Array.from(props.data.likes) || [];
-    if (arr.find(k => k.userId === tokenData._id)) return;
+    let arr = Array.from(props?.data?.likes) || [];
+    if (arr.find(k => k.userId === tokenData.id)) return;
 
     arr.push({
-      userId: tokenData._id,
+      userId: tokenData.id,
       date: moment().format(),
     });
     let t = {
@@ -49,7 +50,7 @@ const ChatPostDetails = props => {
       likes: arr,
     };
     postService
-      .update(session.get(keys.token), props.data._id, t)
+      .update(session.get(keys.token), props.data.id, t)
       .then(result => {
         if (result.data && result.data.success === true) {
           props.reload();
@@ -64,15 +65,15 @@ const ChatPostDetails = props => {
           <View style={styles.userContainer}>
             <Avatar
               size={48}
-              source={{uri: user.imageUrl ? user.imageUrl : null}}
+              source={{uri: user?.imageUrl ? user?.imageUrl : null}}
             />
             <Text customStyle={styles.name} family="semi" size="big">
-              {user.firstName} {user.lastName}
+              {user?.name}
             </Text>
           </View>
         )}
         <Text size="small" customStyle={styles.time}>
-          {moment(data.created_at).fromNow()}
+          {moment(data.createdAt).fromNow()}
         </Text>
       </View>
 
@@ -81,20 +82,21 @@ const ChatPostDetails = props => {
         resizeMode={FastImage.resizeMode.contain}
         style={styles.image}
         source={MockImage}
+        resizeMode={'cover'}
       />
 
-      <Text customStyle={styles.textDetail}>{data.detail}</Text>
+      <Text customStyle={styles.textDetail}>{data?.content}</Text>
 
       <View style={styles.bottomContainer}>
         <View style={styles.actionButtonContainer}>
           <Touchable style={styles.likeButton}>
             <LikeIcon onPress={_handleLike} />
-            <Text customStyle={styles.likeButtonText}>{data.likes.length}</Text>
+            <Text customStyle={styles.likeButtonText}>{data?.likes ? data?.likes : 0}</Text>
           </Touchable>
           <Touchable style={styles.commentButton}>
             <CommentIcon />
             <Text customStyle={styles.commentButtonText}>
-              {data.comments.length}
+              {data?.comments && data?.comments.length > 0 ? data?.comments.length : 0}
             </Text>
           </Touchable>
         </View>
@@ -109,10 +111,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
+    marginLeft: 7,
   },
   userContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginLeft: 7,
   },
   name: {
     marginLeft: 16,
@@ -120,11 +124,13 @@ const styles = StyleSheet.create({
   time: {
     color: Colors.black400,
     alignSelf: 'center',
+    marginRight:5
   },
   bottomContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginLeft: 5
   },
   actionButtonContainer: {
     flexDirection: 'row',
@@ -148,13 +154,15 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   image: {
-    width: 343,
+    width: 340,
     height: 232,
     borderRadius: 8,
     marginTop: 12,
+    alignSelf: 'center',
   },
   textDetail: {
     marginVertical: 12,
+    marginLeft: 5,
   },
 });
 

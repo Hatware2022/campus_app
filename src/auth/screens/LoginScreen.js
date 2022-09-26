@@ -92,6 +92,7 @@ const LoginScreen = () => {
       }
       if (result.data && result.data.success === true) {
         session.set(keys.token, result.data.userData.token);
+        session.set(keys.userId, result.data.userData.id);
         session.set(keys.isLoggedIn, 'true');
 
         let tokenData = utils.decodeJwt(result.data.userData.token);

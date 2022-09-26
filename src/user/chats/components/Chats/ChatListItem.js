@@ -16,6 +16,7 @@ import utils from '../../../../utils/utils';
 import Gap from '../../../../common/Gap';
 import axios from 'axios';
 import constants from '../../../../utils/constants';
+import DemoImage from '../../../../assets/images/empty-image.png';
 
 /* =============================================================================
 <ChatListItem />
@@ -31,7 +32,7 @@ const ChatListItem = props => {
   useEffect(() => {
     if (!props.data) return;
     userService
-      .getById(session.get(keys.token), props.data.userId)
+      .getById(session.get(keys.token), props.data.id)
       .then(result => {
         if (result.data && result.data.success === true) {
           let r = result.data.data;
@@ -44,11 +45,11 @@ const ChatListItem = props => {
     const tokenData = utils.decodeJwt(session.get(keys.token));
     if (!tokenData) return;
 
-    let arr = Array.from(props.data.likes) || [];
-    if (arr.find(k => k.userId === tokenData._id)) return;
+    let arr = Array.from(props.data?.likes) || [];
+    if (arr.find(k => k.userId === tokenData.id)) return;
 
     arr.push({
-      userId: tokenData._id,
+      userId: tokenData.id,
       date: moment().format(),
     });
     let t = {
@@ -93,22 +94,27 @@ return (
               source={{uri: user.imageUrl ? user.imageUrl : null}}
             />
             <Text size="big" family="semi" customStyle={styles.name}>
-              {user.firstName} {user.lastName}
+              {user?.name ? user?.name : 'dummy'}
             </Text>
           </View>
         )}
         <Text size="small" customStyle={styles.time}>
-          {moment(props.data.created_at).fromNow()}
+          {moment(props.data.createdAt).fromNow()}
         </Text>
       </View>
       <Gap height={16} />
 
-      {/* <Text>{props.data.detail}</Text> */}
-      <Image source={props.data.imageUrl} />
-      <Text>{props.data.content}</Text>
+
+      <Image 
+      style={{height:200,width:'98%',borderColor:'#000',borderWidth:0.1,
+      borderRadius:10,alignSelf:'center',backgroundColor:'rgba(0,0,0,0.05)'}}
+      resizeMode={'cover'}
+      source={props?.data?.imageUrl != null ? {uri: props?.data?.imageUrl} : DemoImage} />
+      <Gap height={6} />
+      <Text>{props.data?.content}</Text>
 
       <View style={styles.tagContainer}>
-        {props.data.tags.map(k => {
+        {props.data?.tags.map(k => {
           return (
             <View style={styles.tag} key={k}>
               <Text customStyle={styles.tagText}>{k}</Text>
@@ -127,7 +133,7 @@ return (
         <Touchable style={styles.commentButton} onPress={()=>navigation.navigate('GroupPostComments', {post: props.data})}>
           <CommentIcon />
           <Text customStyle={styles.commentButtonText}>
-            {props?.data?.comments?.length ? props?.data?.comments?.length : '0'}
+            {props?.data?.comments ? props?.data?.comments?.length : '0'}
           </Text>
         </Touchable>
       </View>

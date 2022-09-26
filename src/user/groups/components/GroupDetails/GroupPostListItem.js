@@ -1,7 +1,12 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {Touchable, View, Avatar} from '../../../../common';
 import Text from '../../../../common/TextV2';
+
+import session from '../../../../store/session';
+import keys from '../../../../store/keys';
+
+import userService from '../../../../services/user';
 
 import * as Colors from '../../../../config/colors';
 
@@ -17,6 +22,31 @@ import Gap from '../../../../common/Gap';
 <GroupPostListItem />
 ============================================================================= */
 const GroupPostListItem = ({data}) => {
+  const [userDetail, setUserDetail] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    try{
+      userService.getById(session.get(keys.token), data.createdBy).then((result) => {
+        if (result.error) {
+          setErrorMessage(result.error);
+          return;
+        }
+  
+        if (result.data && result.data.success === false) {
+          setErrorMessage(result.data.message);
+          return;
+        }
+  
+        let userDetail = result.data.data;
+  
+        setUserDetail(userDetail);
+      })
+    } catch(error) {
+      setErrorMessage('No posts')
+    }
+  }, [data.createdBy])
+
   const navigation = useNavigation();
 
   const _moveToComments = () => {
@@ -29,17 +59,17 @@ const GroupPostListItem = ({data}) => {
         <View style={styles.userContainer}>
           <Avatar size={48} source={UserImage} />
           <Text size="big" family="semi" customStyle={styles.name}>
-            {data.name}
+            {userDetail?.name}
           </Text>
         </View>
         <Text size="small" customStyle={styles.time}>
-          {data.time}
+          {new Date(data.createdAt).toLocaleString()}
         </Text>
       </View>
       <Gap height={12} />
 
       <View style={styles.containerDesc}>
-        <Text>{data.description}</Text>
+        <Text>{data.content}</Text>
       </View>
 
       <Gap height={12} />

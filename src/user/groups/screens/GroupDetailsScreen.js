@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   ImageBackground,
   StyleSheet,
@@ -18,7 +18,7 @@ import SurfingImage from '../../../assets/images/Surfing.png';
 import session from '../../../store/session';
 import keys from '../../../store/keys';
 import groupService from '../../../services/group';
-
+import groupPostService from '../../../services/grouppost';
 
 import GROUP_POSTS from '../../../constants/groupPosts';
 
@@ -32,6 +32,9 @@ import ModalConfirm from '../../../auth/components/Modal/modalconfirm';
 ============================================================================= */
 const GroupDetailsScreen = () => {
   const route = useRoute();
+  const isFocused = useIsFocused();
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [posts, setPosts] = useState([]);
   const data = route.params?.data || {};
   const [joinGroup, setJoinGroup] = useState(false);
   const [viewModalLeave, setViewModalLeave] = useState(false);
@@ -41,13 +44,42 @@ const GroupDetailsScreen = () => {
   const dummyTag = ['Sport', 'Outdoor'];
   const navigation = useNavigation();
 
+  useEffect(() => {
+    let isMounted = true;
+    if (isMounted) {
+      reload();
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, [isFocused]);
+
+  const reload = () => {
+    groupPostService.getByGroupId(session.get(keys.token), data?.id).then(result => {
+      if (result.error) {
+        setErrorMessage(result.error);
+        return;
+      }
+
+      if (result.data && result.data.success === false) {
+        setErrorMessage(result.data.message);
+        return;
+      }
+
+      let arr = result.data.data;
+
+      setPosts(arr);
+    });
+  };
+
   const _safeArea = {
     paddingBottom: insets.bottom,
     // paddingTop: insets.top,
   };
 
   const _moveToGroupPost = () => {
-    navigation.navigate('GroupCreate');
+    navigation.navigate('GroupCreate', {groupId: data?.id});
   };
 
   const _handleLeaveGroup = () => {
@@ -80,7 +112,7 @@ const GroupDetailsScreen = () => {
       <View style={{height: insets.top, backgroundColor: Colors.primary}} />
 
       <FlatList
-        data={GROUP_POSTS}
+        data={posts}
         style={styles.list}
         renderItem={renderPostItem}
         keyExtractor={item => item.id}
@@ -127,6 +159,7 @@ const GroupDetailsScreen = () => {
                   onPress={_handlePressGroup}
                   onPressGroup={() => navigation.navigate('GroupMember')}
                   isUserAGroupMember={isUserAGroupMember}
+                  members={data?.members}
                 />
               </View>
             </View>
@@ -137,7 +170,7 @@ const GroupDetailsScreen = () => {
               </Text>
               <TouchableOpacity
                 style={styles.buttonPost}
-                onPress={_moveToGroupPost}>
+                onPress={isUserAGroupMember ? _moveToGroupPost : null}>
                 <Text size="small">Create Post +</Text>
               </TouchableOpacity>
             </View>

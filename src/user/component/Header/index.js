@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {StyleSheet, TouchableOpacity, Platform, StatusBar} from 'react-native';
 import BackIcon from '../../../assets/icons/icon-back.svg';
 
 import {View} from '../../../common';
@@ -41,15 +41,14 @@ const Header = ({title, rightIcon, onPressRightIcon}) => {
 
 const styles = StyleSheet.create({
   headerContainer: {
-    // padding: 16,
-    height: 50,
+    height: Platform.OS === 'ios' ? 90 : 50,
     backgroundColor: Colors.primary,
     alignItems:'center',
     justifyContent:'center',
   },
   iconBack: {
     marginRight: 13,
-    marginLeft: 15,    
+    marginLeft: 15, 
   },
 });
 

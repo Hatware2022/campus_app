@@ -32,11 +32,7 @@ const ProfileListItem = ({data}) => {
       </View>
 
       <View style={styles.descriptionContainer}>
-        {/* <Text>{data.bio}</Text> */}
-        <Text>{data.bio}
-          Hi, Im Angela Belli. Im really love to go biking on the beaches. Im
-          also interested in business talks. So please visit my profile page and
-          follow my social Media.
+        <Text>{data?.bio ? data?.bio : "Hi, this is dummy data."}
         </Text>
       </View>
 
@@ -48,7 +44,7 @@ const ProfileListItem = ({data}) => {
         {data?.downFor?.map((item, index) => (
           <Tag
             key={index}
-            text={item.description}
+            text={item}
             textStyle={styles.textTag}
             style={styles.tagBox}
           />
@@ -82,6 +78,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: Colors.white200,
     marginVertical: 16,
+    alignItems:'center'
   },
   tagTitle: {
     marginBottom: 8,
