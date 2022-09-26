@@ -103,7 +103,7 @@ const ProfilesScreen = () => {
           );
         }
       }
-      // alert(JSON.stringify(arr))
+
       setRecords(arr);
     });
   };
@@ -140,7 +140,7 @@ const ProfilesScreen = () => {
           data={records}
           style={styles.list}
           renderItem={renderItem}
-          keyExtractor={item => item._id}
+          keyExtractor={(item) => item._id}
           contentContainerStyle={styles.listContent}
           ListHeaderComponent={
             <>

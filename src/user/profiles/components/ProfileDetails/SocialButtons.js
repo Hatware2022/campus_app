@@ -16,16 +16,19 @@ const SocialButtons = ({data}) => {
 
   useEffect(() => {
     if (!data) return;
-    if (data?.insta || data?.insta.length > 0) setBtn1(true);
+    // if (data?.insta || data?.insta.length > 0) setBtn1(true);
     if (data?.tiktok || data?.tiktok.length > 0) setBtn2(true);
     if (data?.linkedin || data?.linkedin.length > 0) setBtn3(true);
   }, []);
 
-  const _openIGLink = () => {
-    if (!data) return;
-    if (!data?.insta || data?.insta.length === 0) return;
-    Linking.openURL(data?.insta);
-  };
+  // const _openIGLink = () => {
+  //   if (!data) return;
+  //   if (data?.insta || data?.insta.length > 0){
+  //     Linking.openURL(data?.insta);
+  //   }else{
+  //     return
+  //   }
+  // };
   const _openTiktokLink = () => {
     if (!data) return;
     if (!data?.tiktok || data?.tiktok.length === 0) return;
@@ -39,11 +42,9 @@ const SocialButtons = ({data}) => {
 
   return (
     <View style={styles.container}>
-      {btn1 && (
-        <Touchable onPress={_openIGLink} style={styles.button}>
+        <Touchable onPress={{}} style={styles.button}>
           <InstagramIcon />
         </Touchable>
-      )}
 
       {btn2 && (
         <Touchable onPress={_openTiktokLink} style={styles.button}>

@@ -1,7 +1,13 @@
 import React, {useState} from 'react';
 import {StyleSheet, TextInput} from 'react-native';
+import {useNavigation, useRoute} from '@react-navigation/native';
+
 import {View, Container, Content, Avatar, Button} from '../../../common';
 import Text from '../../../common/TextV2';
+
+import groupPostService from '../../../services/grouppost';
+import session from '../../../store/session';
+import keys from '../../../store/keys';
 
 import UserImage from '../../../assets/images/user.png';
 
@@ -17,12 +23,27 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 ============================================================================= */
 const GroupCreateScreen = () => {
   const [valuePost, setValuePost] = useState('');
+  const route = useRoute();
+  const navigation = useNavigation();
+  const {groupId} = route.params;
 
   const insets = useSafeAreaInsets();
 
   const _safeArea = {
     marginBottom: 16 + insets.bottom,
   };
+
+  const handlePost = () => {
+    try {  
+      groupPostService.add(session.get(keys.token), JSON.stringify({
+        "content": valuePost,
+        "groupId": groupId,
+        "tags": []
+      })).then((_res) => {
+        navigation.pop();
+      })
+    } catch(error) {console.log(error)}
+  }
 
   return (
     <Container>
@@ -57,7 +78,7 @@ const GroupCreateScreen = () => {
         <Button
           style={[styles.button, _safeArea]}
           title="Send"
-          onPress={() => console.log('a')}
+          onPress={handlePost}
         />
       </View>
     </Container>

@@ -110,29 +110,11 @@ const ProfileDetailsScreen = () => {
         <Text family="semi" size="big">
           Interest
         </Text>
-        {record?.downFor && record?.downFor.length ?
-        <TagInput label="Interests" tags={record?.downFor} />
+        {record?.interest && record?.interest.length > 0 ?
+        <TagInput label="Interests" tags={record?.interest} />
         :null}
         <Gap height={12} />
-        {/* <Text>Photography</Text>
-        <Gap height={8} />
-        <View padding={8} backgroundColor={Colors.white200} borderRadius={8}>
-          <Text>
-            I’ve been taking photos for 6 years. I love doing portraits and
-            brand photography.
-          </Text>
-        </View>
-
-        <Gap height={12} />
-        <Text>Art</Text>
-        <Gap height={8} />
-        <View padding={8} backgroundColor={Colors.white200} borderRadius={8}>
-          <Text>
-            Art has always fascinated me. I love to paint and would like to get
-            a group together to paint on the weekends in different locations!
-          </Text>
-        </View> */}
-
+        
         <View
           borderWidth={1}
           borderColor={Colors.white300}
@@ -142,84 +124,10 @@ const ProfileDetailsScreen = () => {
         <Text family="semi" size="big">
           Down For
         </Text>
-        {/* <TagInput label="Interests" tags={record.downFor} /> */}
+        {record?.downFor && record?.downFor.length > 0 ?
+         <TagInput label="Interests" tags={[...record?.downFor,...record?.downFor]} />
+        :null}
         <Gap height={12} />
-        <Text>Movies</Text>
-        <Gap height={8} />
-        <View padding={8} backgroundColor={Colors.white200} borderRadius={8}>
-          <Text>
-            I’ve been taking photos for 6 years. I love doing portraits and
-            brand photography.
-          </Text>
-        </View>
-
-        <Gap height={12} />
-        <Text>Partying</Text>
-        <Gap height={8} />
-        <View padding={8} backgroundColor={Colors.white200} borderRadius={8}>
-          <Text>
-            Art has always fascinated me. I love to paint and would like to get
-            a group together to paint on the weekends in different locations!
-          </Text>
-        </View>
-        {/* <View>
-					<Title type="h4">Down for:</Title>
-
-					<Title type="h5" marginVertical={10}>
-						Movies:
-					</Title>
-					<Card>
-						<Text>
-							Who are capable of assisting in securing funding as well as
-							sourcing from china
-						</Text>
-					</Card>
-
-					<Title type="h5" marginVertical={10}>
-						Partying:
-					</Title>
-					<Card>
-						<Text>
-							Who are interested in attending events and other workshops locally
-						</Text>
-					</Card>
-
-					<Title type="h5" marginVertical={10}>
-						Traveling
-					</Title>
-					<Card>
-						<Text>
-							Students who are interested investing in properties, or brokers
-							looking for an
-						</Text>
-					</Card>
-				</View> */}
-
-        {/* <View style={styles.underline} /> */}
-
-        {/* <View>
-					<Title type="h4">Find similar Students</Title>
-
-					<Title type="h5" marginVertical={10}>
-						Interests
-					</Title>
-					<View style={styles.tagContainer}>
-						<Tag text="Business" style={styles.tag} />
-						<Tag text="Hiking" style={styles.tag} />
-						<Tag text="Reading" style={styles.tag} />
-						<Tag text="Art" style={styles.tag} />
-					</View>
-
-					<Title type="h5" marginVertical={10}>
-						Down for:
-					</Title>
-					<View style={styles.tagContainer}>
-						<Tag text="Movies" style={styles.tag} />
-						<Tag text="Partying" style={styles.tag} />
-						<Tag text="Surfing " style={styles.tag} />
-						<Tag text="Hiking" style={styles.tag} />
-					</View>
-				</View> */}
       </Content>
 
       <View style={styles.containerButton}>

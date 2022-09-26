@@ -30,9 +30,9 @@ const TagInput = ({
 
   return (
     <View style={[styles.container, containerStyle]}>
-      {!!label && <Text style={[styles.label, labelStyle]}>{label}</Text>}
+      {/* {!!label && <Text style={[styles.label, labelStyle]}>{label}</Text>} */}
       <View style={[styles.contentContainerStyle, contentContainerStyle]}>
-        {tags.map(item => (
+        {tags && tags.length > 0 && tags.map(item => (
           <Tag
             key={item}
             text={item}
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   contentContainerStyle: {
     width: '100%',
     borderRadius: 10,
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
     flexWrap: 'wrap',
   },

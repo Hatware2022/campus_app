@@ -44,7 +44,7 @@ const ProfileListItem = ({data}) => {
         {data?.downFor?.map((item, index) => (
           <Tag
             key={index}
-            text={item.description}
+            text={item}
             textStyle={styles.textTag}
             style={styles.tagBox}
           />

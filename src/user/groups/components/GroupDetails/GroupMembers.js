@@ -13,7 +13,7 @@ import * as Colors from '../../../../config/colors';
 /* =============================================================================
 <GroupMembers />
 ============================================================================= */
-const GroupMembers = ({onPress, onPressGroup, joinGroup, isUserAGroupMember}) => {
+const GroupMembers = ({onPress, onPressGroup, isUserAGroupMember, members}) => {
   return (
     <View style={styles.container}>
       <Touchable style={styles.memberContainer} onPress={onPressGroup}>
@@ -31,7 +31,7 @@ const GroupMembers = ({onPress, onPressGroup, joinGroup, isUserAGroupMember}) =>
           size="small"
           color={Colors.black500}
           customStyle={{marginHorizontal: 8}}>
-          +27 people has joined
+          {`${members?.length} people has joined`}
         </Text>
       </Touchable>
       <Button
