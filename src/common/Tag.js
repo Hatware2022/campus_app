@@ -24,7 +24,7 @@ const Tag = ({
   if (onPress) {
     return (
       <View style={{marginTop: 15}}>
-     {<Text style={{}}>{text?.name}</Text>}
+        {text?.name ? <Text style={{}}>{text?.name}</Text>:null}
       <Touchable
         style={[
           styles.container,
@@ -33,7 +33,7 @@ const Tag = ({
           redBorder && styles.redBorder,
           style,
         ]}
-        onPress={() => onPress(text?.description)}>
+        onPress={() => onPress(text?.description ? text?.description : text ? text : '')}>
         <Text
           size={size}
           customStyle={[
@@ -42,7 +42,7 @@ const Tag = ({
             redBorder && styles.selectedText,
             textStyle,
           ]}>
-          {text?.description}
+        {text?.description ? text?.description : text ? text : ''}
         </Text>
       </Touchable>
       </View>
@@ -66,7 +66,7 @@ const Tag = ({
           redBorder && styles.selectedText,
           textStyle,
         ]}>
-        {text?.description}
+        {text?.description ? text?.description : text ? text : ''}
       </Text>
     </View>
   );

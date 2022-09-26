@@ -103,22 +103,27 @@ const PostCreateScreen = () => {
   }
 
   const _handleSubmit =() => {
-    console.log('galleryImagegalleryImage',galleryImage.file.assets)
     let file =galleryImage.file.assets[0]
     const formdatas = new FormData();
-    formdatas.append("image", file);
     // formdatas.append("fileName", galleryImage.file.assets[0]?.fileName);
-    console.log('formdatasformdatas',formdatas)
+    let img = {
+      type: file.type,
+      name: file.fileName,
+      uri: file.uri
+    }
+    formdatas.append("image", img);
     postService
     .uploadPostImage(session.get(keys.token), formdatas)
     .then(result => {
-      // alert(JSON.stringify(result))
       if (result.data && result.data.success === true) {
-        navigation.goBack()
-        props.reload();
+        postApi(result.data.url)
+        // navigation.goBack()
+        // props.reload();
       }
     });
-    
+  }
+
+  const postApi = (url) => {
     let selectedTag=[]
     tags.forEach((e)=>{
       e.checked ? selectedTag.push(e.tag): null
@@ -126,17 +131,17 @@ const PostCreateScreen = () => {
     let data ={
       "content" :valuePost,
       "tags": selectedTag,
-      "imageUrl": galleryImage?.uri
+      "imageUrl": url
     }
-    // postService
-    // .create(session.get(keys.token), data)
-    // .then(result => {
-    //   alert(JSON.stringify(result?.data.code))
-    //   if (result.data && result.data.success === true) {
-    //     navigation.goBack()
-    //     props.reload();
-    //   }
-    // });
+    postService
+    .create(session.get(keys.token), data)
+    .then(result => {
+      alert(JSON.stringify(result?.data.code))
+      if (result.data && result.data.success === true) {
+        navigation.goBack()
+        props.reload();
+      }
+    });
   }
 
   return (

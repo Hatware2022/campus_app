@@ -43,6 +43,7 @@ import {useNavigation} from '@react-navigation/native';
 import {launchImageLibrary} from 'react-native-image-picker';
 import FastImage from 'react-native-fast-image';
 import ModalCreateProfile from '../../../auth/components/Modal/modalcreateprofile';
+import postService from '../../../services/post';
 
 /* =============================================================================
 <UpdateProfileScreen/>
@@ -108,14 +109,13 @@ const UpdateProfileScreen = (props) => {
       "tiktok": tiktok,
       "linkedin": linkedin,
       "interest": interetsSelected,
-      "imageUrl": galleryImage?.uri,
+      "imageUrl": galleryImage,
       "downFor": downForSelected
     }
-
     const tokenData = utils.decodeJwt(session.get(keys.token));
     if (!tokenData) return;
     userService
-      .update(session.get(keys.token), tokenData._id, data)
+      .update(session.get(keys.token), tokenData.id, data)
       .then(result => {
         if (result.error) {
           setErrorMessage(result.error);
@@ -129,7 +129,8 @@ const UpdateProfileScreen = (props) => {
 
         if (result.data && result.data.success === true) {
           setSuccessMessage(result.data.message);
-          reload();
+          navigation.goBack()
+          // reload();
           return;
         }
       });
@@ -178,10 +179,21 @@ const UpdateProfileScreen = (props) => {
       } else if (response.errorCode) {
         // empty action
       } else {
+        let file = response.assets?.[0]
         const source = {
-          uri: response.assets?.[0].uri,
+          uri: file.uri,
+          name: file.fileName,
+          uri: file.uri
         };
-        setGalleryImage(source);
+        const formdatas = new FormData();
+        formdatas.append("image", source);
+        postService
+        .uploadPostImage(session.get(keys.token), formdatas)
+        .then(result => {
+          if (result.data && result.data.success === true) {
+            setGalleryImage(result.data.url)
+          }
+        });
       }
     });
   };
@@ -218,7 +230,7 @@ const UpdateProfileScreen = (props) => {
             <FastImage
               resizeMode={FastImage.resizeMode.contain}
               style={styles.image}
-              source={galleryImage}>
+              source={{uri: galleryImage}}>
               <Touchable
                 onPress={() => setGalleryImage(null)}
                 style={styles.containerTrash}>

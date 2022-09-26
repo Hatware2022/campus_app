@@ -74,24 +74,19 @@ export default class {
     }
 
     static uploadPostImage = async (token, data) => {
-        // let data ={formdatas}
-        // console.log(data)
         let result = {
             data: null,
             error: null
         };
-        // alert(JSON.stringify(`${constants.API_URL}/image/uploadImages`))
-
         await axios.put(`${constants.API_URL}/image/uploadImages`, data,
             { headers: { 'Authorization': token ,'Content-Type': 'multipart/form-data' }})
             .then(resp => {
-                alert(JSON.stringify(resp))
                 if (resp.status === 201) {
                     result.data = resp.data;
                 }
             })
             .catch(err => {
-                console.log('err',err.response)
+                console.log('uploadPostImage err : ',err.response)
                 result.error = err.response.data;
             });
 

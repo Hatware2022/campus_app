@@ -74,6 +74,11 @@ const EditUserProfileScreen = () => {
     reload();
   }, []);
 
+  useEffect(() => {
+    
+    reload();
+  }, [navigation]);
+
   const reload = () => {
     const tokenData = utils.decodeJwt(session.get(keys.token));
     if (!tokenData) return;
