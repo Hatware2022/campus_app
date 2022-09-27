@@ -35,6 +35,7 @@ import Gap from '../../../common/Gap';
 import Underline from '../../component/Underline';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
+import postService from '../../../services/post';
 
 /* =============================================================================
 <EditUserProfileScreen/>
@@ -150,7 +151,7 @@ const EditUserProfileScreen = () => {
 
       ImagePicker.openPicker({
         cropping: false,
-        multiple: false,
+        multiple: false, 
       })
         .then(k => {
           const file = {
@@ -159,17 +160,37 @@ const EditUserProfileScreen = () => {
             uri: Platform.OS === 'ios' ? k.path.replace('file://', '') : k.path,
           };
 
-          imageService.create(file).then(result => {
+          const formdatas = new FormData();
+          let img = {
+            type: k.mime,
+            name: 'ddsd',
+            uri: k.path
+          }
+          formdatas.append("image", img);
+          postService
+          .uploadPostImage(session.get(keys.token), formdatas)
+          .then(result => {
+            
             if (result.data && result.data.success === true) {
-              userService
-                .update(session.get(keys.token), tokenData._id, {
-                  imageUrl: result.data.url,
-                })
-                .then(result1 => {
-                  setImageUrl(result.data.url);
-                });
+              alert(JSON.stringify(result))
+              setImageUrl(result.data.url);
+              // postApi(result.data.url)
+              // navigation.goBack()
+              // props.reload();
             }
           });
+
+          // imageService.create(file).then(result => {
+          //   if (result.data && result.data.success === true) {
+          //     userService
+          //       .update(session.get(keys.token), tokenData._id, {
+          //         imageUrl: result.data.url,
+          //       })
+          //       .then(result1 => {
+          //         setImageUrl(result.data.url);
+          //       });
+          //   }
+          // });
         })
         .catch(err => {});
     } catch (err) {}

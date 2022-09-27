@@ -23,6 +23,7 @@ import StarIcon from '../../../assets/icons/icon-star.svg';
 import BlockIcon from '../../../assets/icons/icon-block.svg';
 import Gap from '../../../common/Gap';
 import ModalConfirm from '../../../auth/components/Modal/modalconfirm';
+import DemoImage from '../../../assets/images/empty-image.png';
 
 /* =============================================================================
 <ProfileScreen />
@@ -77,7 +78,7 @@ const ProfileScreen = () => {
         <View horizontal marginTop={12} alignItem="center">
           <Avatar
             size={48}
-            source={{uri: record?.imageUrl ? record?.imageUrl : null}}
+            source={record?.imageUrl ?{uri: record?.imageUrl ? record?.imageUrl : DemoImage} :DemoImage}
           />
           <View paddingHorizontal={16} justifyContent="center">
             <Text color={Colors.whiteText} family="semi" size="big">

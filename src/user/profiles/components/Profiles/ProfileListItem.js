@@ -6,7 +6,7 @@ import Text from '../../../../common/TextV2';
 import * as Colors from '../../../../config/colors';
 
 import UserImage from '../../../../assets/images/user.png';
-
+import DemoImage from '../../../../assets/images/empty-image.png';
 import {useNavigation} from '@react-navigation/native';
 
 /* =============================================================================
@@ -24,7 +24,7 @@ const ProfileListItem = ({data}) => {
       <View center>
         <Avatar
           size={80}
-          source={{uri: data?.imageUrl ? data?.imageUrl : null}}
+          source={data?.imageUrl ?{uri: data?.imageUrl ? data?.imageUrl : null}: DemoImage}
         />
         <Text size="big" family="semi" customStyle={styles.name}>
           {data?.name}

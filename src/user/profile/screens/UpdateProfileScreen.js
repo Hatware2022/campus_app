@@ -54,29 +54,29 @@ const UpdateProfileScreen = (props) => {
 
   const navigation = useNavigation();
   const [record, setRecord] = useState(null);
-  const [imageUrl, setImageUrl] = useState(null);
+  const [imageUrl, setImageUrl] = useState(userData?.imageUrl);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [major, setMajor] = useState('');
+  const [major, setMajor] = useState(userData?.major);
   const [gradeYear, setGradeYear] = useState('');
-  const [gender, setGender] = useState('');
-  const [bio, setBio] = useState('');
-  const [insta, setInsta] = useState('');
-  const [tiktok, setTiktok] = useState('');
-  const [linkedin, setLinkedin] = useState('');
+  const [gender, setGender] = useState(userData?.gender);
+  const [bio, setBio] = useState(userData?.bio);
+  const [insta, setInsta] = useState(userData?.insta);
+  const [tiktok, setTiktok] = useState(userData?.tiktok);
+  const [linkedin, setLinkedin] = useState(userData?.linkedin);
   const [interests, setInterests] = useState([]);
   const [activities, setActivities] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
   const [file, setFile] = useState(null);
-  const [gradYear, setGradYead] = useState('');
+  const [gradYear, setGradYead] = useState(userData?.gradYear);
   const [diplayGender, setDisplayGender] = useState(false);
-  const [location, setLocation] = useState('');
+  const [location, setLocation] = useState(userData?.address);
   const [galleryImage, setGalleryImage] = useState(null);
   const [isVisibal, setIsVisibal] = useState(false)
   const [typeModal, setTypeModal] = useState('')
-  const [interetsSelected, setInteretsSelected] = useState()
-  const [downForSelected, setDownForSelected] = useState()
+  const [interetsSelected, setInteretsSelected] = useState(userData?.interest)
+  const [downForSelected, setDownForSelected] = useState(userData?.downFor)
 
   const insets = useSafeAreaInsets();
 
@@ -85,9 +85,44 @@ const UpdateProfileScreen = (props) => {
   };
 
   useEffect(() => {
+    // alert(JSON.stringify(userData))
     setErrorMessage(null);
     setSuccessMessage(null);
   }, []);
+
+  const validateFields =()=>{
+    if(bio === ""){
+      alert('Bio is required')
+    }
+    else if(major === ""){
+      alert('Major is required')
+    }
+    else if(gradYear === ""){
+      alert('Grand is required')
+    }
+    else if(gender === ""){
+      alert('Gender is required')
+    }
+    else if(location === ""){
+      alert('From is required')
+    }
+    else if(insta === ""){
+      alert('Instragram is required')
+    }
+    else if(tiktok === ""){
+      alert('TikTok is required')
+    }
+    else if(interetsSelected === ""){
+      alert('Interest is required')
+    }
+    else if(downForSelected === ""){
+      alert('Down For is required')
+    }
+    else{
+      _update()
+    }
+    // _update()
+  }
 
   const _update = () => {
     setErrorMessage(null);
@@ -109,7 +144,7 @@ const UpdateProfileScreen = (props) => {
       "tiktok": tiktok,
       "linkedin": linkedin,
       "interest": interetsSelected,
-      "imageUrl": galleryImage,
+      "imageUrl": imageUrl,
       "downFor": downForSelected
     }
     const tokenData = utils.decodeJwt(session.get(keys.token));
@@ -179,21 +214,39 @@ const UpdateProfileScreen = (props) => {
       } else if (response.errorCode) {
         // empty action
       } else {
-        let file = response.assets?.[0]
-        const source = {
-          uri: file.uri,
+        let file =response.assets?.[0]
+        const formdatas = new FormData();
+        // formdatas.append("fileName", galleryImage.file.assets[0]?.fileName);
+        let img = {
+          type: file.type,
           name: file.fileName,
           uri: file.uri
-        };
-        const formdatas = new FormData();
-        formdatas.append("image", source);
+        }
+        formdatas.append("image", img);
         postService
         .uploadPostImage(session.get(keys.token), formdatas)
         .then(result => {
-          if (result.data && result.data.success === true) {
-            setGalleryImage(result.data.url)
-          }
-        });
+            // alert(JSON.stringify(result))
+            if (result.data && result.data.success === true) {
+              // alert(JSON.stringify(result))
+              setImageUrl(result.data.url);
+              // postApi(result.data.url)
+              // navigation.goBack()
+              // props.reload();
+            }
+          });
+
+
+
+        // const formdatas = new FormData();
+        // formdatas.append("image", source);
+        // postService
+        // .uploadPostImage(session.get(keys.token), formdatas)
+        // .then(result => {
+        //   if (result.data && result.data.success === true) {
+        //     setGalleryImage(result.data.url)
+        //   }
+        // });
       }
     });
   };
@@ -225,14 +278,14 @@ const UpdateProfileScreen = (props) => {
       <Content padding={16}>
         <Text family="semi">Add Image</Text>
 
-        {galleryImage ? (
+        {imageUrl ? (
           <View style={styles.containerImage}>
             <FastImage
               resizeMode={FastImage.resizeMode.contain}
               style={styles.image}
-              source={{uri: galleryImage}}>
+              source={{uri: imageUrl}}>
               <Touchable
-                onPress={() => setGalleryImage(null)}
+                onPress={() => setImageUrl(null)}
                 style={styles.containerTrash}>
                 <TrashIcon />
               </Touchable>
@@ -264,7 +317,7 @@ const UpdateProfileScreen = (props) => {
               multiline
               placeholderTextColor={Colors.black400}
               style={styles.input}
-              placeholder="Enter your email here"
+              placeholder="Enter your Bio here"
               value={bio}
               onChangeText={value => {
                 setBio(value);
@@ -461,7 +514,7 @@ const UpdateProfileScreen = (props) => {
         <Button
           style={[styles.button, _safeArea]}
           title="Confirm Change"
-          onPress={() => _update()}
+          onPress={() => validateFields()}
         />
       </View>
 
