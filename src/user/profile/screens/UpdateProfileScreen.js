@@ -90,6 +90,10 @@ const UpdateProfileScreen = (props) => {
     setSuccessMessage(null);
   }, []);
 
+  useEffect(() => {
+    setImageUrl(imageUrl)
+  }, [imageUrl]);
+
   const validateFields =()=>{
     if(bio === ""){
       alert('Bio is required')
@@ -193,7 +197,7 @@ const UpdateProfileScreen = (props) => {
                 .update(session.get(keys.token), tokenData._id, {
                   imageUrl: result.data.url,
                 })
-                .then(result1 => {
+                .then(result => {
                   setImageUrl(result.data.url);
                 });
             }
@@ -226,7 +230,6 @@ const UpdateProfileScreen = (props) => {
         postService
         .uploadPostImage(session.get(keys.token), formdatas)
         .then(result => {
-            // alert(JSON.stringify(result))
             if (result.data && result.data.success === true) {
               // alert(JSON.stringify(result))
               setImageUrl(result.data.url);

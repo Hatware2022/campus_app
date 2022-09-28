@@ -11,6 +11,7 @@ import FastImage from 'react-native-fast-image';
 
 import UserImage from '../../../../assets/images/user.png';
 import Underline from '../../../../user/component/Underline';
+import moment from 'moment';
 // import { Image } from 'react-native-svg';
 
 /* =============================================================================
@@ -19,31 +20,29 @@ import Underline from '../../../../user/component/Underline';
 const GroupPostDetails = ({data}) => {
   return (
     <View>
-      <View style={{flexDirection:'row'}}>
+      <View style={{flexDirection:'row',margin:10}}>
        <Avatar
             size={48}
             style={{marginBottom:10}}
             source={{uri: data.imageUrl ? data.imageUrl : null}}
           />
           <Text customStyle={styles.name} family="semi" size="big">
-            {data.name}
+            {data?.name ? data?.name : 'dummy'}
           </Text>
+          <Text size="small" customStyle={styles.time}>
+          {moment(new Date()).fromNow()}
+        </Text>
           </View>
       <View style={styles.topContainer}>
      
         <View style={styles.userContainer}>
           
-          <Image source={{uri: data.imageUrl ? data.imageUrl : null}} style={styles.images} />
-          {console.log(JSON.stringify(data))}
-          
+          <Image source={{uri: data?.imageUrl ? data?.imageUrl : null}} style={styles.images} />          
         </View>
-        
-        <Text size="small" customStyle={styles.time}>
-          {data.time}
-        </Text>
+      
       </View>
-      <Text customStyle={{marginTop:20,color:'black'}} family="semi" size="big">
-            {data.content}ssdsd
+      <Text customStyle={{marginTop:20,color:'black',marginLeft:10}} family="semi" size="big">
+            {data?.content}
           </Text>
       {/* create condition if image exist */}
       {/* <FastImage
@@ -52,17 +51,17 @@ const GroupPostDetails = ({data}) => {
         source={MockImage}
       /> */}
 
-      <Text customStyle={styles.textDetail}>{data.description}</Text>
+      <Text customStyle={styles.textDetail}>{data?.description}</Text>
 
       <View style={styles.bottomContainer}>
         <View style={styles.actionButtonContainer}>
           <Touchable style={styles.likeButton}>
             <LikeIcon />
-            <Text customStyle={styles.likeButtonText}>{data.likes}</Text>
+            <Text customStyle={styles.likeButtonText}>{data?.likes}</Text>
           </Touchable>
           <Touchable style={styles.commentButton}>
             <CommentIcon />
-            <Text customStyle={styles.commentButtonText}>{data.comments.length}</Text>
+            <Text customStyle={styles.commentButtonText}>{data?.comments.length}</Text>
           </Touchable>
         </View>
       </View>
@@ -80,6 +79,7 @@ const styles = StyleSheet.create({
   userContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center'
   },
   name: {
     marginLeft: 16,
@@ -90,11 +90,13 @@ const styles = StyleSheet.create({
   time: {
     color: Colors.black400,
     alignSelf: 'center',
+    marginLeft: 'auto',
   },
   bottomContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginLeft: 10
   },
   actionButtonContainer: {
     flexDirection: 'row',
@@ -125,8 +127,15 @@ const styles = StyleSheet.create({
   },
   textDetail: {
     marginVertical: 12,
+    marginLeft:10
   },
-  images:{width:'100%',height:230,borderRadius:10}
+  images:{
+    width:'97%',
+    height:230,
+    borderRadius:10,
+    backgroundColor: 'rgba(0,0,0,0.05)',
+    marginLeft:5
+  }
 });
 
 export default GroupPostDetails;

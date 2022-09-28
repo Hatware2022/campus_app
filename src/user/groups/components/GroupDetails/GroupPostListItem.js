@@ -57,6 +57,7 @@ const GroupPostListItem = ({data}) => {
     <Touchable onPress={_moveToComments} style={styles.container}>
       <View style={styles.topContainer}>
         <View style={styles.userContainer}>
+        {/* <Avatar size={48} source={userDetail?.imageUrl} /> */}
           <Avatar size={48} source={UserImage} />
           <Text size="big" family="semi" customStyle={styles.name}>
             {userDetail?.name}

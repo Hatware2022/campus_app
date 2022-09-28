@@ -8,7 +8,7 @@ import * as Colors from '../config/colors';
 /* =============================================================================
 <Avatar />
 ============================================================================= */
-const Avatar = ({source, style, size, border, round, radius, onPress}) => {
+const Avatar = ({source, style, size, border, round, radius, onPress, editProfile}) => {
   const _layout = {
     width: size,
     height: size,
@@ -23,7 +23,7 @@ const Avatar = ({source, style, size, border, round, radius, onPress}) => {
         <Image
           style={[styles.image, _layout, style]}
           source={source}
-          resizeMode={'cover'}
+          resizeMode={editProfile?'contain':'cover'}
         />
       </Pressable>
     );

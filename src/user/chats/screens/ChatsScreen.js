@@ -147,7 +147,7 @@ const ChatsScreen = () => {
             <AntDesign name="pluscircle" size={20} color={Colors.primary} style={{marginTop:9,marginLeft:-7}} />
             </View>
             {/* <ChatForm reload={reload} /> */}
-          </View> 
+          </View>
         }
         ListEmptyComponent={
           <Title type="h6" marginHorizontal={20} marginVertical={20}>

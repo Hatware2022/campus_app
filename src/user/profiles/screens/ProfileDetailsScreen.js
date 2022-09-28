@@ -125,7 +125,7 @@ const ProfileDetailsScreen = () => {
           Down For
         </Text>
         {record?.downFor && record?.downFor.length > 0 ?
-         <TagInput label="Interests" tags={[...record?.downFor,...record?.downFor]} />
+         <TagInput label="Interests" tags={record?.downFor} />
         :null}
         <Gap height={12} />
       </Content>

@@ -24,8 +24,9 @@ const ChatPostDetails = props => {
   const data = props.data;
 
   useEffect(() => {
+    const tokenData = utils.decodeJwt(session.get(keys.token)) || data.id;
     if (!data) return;
-    userService.getById(session.get(keys.token), data.id).then(result => {
+    userService.getById(session.get(keys.token), tokenData.id).then(result => {
       if (result.data && result.data.success === true) {
         let r = result.data.data;
         setUser(r);
@@ -81,7 +82,7 @@ const ChatPostDetails = props => {
       <FastImage
         resizeMode={FastImage.resizeMode.contain}
         style={styles.image}
-        source={MockImage}
+        source={data && data?.imageUrl ? {uri:data?.imageUrl} :MockImage}
         resizeMode={'cover'}
       />
 
@@ -154,11 +155,15 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   image: {
-    width: 340,
-    height: 232,
+    width: 310,
+    height: 202,
     borderRadius: 8,
     marginTop: 12,
     alignSelf: 'center',
+    backgroundColor:'rgba(0,0,0,0.05)',
+    borderColor:'rgba(0,0,0,0.1)',
+    borderWidth:0.5,
+    margin:5
   },
   textDetail: {
     marginVertical: 12,

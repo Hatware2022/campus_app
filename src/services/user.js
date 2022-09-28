@@ -157,13 +157,11 @@ export default class {
         await axios.put(`${constants.API_URL}/users/${id}`, data,
             { headers: { 'Authorization': token } })
             .then(resp => {
-                console.log('userService : resp ',resp)
                 if (resp.status === 200) {
                     result.data = resp.data;
                 }
             })
             .catch(err => {
-                console.log('userService : err ',err.response)
                 result.error = err.response.data;
             });
 

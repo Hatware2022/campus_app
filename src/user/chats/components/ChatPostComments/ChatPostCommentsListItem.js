@@ -32,6 +32,7 @@ const ChatPostCommentListItem = ({data}) => {
         <Avatar
           source={{uri: record?.imageUrl ? record?.imageUrl : null}}
           size={34}
+          editProfile={true}
         />
       )}
 

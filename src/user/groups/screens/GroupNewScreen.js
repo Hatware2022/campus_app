@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, TextInput, Pressable} from 'react-native';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 
 import {View, Container, Content, Tag, Button} from '../../../common';
 import Text from '../../../common/TextV2';
 import groupService from '../../../services/group';
+import tagService from '../../../services/tag';
 import session from '../../../store/session';
 import keys from '../../../store/keys';
 
@@ -24,24 +25,28 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 const GroupNewScreen = () => {
   const isFocused = useIsFocused();
   const navigation = useNavigation();
-  const [tags, setTags] = useState([
-    'Lost & Found',
-    'Ride Share',
-    'For Sale',
-    'Question',
-    'General',
-    'Other',
-  ]);
+  const [tags, setTags] = useState([]);
   const [groupName, setGroupName] = useState('');
-  const [tag, setTag] = useState(['']);
+  const [groupDescription, setGroupDescription] = useState('');
+  const [groupTags, setGroupTags] = useState([]);
   const insets = useSafeAreaInsets();
+
+  useEffect(() => {
+    try {
+      tagService.getAll(session.get(keys.token))
+        .then((res) => {
+          setTags(res.data?.data)
+        })
+    } catch(error) {}
+  }, [])
 
   const handleSubmit = () => {
     groupService.create(session.get(keys.token), JSON.stringify({
       "title": groupName,
       "members": [],
       "type": "public",
-      "description": "Vanilla group"
+      "description": groupDescription,
+      "tags": groupTags,
     })).then((res) => {
       const {data} = res;
       if(data?.success) {
@@ -70,6 +75,18 @@ const GroupNewScreen = () => {
           />
         </View>
 
+        <Text family="semi">Group Description</Text>
+        <View style={styles.containerPost}>
+          <TextInput
+            multiline
+            placeholder="Write your group description here"
+            value={groupDescription}
+            onChangeText={value => {
+              setGroupDescription(value);
+            }}
+          />
+        </View>
+
         <Text family="semi">Profile Picture</Text>
         <View style={styles.containerAddImage}>
           <PictureIcon />
@@ -83,20 +100,20 @@ const GroupNewScreen = () => {
 
         <View horizontal marginTop={12} style={{flexWrap: 'wrap'}}>
           {tags.map((item, index) => {
-            const isSelect = tag.includes(item);
+            const tagIncluded = groupTags.includes(item.tag);
             return (
               <>
                 <Pressable
                   onPress={() => {
-                    tag.push(item);
-                    setTag(tag);
+                    setGroupTags(tagIncluded ? 
+                      groupTags.filter(tag => tag !== item.tag) : [...groupTags, item.tag]);
                   }}
                   style={
-                    isSelect ? styles.containerTagActive : styles.containerTag
+                    tagIncluded ? styles.containerTagActive : styles.containerTag
                   }
                   key={index}>
-                  <Text color={isSelect ? Colors.primary : Colors.black600}>
-                    {item}
+                  <Text color={tagIncluded ? Colors.primary : Colors.black600}>
+                    {item.tag}
                   </Text>
                 </Pressable>
               </>
