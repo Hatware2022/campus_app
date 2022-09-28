@@ -39,7 +39,6 @@ const GroupDetailsScreen = () => {
   const [isUserAGroupMember, setIsUserAGroupMember] = 
     useState((data?.members || []).includes(session.get(keys.userId)))
   const insets = useSafeAreaInsets();
-  // const dummyTag = ['Sport', 'Outdoor'];
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -161,21 +160,24 @@ const GroupDetailsScreen = () => {
                 />
               </View>
             </View>
-
-            {
-              isUserAGroupMember ? (
-                <View style={styles.headerPost}>
-                  <Text family="bold" size="big" customStyle={styles.textPost}>
-                    Post
-                  </Text>
+            <View style={styles.headerPost}>
+              {
+                isUserAGroupMember ? (
                   <TouchableOpacity
-                    style={styles.buttonPost}
-                    onPress={isUserAGroupMember ? _moveToGroupPost : null}>
+                  style={styles.buttonPost}
+                  onPress={isUserAGroupMember ? _moveToGroupPost : null}>
                     <Text size="small">Create Post +</Text>
                   </TouchableOpacity>
-                </View>
-              ) : null
-            }
+                ) : null
+              }
+              {
+                posts.length ? (
+                  <Text family="bold" size="big" customStyle={styles.textPost}>
+                    Posts
+                  </Text>
+                ) : <></>
+              }
+            </View>
           </View>
         }
       />
@@ -221,7 +223,7 @@ const styles = StyleSheet.create({
   headerPost: {
     marginTop: 24,
     marginBottom: 12,
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     marginHorizontal: 16,
     alignItems: 'center',
   },
