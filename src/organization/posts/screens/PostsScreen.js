@@ -27,6 +27,7 @@ import session from '../../../store/session';
 import keys from '../../../store/keys';
 import moment from 'moment';
 import ModalFilter from '../../../auth/components/Modal/modalfilter';
+import ChatListItem from '../../../user/chats/components/Chats/ChatListItem';
 
 /* =============================================================================
 <PostsScreen />
@@ -107,7 +108,8 @@ const PostsScreen = () => {
     setRefreshing(false);
   };
 
-  const renderItem = ({item}) => <PostListItem data={item} reload={reload} />;
+  // const renderItem = ({item}) =>  <PostListItem data={item} reload={reload} />;
+  const renderItem = ({item}) =>  <ChatListItem data={item} reload={reload} />;
 
   return (
     <Container backgroundColor={Colors.white250} style={{padding: 16}}>

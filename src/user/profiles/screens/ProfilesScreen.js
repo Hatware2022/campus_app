@@ -32,6 +32,7 @@ const ProfilesScreen = () => {
   const [sortBy, setSortBy] = useState('A-Z');
   const [filters, setFilters] = useState(null);
   const [viewFilter, setViewFilter] = useState(false);
+  const [displayRecords, setDisplayRecords] = useState([]);
 
   useEffect(() => {
     let isMounted = true;
@@ -42,7 +43,17 @@ const ProfilesScreen = () => {
     return () => {
       isMounted = false;
     };
-  }, [isFocused, keyword, sortBy, filters]);
+  }, [isFocused, sortBy, filters]);
+  
+  useEffect(() => {
+    if(!keyword) {
+      setDisplayRecords(records);
+    } else {
+      setDisplayRecords(records.filter((record) => 
+        // record.title?.toLowerCase().includes(keyword.toLowerCase()) || 
+        record.name?.toLowerCase().includes(keyword.toLowerCase())))
+    }
+  }, [keyword, records])
 
   useEffect(() => {
     const keywordFromOtherScreen = route.params ? route.params.keyword : null;
@@ -137,7 +148,7 @@ const ProfilesScreen = () => {
 
       <View style={styles.container}>
         <FlatList
-          data={records}
+          data={displayRecords}
           style={styles.list}
           renderItem={renderItem}
           keyExtractor={(item) => item._id}

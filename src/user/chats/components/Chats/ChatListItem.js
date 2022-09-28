@@ -85,7 +85,10 @@ const ChatListItem = props => {
   };
 
 return (
-    <Touchable onPress={_moveToChatComments} style={styles.container}>
+    <Touchable 
+    onPress={()=>navigation.navigate('GroupPostComments', {post: props.data, userName:user?.name})}
+    // onPress={_moveToChatComments} 
+    style={styles.container}>
       <View style={styles.topContainer}>
         {user && (
           <View style={styles.userContainer}>

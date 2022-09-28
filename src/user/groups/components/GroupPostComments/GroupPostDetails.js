@@ -16,7 +16,7 @@ import Underline from '../../../../user/component/Underline';
 /* =============================================================================
 <GroupPostDetails />
 ============================================================================= */
-const GroupPostDetails = ({data}) => {
+const GroupPostDetails = ({data,userName}) => {
   return (
     <View>
       <View style={{flexDirection:'row'}}>
@@ -26,7 +26,7 @@ const GroupPostDetails = ({data}) => {
             source={{uri: data.imageUrl ? data.imageUrl : null}}
           />
           <Text customStyle={styles.name} family="semi" size="big">
-            {data.name}
+            {userName}
           </Text>
           </View>
       <View style={styles.topContainer}>
