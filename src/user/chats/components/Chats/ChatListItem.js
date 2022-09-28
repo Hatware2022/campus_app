@@ -30,9 +30,10 @@ const ChatListItem = props => {
   };
 
   useEffect(() => {
+    const tokenData = utils.decodeJwt(session.get(keys.token)) || props.data.id;
     if (!props.data) return;
     userService
-      .getById(session.get(keys.token), props.data.id)
+      .getById(session.get(keys.token), tokenData.id)
       .then(result => {
         if (result.data && result.data.success === true) {
           let r = result.data.data;
@@ -56,7 +57,6 @@ const ChatListItem = props => {
       ...props.data,
       likes: arr,
     };
-    // alert(session.get(keys.token))
     let aa = session.get(keys.token)
     try {
       let response =  axios({
@@ -73,15 +73,6 @@ const ChatListItem = props => {
     } catch (error) {
       console.log('Error while Sending Password Reset Email => ' + error);
     }
-
-
-    // postService
-    //   .update(session.get(keys.token), props.data.id, t)
-    //   .then(result => {
-    //     if (result.data && result.data.success === true) {
-    //       props.reload();
-    //     }
-    //   });
   };
 
 return (
@@ -94,7 +85,7 @@ return (
           <View style={styles.userContainer}>
             <Avatar
               size={48}
-              source={{uri: user.imageUrl ? user.imageUrl : null}}
+              source={{uri: user?.imageUrl ? user?.imageUrl : null}}
             />
             <Text size="big" family="semi" customStyle={styles.name}>
               {user?.name ? user?.name : 'dummy'}

@@ -135,12 +135,12 @@ const GroupsScreen = () => {
               <Text family="semi" size="big" customStyle={styles.textGroup}>
                 Groups
               </Text>
-              <Text size="small" family="medium" color={Colors.primary}>
-                Create New
-              </Text>
               <TouchableOpacity
                 onPress={_moveToCreateGroup}
                 style={styles.iconPlus}>
+                <Text size="small" family="medium" color={Colors.primary}>
+                  {`Create New  `}
+                </Text>
                 <PlusIcon />
               </TouchableOpacity>
             </View>
@@ -207,6 +207,8 @@ const styles = StyleSheet.create({
   },
   iconPlus: {
     marginLeft: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 

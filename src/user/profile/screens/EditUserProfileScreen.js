@@ -207,6 +207,7 @@ const EditUserProfileScreen = () => {
             source={{uri: record?.imageUrl ? record?.imageUrl : null}}
             size={80}
             onPress={_handleChooseFile}
+            editProfile={true}
           />
           <Gap height={12} />
           <Text size="big" family="semi">

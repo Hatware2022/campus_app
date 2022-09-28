@@ -1,5 +1,9 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
+
+import userService from '../../../../services/user';
+import session from '../../../../store/session';
+import keys from '../../../../store/keys';
 
 import {View, Avatar, Button, Touchable} from '../../../../common';
 import Text from '../../../../common/TextV2';
@@ -10,29 +14,51 @@ import UserImage4 from '../../../../assets/images/user-4.png';
 
 import * as Colors from '../../../../config/colors';
 
+const interpolation = [0, 35, 20, 5];
+
 /* =============================================================================
 <GroupMembers />
 ============================================================================= */
 const GroupMembers = ({onPress, onPressGroup, isUserAGroupMember, members}) => {
+  const [groupAvatars, setGroupAvatars] = useState(null);
+
+  useEffect(() => {
+    try {
+      const last3membersData = members?.slice(-3)?.map((item) => 
+        userService.getById(session.get(keys.token), item));
+      Promise.all(last3membersData).then((res) => {
+        const forGroupAvatars = res.map(member => member?.data?.data?.imageUrl);
+        setGroupAvatars(forGroupAvatars);
+      })
+    } catch (error) {}
+  }, [members])
+  
   return (
     <View style={styles.container}>
       <Touchable style={styles.memberContainer} onPress={onPressGroup}>
         <View style={styles.memberAvatarContainer}>
-          {USERS.map((item, index) => (
+          {groupAvatars?.map((item, index, array) => (
             <Avatar
               size={36}
-              key={item.id}
-              source={item.image}
-              style={getAvatarStyle(index)}
+              key={item?.id}
+              source={item}
+              style={getAvatarStyle(index, array.length)}
             />
           ))}
         </View>
-        <Text
+        {members.length ? <Text
           size="small"
           color={Colors.black500}
-          customStyle={{marginHorizontal: 8}}>
+          customStyle={
+            {
+              marginHorizontal: 8, 
+              position: 'relative', 
+              right: interpolation[groupAvatars?.length]
+            }
+          }
+        >
           {`${members?.length} people has joined`}
-        </Text>
+        </Text> : null}
       </Touchable>
       <Button
           title={isUserAGroupMember ? 'Leave Group' : 'Join Group'}
@@ -44,17 +70,13 @@ const GroupMembers = ({onPress, onPressGroup, isUserAGroupMember, members}) => {
   );
 };
 
-const getAvatarStyle = index => ({
-  top: -(37 / 2),
-  right: 15 * index,
-  position: 'absolute',
-});
-
-const USERS = [
-  {id: 1, image: UserImage4},
-  {id: 2, image: UserImage3},
-  {id: 3, image: UserImage2},
-];
+const getAvatarStyle = (index, length) => {
+  return {
+    top: -(37 / 2),
+    right: 15 * index + interpolation[length],
+    position: 'absolute',
+  }
+};
 
 const styles = StyleSheet.create({
   container: {

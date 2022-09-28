@@ -20,8 +20,6 @@ import keys from '../../../store/keys';
 import groupService from '../../../services/group';
 import groupPostService from '../../../services/grouppost';
 
-import GROUP_POSTS from '../../../constants/groupPosts';
-
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Header from '../../component/Header';
 import {useNavigation, useIsFocused, useRoute} from '@react-navigation/native';
@@ -41,7 +39,7 @@ const GroupDetailsScreen = () => {
   const [isUserAGroupMember, setIsUserAGroupMember] = 
     useState((data?.members || []).includes(session.get(keys.userId)))
   const insets = useSafeAreaInsets();
-  const dummyTag = ['Sport', 'Outdoor'];
+  // const dummyTag = ['Sport', 'Outdoor'];
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -150,7 +148,7 @@ const GroupDetailsScreen = () => {
                 </Text>
 
                 <View style={styles.tagContainer}>
-                  {dummyTag.map((item, index) => (
+                  {data.tags?.map((item, index) => (
                     <Tag key={index} text={item} redBorder />
                   ))}
                 </View>
@@ -164,16 +162,20 @@ const GroupDetailsScreen = () => {
               </View>
             </View>
 
-            <View style={styles.headerPost}>
-              <Text family="bold" size="big" customStyle={styles.textPost}>
-                Post
-              </Text>
-              <TouchableOpacity
-                style={styles.buttonPost}
-                onPress={isUserAGroupMember ? _moveToGroupPost : null}>
-                <Text size="small">Create Post +</Text>
-              </TouchableOpacity>
-            </View>
+            {
+              isUserAGroupMember ? (
+                <View style={styles.headerPost}>
+                  <Text family="bold" size="big" customStyle={styles.textPost}>
+                    Post
+                  </Text>
+                  <TouchableOpacity
+                    style={styles.buttonPost}
+                    onPress={isUserAGroupMember ? _moveToGroupPost : null}>
+                    <Text size="small">Create Post +</Text>
+                  </TouchableOpacity>
+                </View>
+              ) : null
+            }
           </View>
         }
       />
