@@ -154,7 +154,13 @@ const GroupDetailsScreen = () => {
                 <GroupMembers
                   joinGroup={joinGroup}
                   onPress={_handlePressGroup}
-                  onPressGroup={() => navigation.navigate('GroupMember')}
+                  onPressGroup={() => navigation.navigate(
+                    'GroupMember', 
+                    {
+                      members: data?.members, 
+                      title: data?.title
+                    }
+                  )}
                   isUserAGroupMember={isUserAGroupMember}
                   members={data?.members}
                 />
