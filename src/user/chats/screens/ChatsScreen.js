@@ -178,7 +178,7 @@ const ChatsScreen = () => {
 
       <ModalFilter
         isVisible={viewFilter}
-        onCloseModal={() => setViewFilter(false)}
+        onCloseModal={() => console.log('ji') || setViewFilter(false)}
         onYes={() => setViewFilter(false)}
       />
     </Container>

@@ -10,7 +10,7 @@ import {
 import moment from 'moment';
 import styles from '../../styles/styles';
 import userService from '../../services/user';
-
+import OtpInputs from 'react-native-otp-inputs';
 import * as Colors from '../../config/colors';
 
 import {useNavigation} from '@react-navigation/native';
@@ -27,20 +27,17 @@ const OtpScreen = (props) => {
     const route = useRoute();
     const navigation = useNavigation();
   const registrationData = props.route.params.data
-  
+  const [code,setCode]=useState('')
   const [codeDigitOne, setCodeDigitOne] = useState('');
   const [codeDigitTwo, setCodeDigitTwo] = useState('');
   const [codeDigitThree, setCodeDigitThree] = useState('');
   const [codeDigitFour, setCodeDigitFour] = useState('');
 
   const _handleSendOtp =()=>{
-      if(codeDigitOne === "" || codeDigitTwo === "" || codeDigitThree === "" || codeDigitFour === ""){
+      if(code.length < 4){
           alert('Incomplete OTP code')
       }
       else{
-        
-          let code = codeDigitOne + codeDigitTwo + codeDigitThree + codeDigitFour
-     
           userService.sendOtp(registrationData?.email, code).then(result => {
             console.log("result.data",result)
             console.log(result)
@@ -74,45 +71,13 @@ const OtpScreen = (props) => {
       <Text style={styles.otpTitle}>
 We have sent you a one time password to your phone number, please insert them here.
       </Text>
-
       <View style={styles.otpDirection}>
-          <View style={styles.codeInputContainer}>
-              <TextInput 
-              value={codeDigitOne}
-              placeholder={'-'}
-              style={styles.codeInput}
-              maxLength={1}
-              onChangeText={(e)=>setCodeDigitOne(e)}
-              />
-          </View>
-          <View style={styles.codeInputContainer}>
-               <TextInput 
-              value={codeDigitTwo}
-              placeholder={'-'}
-              style={styles.codeInput}
-              maxLength={1}
-              onChangeText={(e)=>setCodeDigitTwo(e)}
-              />
-          </View>
-          <View style={styles.codeInputContainer}>
-               <TextInput 
-              value={codeDigitThree}
-              placeholder={'-'}
-              style={styles.codeInput}
-              maxLength={1}
-              onChangeText={(e)=>setCodeDigitThree(e)}
-              />
-          </View>
-          <View style={styles.codeInputContainer}>
-               <TextInput 
-              value={codeDigitFour}
-              placeholder={'-'}
-              style={styles.codeInput}
-              maxLength={1}
-              onChangeText={(e)=>setCodeDigitFour(e)}
-              />
-          </View>
-      </View>
+      <OtpInputs
+          handleChange={(code) => setCode(code)}
+          numberOfInputs={4}
+          inputStyles={styles.codeInputContainer}
+        />
+        </View>
 
       <Text style={styles.otpNotRecieved}>If you didn’t receive the OTP code, <Text style={{color:'#A70032',fontSize:14}} onPress={()=>alert('click here')}>click here</Text></Text>
       </Content>

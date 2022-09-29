@@ -78,7 +78,11 @@ const styles = StyleSheet.create({
         paddingHorizontal:10,
         marginTop:20
     },
-    otpDirection:{flexDirection:'row',alignSelf:'center'},
+    otpDirection:{
+      marginTop:50,
+      width:'85%',
+      alignSelf:'center',
+    },
     codeInputContainer:{width:72,height:72,backgroundColor:'#FAFAFA',borderRadius:10,marginRight:10,marginTop:20},
     codeInput:{alignSelf:'center',height:72,width:72,textAlign:'center'},
     otpNotRecieved:{color:'#6B7476',fontSize:14,marginLeft:10,marginTop:20}

@@ -385,9 +385,10 @@ const ModalFilter = ({onYes, onCloseModal, isVisible}) => {
                 </Text>
                 <TouchableOpacity
                   style={{flexDirection: 'row', alignItems: 'center'}}
-                  onPress={()=> {_clearFilter()}}
+                  onPress={()=> {_clearFilter() ||onCloseModal()}}
+                  // onPress={()=>()}
                 >
-                  <Text size="Medium" family="semi" color="#A70032">
+                  <Text size="Medium" family="semi" color="#A70032" >
                     Clear Filter
                   </Text>
                   <PlusIcon

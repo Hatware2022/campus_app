@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {StatusBar, TextInput} from 'react-native';
+import {StatusBar, TextInput,TouchableOpacity} from 'react-native';
 import {
   Container,
   Card,
@@ -32,7 +32,7 @@ import EyeOpenIcon from '../../assets/icons/icon-eye-open.svg';
 import ModalCalendar from '../components/Modal/modalcalendar';
 import axios from 'axios';
 import constants from '../../utils/constants';
-
+import { WebView } from 'react-native-webview';
 
 
 
@@ -47,6 +47,7 @@ const RegisterScreen = () => {
   const [phoneNo, setPhoneNo] = useState('');
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
   const insets = useSafeAreaInsets();
@@ -54,6 +55,8 @@ const RegisterScreen = () => {
   const [temporaryDate, setTemporaryDate] = useState(new Date());
   const [birthDate, setBirthDate] = useState(null);
   const [eye, setEye] = useState(true);
+  const [displayTerm,setDisplayTerms]= useState(false)
+  const [webUrl,setWebUrl]= useState('')
 
   const _safeAreaStyle = {
     paddingTop: insets.top,
@@ -87,6 +90,12 @@ const RegisterScreen = () => {
   const _handleLogin = async() => {
     setSuccessMessage(null);
     setErrorMessage(null);
+
+    if(password != confirmPassword){
+      alert('Password doesnot match')
+      return;
+    }
+
     if (!email || !password) {
       alert('Please provide all fields.')
       setErrorMessage(`Please provide all fields.`);
@@ -147,7 +156,8 @@ const RegisterScreen = () => {
       }
 
       if (result.data && result.data.data && result.data.data.success === true) {
-        alert('Check your mail for vefication of your account')
+        // alert('Check your mail for vefication of your account')
+        alert('we texted it ')
         navigation.navigate('otpScreen',{data:data, userId:result.data.data.data.id,email,password})
 // navigation.goBack()
         // session.set(keys.token, result.data.token);
@@ -170,18 +180,19 @@ const RegisterScreen = () => {
   };
 
   return (
+    <>
     <Container>
       <StatusBar backgroundColor={Colors.primary} barStyle="light-content" />
       <Header title={'Register'} />
       <Content>
         <View
           style={{backgroundColor: Colors.background, flex: 1, padding: 16}}>
-          <Text customStyle={styles.registerTxt} style={styles.lableuser}>User Name</Text>
+          <Text customStyle={styles.registerTxt} style={styles.lableuser}>Name</Text>
           <View>
             <TextInput
             style={styles.lableinput}
             placeholderTextColor={'#6B7476'}
-              placeholder="Enter your username here"
+              placeholder="Enter your name here"
               value={userName}
               onChangeText={value => {
                 setUserName(value);
@@ -252,9 +263,10 @@ const RegisterScreen = () => {
               placeholderTextColor={'#6B7476'}
               secureTextEntry={eye}
               placeholder="Enter your password"
-              value={password}
+              value={confirmPassword}
               onChangeText={value => {
-                setPassword(value);
+                setConfirmPassword(value)
+                // setPassword(value);
               }}
             />
             <Touchable style={styles.eyeicon} onPress={() => setEye(!eye)}>
@@ -267,6 +279,7 @@ const RegisterScreen = () => {
             label="Agree to"
             selected={term}
             onChange={() => setTerm(!term)}
+            onPressItem={()=>setWebUrl('https://docs.google.com/document/d/13X5oJhvqFUNbCbIu5jtHE4kEKAEk3tAGb4yaQ6OVckQ/edit?usp=sharing')|| setDisplayTerms(true)}
             children={
               <Text
                 family="medium"
@@ -280,6 +293,7 @@ const RegisterScreen = () => {
             label="Agree to"
             selected={policy}
             onChange={() => setPolicy(!policy)}
+            onPressItem={()=>setWebUrl('https://docs.google.com/document/d/1RX-SShcYeLDplmfTImCthYiq1RyPltzpOekBtZ_IWn8/edit?usp=sharing')|| setDisplayTerms(true)}
             children={
               <Text
                 family="medium"
@@ -306,7 +320,15 @@ const RegisterScreen = () => {
         onDateChange={date => setTemporaryDate(date)}
         onConfirm={_onConfirmDate}
       />
+      
     </Container>
+    {displayTerm &&
+    <View style={{height:'100%'}}>
+      <TouchableOpacity style={{height:50,backgroundColor:'white'}} onPress={()=>setDisplayTerms(false)}><Text customStyle={{alignSelf:'center',fontSize:18,marginTop:10,fontWeight:'bold'}}>Close </Text></TouchableOpacity>
+    <WebView source={{ uri: webUrl }}/>
+    </View>
+}
+    </>
   );
 };
 

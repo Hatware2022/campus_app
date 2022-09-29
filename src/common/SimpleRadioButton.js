@@ -16,19 +16,24 @@ const SimpleRadioButton = ({
   disabled,
   containerStyle,
   onChange,
+  onPressItem,
   children,
 }) => {
   return (
-    <TouchableOpacity
+    <View
       style={[styles.container, containerStyle]}
       disabled={disabled}
       activeOpacity={0.5}
-      onPress={() => onChange(value)}>
+      >
+        <TouchableOpacity onPress={() => onChange(value)}>
       {selected ? <CheckIcon /> : <EmptyCheckIcon />}
+      </TouchableOpacity>
+      <TouchableOpacity onPress={()=>onPressItem()}>
       <Text customStyle={styles.txt}>
         {label} {children}
       </Text>
-    </TouchableOpacity>
+      </TouchableOpacity>
+    </View>
   );
 };
 
