@@ -17,7 +17,7 @@ import moment from 'moment';
 /* =============================================================================
 <GroupPostDetails />
 ============================================================================= */
-const GroupPostDetails = ({data,userName}) => {
+const GroupPostDetails = ({data}) => {
   return (
     <View>
       <View style={{flexDirection:'row',margin:10}}>
@@ -27,7 +27,7 @@ const GroupPostDetails = ({data,userName}) => {
             source={{uri: data.imageUrl ? data.imageUrl : null}}
           />
           <Text customStyle={styles.name} family="semi" size="big">
-            {userName}
+            {data?.name ? data?.name : 'dummy'}
           </Text>
           <Text size="small" customStyle={styles.time}>
           {moment(new Date()).fromNow()}

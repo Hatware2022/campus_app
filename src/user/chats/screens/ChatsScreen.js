@@ -40,7 +40,6 @@ const ChatsScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const [viewFilter, setViewFilter] = useState(false);
-  const [displayRecords, setDisplayRecords] = useState([]);
 
   const _moveToCreatePost = () => {
     navigation.navigate('PostCreate');
@@ -55,17 +54,7 @@ const ChatsScreen = () => {
     return () => {
       isMounted = false;
     };
-  }, [isFocused, sortBy, filters]);
-
-  useEffect(() => {
-    if(!keyword) {
-      setDisplayRecords(records);
-    } else {
-      setDisplayRecords(records.filter((record) => 
-      record.postCreator?.toLowerCase().includes(keyword.toLowerCase()) || 
-        record.content?.toLowerCase().includes(keyword.toLowerCase())))
-    }
-  }, [keyword, records])
+  }, [isFocused, keyword, sortBy, filters]);
 
   const reload = () => {
     postService.getAll(session.get(keys.token)).then(result => {
@@ -134,8 +123,7 @@ const ChatsScreen = () => {
       </View>
 
       <FlatList
-        // data={records}
-        data={displayRecords}
+        data={records}
         style={styles.list}
         renderItem={renderItem}
         keyExtractor={item => item._id}

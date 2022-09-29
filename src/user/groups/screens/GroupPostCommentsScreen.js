@@ -22,7 +22,6 @@ import keys from '../../../store/keys';
 const GroupPostCommentsScreen = () => {
   const route = useRoute();
   const post = route.params?.post || {};
-  const userName = route.params?.userName || 'Dummy';
  
   const [allComments,setAllComments]= useState(route.params?.post?.comments || [])
 
@@ -77,7 +76,7 @@ const GroupPostCommentsScreen = () => {
         renderItem={renderCommentItem}
         keyExtractor={item => item._id}
         contentContainerStyle={styles.listContent}
-        ListHeaderComponent={<GroupPostDetails data={post} userName={userName} />}
+        ListHeaderComponent={<GroupPostDetails data={post} />}
       />
 
       <GroupPostCommentForm sendMsg={(e)=>handleSendComment(e)} />
