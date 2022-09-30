@@ -8,10 +8,6 @@ import keys from '../../../../store/keys';
 import {View, Avatar, Button, Touchable} from '../../../../common';
 import Text from '../../../../common/TextV2';
 
-import UserImage2 from '../../../../assets/images/user-2.png';
-import UserImage3 from '../../../../assets/images/user-3.png';
-import UserImage4 from '../../../../assets/images/user-4.png';
-
 import * as Colors from '../../../../config/colors';
 
 const interpolation = [0, 35, 20, 5];

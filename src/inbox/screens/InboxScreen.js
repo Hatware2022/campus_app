@@ -1,81 +1,83 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect, useContext} from 'react'
 import {
   FlatList,
   StatusBar,
   StyleSheet,
   RefreshControl,
-  TextInput,
-} from 'react-native';
-import {Container, StackHeader, View, Title} from '../../common';
-import Text from '../../common/TextV2';
-import InboxListItem from '../components/Inbox/InboxListItem';
-import SearchIcon from '../../assets/icons/icon-search.svg';
-import PlusIcon from '../../assets/icons/icon-plus.svg';
-import ArrowDownIcon from '../../assets/icons/app-arrow-down.svg';
-import * as Colors from '../../config/colors';
-import {useIsFocused} from '@react-navigation/native';
-import conversationService from '../../services/conversation';
-import keys from '../../store/keys';
-import session from '../../store/session';
-import utils from '../../utils/utils';
-import moment from 'moment';
-import INBOXES from '../../constants/inboxes';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import Fonts from '../../config/fonts';
-import CampusContext from '../../CampusContext';
-import Header from '../../user/component/Header';
+  TextInput
+} from 'react-native'
+import {Container, StackHeader, View, Title} from '../../common'
+import Text from '../../common/TextV2'
+import InboxListItem from '../components/Inbox/InboxListItem'
+import SearchIcon from '../../assets/icons/icon-search.svg'
+import PlusIcon from '../../assets/icons/icon-plus.svg'
+import ArrowDownIcon from '../../assets/icons/app-arrow-down.svg'
+import * as Colors from '../../config/colors'
+import {useIsFocused} from '@react-navigation/native'
+import conversationService from '../../services/conversation'
+import keys from '../../store/keys'
+import session from '../../store/session'
+import utils from '../../utils/utils'
+import moment from 'moment'
+import INBOXES from '../../constants/inboxes'
+import {useSafeAreaInsets} from 'react-native-safe-area-context'
+import Fonts from '../../config/fonts'
+import CampusContext from '../../CampusContext'
+import Header from '../../user/component/Header'
+import reactotron from 'reactotron-react-native'
+import {io} from 'socket.io-client'
 
 /* =============================================================================
 <InboxScreen />
 ============================================================================= */
 const InboxScreen = () => {
-  const isFocused = useIsFocused();
-  const [records, setRecords] = useState([]);
-  const [refreshing, setRefreshing] = useState(false);
-  const [keyword, setKeyword] = useState('');
+  const isFocused = useIsFocused()
+  const [records, setRecords] = useState([])
+  const [refreshing, setRefreshing] = useState(false)
+  const [keyword, setKeyword] = useState('')
 
-  const insets = useSafeAreaInsets();
+  const insets = useSafeAreaInsets()
 
   const _safeAreaStyle = {
-    paddingTop: insets.top,
+    paddingTop: insets.top
     // minHeight: HEADER_HEIGHT + insets.top,
-  };
-
+  }
   useEffect(() => {
-    let isMounted = true;
-    if (isMounted) {
-      reload();
+    if (isFocused) {
+      reload()
     }
-
-    return () => {
-      isMounted = false;
-    };
-  }, [isFocused, keyword]);
+  }, [isFocused, keyword])
 
   const reload = () => {
-    const tokenData = utils.decodeJwt(session.get(keys.token));
-    if (!tokenData) return;
+    setRefreshing(true)
+
+    const tokenData = utils.decodeJwt(session.get(keys.token))
+    if (!tokenData) return
     conversationService
-      .getAll(session.get(keys.token), tokenData._id)
+      .getAll(session.get(keys.token), tokenData.id)
       .then(result => {
-        let arr = result.data.data;
+        let arr = result.data.data
         if (keyword.length > 0) {
           arr = arr.filter(k =>
-            k.title.toLowerCase().includes(keyword.toLowerCase()),
-          );
+            k.title.toLowerCase().includes(keyword.toLowerCase())
+          )
         }
-        arr = arr.sort((a, b) => moment(a.updated_at) - moment(b.updated_at));
-        setRecords(arr);
-      });
-  };
+        arr = arr.sort((a, b) => moment(a.updated_at) - moment(b.updated_at))
+
+        setRecords(arr)
+      })
+      .finally(() =>
+        setTimeout(() => {
+          setRefreshing(false)
+        }, 1000)
+      )
+  }
 
   const onRefresh = () => {
-    setRefreshing(true);
-    reload();
-    setRefreshing(false);
-  };
+    reload()
+  }
 
-  const {loginAsClub} = useContext(CampusContext);
+  const {loginAsClub} = useContext(CampusContext)
 
   if (loginAsClub) {
     return (
@@ -88,12 +90,12 @@ const InboxScreen = () => {
           </Text>
         </View>
       </Container>
-    );
+    )
   }
 
   return (
-    <Container>
-      <StatusBar backgroundColor={Colors.primary} barStyle="light-content" />
+    <Container backgroundColor={Colors.background}>
+      {/* <StatusBar backgroundColor={Colors.primary} barStyle="light-content" /> */}
 
       <View style={[_safeAreaStyle, styles.headerContainer]}>
         <View horizontal justifyContent="space-between" alignItems="center">
@@ -112,18 +114,16 @@ const InboxScreen = () => {
             style={styles.textInput}
             value={keyword}
             onChangeText={value => {
-              setKeyword(value);
+              setKeyword(value)
             }}
           />
         </View>
       </View>
 
       <FlatList
-        data={INBOXES}
-        // data={records}
+        data={records}
         style={styles.list}
         renderItem={renderItem}
-        // keyExtractor={item => item._id}
         keyExtractor={item => item.id}
         contentContainerStyle={styles.listContent}
         ListEmptyComponent={
@@ -141,41 +141,42 @@ const InboxScreen = () => {
         }
       />
     </Container>
-  );
-};
+  )
+}
 
-const renderItem = ({item}) => <InboxListItem data={item} />;
+const renderItem = ({item}) => <InboxListItem data={item} />
 
 const styles = StyleSheet.create({
   headerContainer: {
     padding: 16,
-    backgroundColor: Colors.primary,
-    paddingTop: 10,
+    backgroundColor: Colors.primary
   },
   container: {
-    flex: 1,
+    flex: 1
   },
   list: {
     flex: 1,
+    paddingVertical: 10,
+    paddingHorizontal: 5
   },
   listContent: {
-    paddingBottom: 20,
+    paddingBottom: 20
   },
   containerSearch: {
     paddingHorizontal: 8,
-    // paddingVertical: 1,
+    paddingVertical: 10,
     borderRadius: 8,
     backgroundColor: Colors.whiteText,
     marginTop: 10,
     // justifyContent: 'center',
-		alignItems: 'center',
+    alignItems: 'center'
   },
   textInput: {
     paddingHorizontal: 8,
     backgroundColor: Colors.background,
     fontFamily: Fonts.fontFamily.rubikRegular,
-    color: Colors.black600,
-  },
-});
+    color: Colors.black600
+  }
+})
 
-export default InboxScreen;
+export default InboxScreen

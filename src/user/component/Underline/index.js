@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 
-import {View} from '../../../common';
-import * as Colors from '../../../config/colors';
+import {View} from '../../../common'
+import * as Colors from '../../../config/colors'
 
 const Underline = ({marginHorizontal, marginVertical}) => {
   return (
@@ -11,12 +11,12 @@ const Underline = ({marginHorizontal, marginVertical}) => {
       marginHorizontal={marginHorizontal}
       marginVertical={marginVertical}
     />
-  );
-};
+  )
+}
 
 Underline.defaultProps = {
   marginHorizontal: -16,
-  marginVertical: 24,
-};
+  marginVertical: 16
+}
 
-export default Underline;
+export default Underline
