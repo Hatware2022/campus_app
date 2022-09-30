@@ -10,6 +10,10 @@ import DemoImage from '../../../../assets/images/empty-image.png';
 import {useNavigation} from '@react-navigation/native';
 import ClubMember from './ClubMember';
 import Gap from '../../../../common/Gap';
+import axios from 'axios';
+import constants from '../../../../utils/constants';
+import session from '../../../../store/session';
+import keys from '../../../../store/keys';
 
 /* =============================================================================
 <ClubListItem />
@@ -22,6 +26,25 @@ const ClubListItem = ({data}) => {
   const _moveToDetails = () => {
     navigation.navigate('ClubDetails', {item: previousData});
   };
+
+  const handleJoinClub =(id)=>{
+    let aa = session.get(keys.token)
+    try {
+      let response =  axios({
+        url: `${constants.API_URL}/club/join/${id}`,
+        method: 'POST',
+        headers:{
+          'Authorization': aa,
+          // 'Content-Type': 'application/json'
+        }
+      }).then((e)=>{
+        setJoinClub(!joinClub)
+            alert('Join Club Successfully')
+      });
+    } catch (error) {
+      console.log('Error while Sending Password Reset Email => ' + error);
+    }
+  }
 
   return (
     <Touchable onPress={_moveToDetails} style={styles.container}>
@@ -49,7 +72,8 @@ const ClubListItem = ({data}) => {
       <ClubMember
         data={data}
         joinClub={joinClub}
-        onPress={() => setJoinClub(!joinClub)}
+        // onPress={() => setJoinClub(!joinClub)}
+        onPress={()=>handleJoinClub(data.id)}
         onPressGroup={() => console.log('create club screen')}
       />
     </Touchable>

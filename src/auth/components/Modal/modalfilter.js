@@ -18,9 +18,9 @@ import {useNavigation} from '@react-navigation/native'
 import Fonts from '../../../config/fonts'
 import PlusIcon from '../../../assets/icons/icon-plus-circle.svg'
 
-const ModalFilter = ({onYes, onCloseModal, isVisible}) => {
+const ModalFilter = ({onYes, onCloseModal, isVisible,setSortBy,sortBy}) => {
   const navigation = useNavigation()
-  const [sortBy, setSortBy] = useState('Recent')
+  // const [sortBy, setSortBy] = useState('Recent')
   const [location, setLocation] = useState('')
   const [gradYear, setGradYear] = useState('')
   const [gender, setGender] = useState('')
@@ -406,19 +406,19 @@ const ModalFilter = ({onYes, onCloseModal, isVisible}) => {
                 <Tag
                   text="Recent"
                   selected={sortBy === 'Recent'}
-                  onPress={setSortBy}
+                  onPress={(e)=>setSortBy(e)}
                   style={{paddingHorizontal: 10, paddingVertical: 6}}
                 />
                 <Tag
                   text="A-Z"
                   selected={sortBy === 'A-Z'}
-                  onPress={setSortBy}
+                  onPress={(e)=>setSortBy(e)}
                   style={{paddingHorizontal: 10, paddingVertical: 6}}
                 />
                 <Tag
                   text="Z-A"
                   selected={sortBy === 'Z-A'}
-                  onPress={setSortBy}
+                  onPress={(e)=>setSortBy(e)}
                   style={{paddingHorizontal: 10, paddingVertical: 6}}
                 />
               </View>
