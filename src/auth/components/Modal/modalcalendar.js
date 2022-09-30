@@ -1,12 +1,12 @@
-import Text from '../../../common/TextV2';
-import {Container, View, Button} from '../../../common';
-import React, {useState} from 'react';
-import {FlatList, StyleSheet, TouchableOpacity} from 'react-native';
-import Gap from '../../../common/Gap';
-import DatePicker from 'react-native-date-picker';
-import Modal from 'react-native-modal';
-import * as Colors from '../../../config/colors';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import Text from '../../../common/TextV2'
+import {Container, View, Button} from '../../../common'
+import React, {useState} from 'react'
+import {FlatList, StyleSheet, TouchableOpacity} from 'react-native'
+import Gap from '../../../common/Gap'
+import DatePicker from 'react-native-date-picker'
+import Modal from 'react-native-modal'
+import * as Colors from '../../../config/colors'
+import {useSafeAreaInsets} from 'react-native-safe-area-context'
 
 const ModalCalendar = ({
   visibleValue,
@@ -16,12 +16,12 @@ const ModalCalendar = ({
   temporaryDate,
   onDateChange,
   onConfirm,
-  title,
+  title
 }) => {
-  const insets = useSafeAreaInsets();
+  const insets = useSafeAreaInsets()
   const _safeAreaStyle = {
-    paddingBottom: 10 + insets.bottom,
-  };
+    paddingBottom: 10 + insets.bottom
+  }
   return (
     <Modal
       animationIn="fadeIn"
@@ -32,11 +32,13 @@ const ModalCalendar = ({
       style={styles.modalContainerStyle}
       accessibilityLabel={accessibilityLabel}
       onBackdropPress={onBackdropPress}
-      onBackButtonPress={onBackButtonPress}>
+      onBackButtonPress={onBackButtonPress}
+    >
       <View
         style={styles.wrapperBox}
         accessibilityLabel="modal_camera"
-        testID="modal_camera">
+        testID="modal_camera"
+      >
         <View
           style={{
             height: 4,
@@ -44,10 +46,14 @@ const ModalCalendar = ({
             borderRadius: 100,
             backgroundColor: Colors.black400,
             alignSelf: 'center',
-            marginVertical: 10,
+            marginVertical: 10
           }}
         />
-        <Text customStyle={{color:'#000', fontWeight:'bold'}} size="big" family="semi">
+        <Text
+          customStyle={{color: '#000', fontWeight: 'bold'}}
+          size="big"
+          family="semi"
+        >
           {title}
         </Text>
         <View style={styles.containerDatePicker}>
@@ -56,11 +62,11 @@ const ModalCalendar = ({
             locale="id"
             mode="date"
             fadeToColor="none"
-            maximumDate={new Date()}
+            // maximumDate={new Date()}
             textColor={Colors.black600}
             onDateChange={onDateChange}
             style={{
-              marginTop: 0,
+              marginTop: 0
             }}
           />
         </View>
@@ -75,48 +81,48 @@ const ModalCalendar = ({
         </View>
       </View>
     </Modal>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   containerDialog: {
     justifyContent: 'flex-end',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   modalContainerStyle: {
     justifyContent: 'flex-end',
-    margin: 0,
+    margin: 0
   },
   containerTitle: {
     justifyContent: 'flex-start',
-    flex: 1,
+    flex: 1
   },
   containerSelect: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   flexTwo: {
     flex: 2,
-    marginTop: 4,
+    marginTop: 4
   },
   alignFlexEnd: {
-    alignItems: 'flex-end',
+    alignItems: 'flex-end'
   },
   wrapperBox: {
     backgroundColor: Colors.white100,
     justifyContent: 'center',
     borderTopRightRadius: 12,
     borderTopLeftRadius: 12,
-    paddingHorizontal: 16,
+    paddingHorizontal: 16
   },
   containerDatePicker: {
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   containerButton: {
     flexDirection: 'row',
-    paddingBottom: 10,
-  },
-});
+    paddingBottom: 10
+  }
+})
 
-export default ModalCalendar;
+export default ModalCalendar

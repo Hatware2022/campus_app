@@ -1,70 +1,71 @@
-import React, {useState} from 'react';
-import {StyleSheet, TextInput} from 'react-native';
-import {
-  Container,
-  Content,
-  View,
-  Button,
-  Touchable,
-  Tag,
-} from '../../../common';
-import Text from '../../../common/TextV2';
-import moment from 'moment';
-import PlusIcon from '../../../assets/icons/icon-plus-red.svg';
-import PictureIcon from '../../../assets/icons/icon-picture.svg';
-import CalendarIcon from '../../../assets/icons/icon-calendar-gray.svg';
-import LocationIcon from '../../../assets/icons/icon-location-gray.svg';
-import ArrowDownIcon from '../../../assets/icons/icon-arrow-down-red.svg';
-import ClockIcon from '../../../assets/icons/icon-clock.svg';
-import TrashIcon from '../../../assets/icons/icon-trash-red.svg';
-import * as Colors from '../../../config/colors';
-import Gap from '../../../common/Gap';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import Fonts from '../../../config/fonts';
-import {useNavigation} from '@react-navigation/native';
-import {launchImageLibrary} from 'react-native-image-picker';
-import FastImage from 'react-native-fast-image';
-import Header from '../../../user/component/Header';
-import ModalCalendar from '../../../auth/components/Modal/modalcalendar';
+import React, {useState} from 'react'
+import {StyleSheet, TextInput, Alert} from 'react-native'
+import {Container, Content, View, Button, Touchable, Tag} from '../../../common'
+import Text from '../../../common/TextV2'
+import moment from 'moment'
+import PlusIcon from '../../../assets/icons/icon-plus-red.svg'
+import PictureIcon from '../../../assets/icons/icon-picture.svg'
+import CalendarIcon from '../../../assets/icons/icon-calendar-gray.svg'
+import LocationIcon from '../../../assets/icons/icon-location-gray.svg'
+import ArrowDownIcon from '../../../assets/icons/icon-arrow-down-red.svg'
+import ClockIcon from '../../../assets/icons/icon-clock.svg'
+import TrashIcon from '../../../assets/icons/icon-trash-red.svg'
+import * as Colors from '../../../config/colors'
+import Gap from '../../../common/Gap'
+import {useSafeAreaInsets} from 'react-native-safe-area-context'
+import Fonts from '../../../config/fonts'
+import {useNavigation} from '@react-navigation/native'
+import {launchImageLibrary} from 'react-native-image-picker'
+import FastImage from 'react-native-fast-image'
+import Header from '../../../user/component/Header'
+import ModalCalendar from '../../../auth/components/Modal/modalcalendar'
+import eventService from '../../../services/event'
+import utils from '../../../utils/utils'
+import session from '../../../store/session'
+import keys from '../../../store/keys'
+import ModalAlert from '../../../auth/components/Modal/modalalert'
+import reactotron from 'reactotron-react-native'
 
 /* =============================================================================
 <EventHostScreen/>
 ============================================================================= */
 const EventHostScreen = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation()
 
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState('')
 
-  const [selectedTag, setSelectedTag] = useState('');
+  const [selectedTag, setSelectedTag] = useState([])
 
-  const [location, setLocation] = useState('');
-  const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
-  const [titleEvent, setTitleEvent] = useState('');
-  const [galleryImage, setGalleryImage] = useState(null);
-  const [showCalendar, setShowCalendar] = useState(false);
-  const [temporaryDate, setTemporaryDate] = useState(new Date());
-  const [eventDate, setEventDate] = useState(null);
+  const [location, setLocation] = useState('')
+  const [startTime, setStartTime] = useState('')
+  const [endTime, setEndTime] = useState('')
+  const [titleEvent, setTitleEvent] = useState('')
+  const [galleryImage, setGalleryImage] = useState(null)
+  const [showCalendar, setShowCalendar] = useState(false)
+  const [temporaryDate, setTemporaryDate] = useState(new Date())
+  const [eventDate, setEventDate] = useState(null)
+  const [isEventSuccess, setIsEventSuccess] = useState(false)
   const [dataTags] = useState([
     'Sports',
     'Outdoors',
     'Social',
     'Academic',
     'Greek Life',
-    'Entertainment',
-  ]);
+    'Entertainment'
+  ])
 
-  const insets = useSafeAreaInsets();
+  const insets = useSafeAreaInsets()
+  const tokenData = utils.decodeJwt(session.get(keys.token))
 
   const _safeArea = {
-    marginBottom: 16 + insets.bottom,
-  };
+    marginBottom: 16 + insets.bottom
+  }
 
   const takephotofromLibrary = () => {
     const options = {
       mediaType: 'photo',
-      quality: 0.3,
-    };
+      quality: 0.3
+    }
     launchImageLibrary(options, response => {
       if (response.didCancel) {
         // empty action
@@ -72,17 +73,35 @@ const EventHostScreen = () => {
         // empty action
       } else {
         const source = {
-          uri: response.assets?.[0].uri,
-        };
-        setGalleryImage(source);
+          uri: response.assets?.[0].uri
+        }
+        setGalleryImage(source)
       }
-    });
-  };
+    })
+  }
 
   const _onConfirmDate = () => {
-    setShowCalendar(false);
-    setEventDate(temporaryDate);
-  };
+    setShowCalendar(false)
+    setEventDate(temporaryDate)
+  }
+
+  const _onPressSubmit = () => {
+    const payload = {
+      title: titleEvent,
+      description: description,
+      date: moment(temporaryDate).format('YYYY-MM-DD'),
+      location: location,
+      tags: selectedTag
+    }
+
+    eventService.create(session.get(keys.token), payload).then(result => {
+      if (result.error) {
+        Alert.alert('Something went wrong!')
+      } else {
+        setIsEventSuccess(true)
+      }
+    })
+  }
 
   return (
     <Container>
@@ -99,7 +118,7 @@ const EventHostScreen = () => {
             placeholder="Write your post here"
             value={titleEvent}
             onChangeText={value => {
-              setTitleEvent(value);
+              setTitleEvent(value)
             }}
           />
         </View>
@@ -110,10 +129,12 @@ const EventHostScreen = () => {
             <FastImage
               resizeMode={FastImage.resizeMode.contain}
               style={styles.image}
-              source={galleryImage}>
+              source={galleryImage}
+            >
               <Touchable
                 onPress={() => setGalleryImage(null)}
-                style={styles.containerTrash}>
+                style={styles.containerTrash}
+              >
                 <TrashIcon />
               </Touchable>
             </FastImage>
@@ -121,7 +142,8 @@ const EventHostScreen = () => {
         ) : (
           <Touchable
             style={styles.containerAddImage}
-            onPress={takephotofromLibrary}>
+            onPress={takephotofromLibrary}
+          >
             <PictureIcon />
             <Text color={Colors.black500} customStyle={styles.textAddImage}>
               Click to add image
@@ -142,7 +164,7 @@ const EventHostScreen = () => {
             placeholder="Enter the event location here"
             value={location}
             onChangeText={value => {
-              setLocation(value);
+              setLocation(value)
             }}
           />
           <LocationIcon />
@@ -151,7 +173,8 @@ const EventHostScreen = () => {
         <Text family="medium">Event Date</Text>
         <Touchable
           style={styles.containerEventDate}
-          onPress={() => setShowCalendar(true)}>
+          onPress={() => setShowCalendar(true)}
+        >
           <Text color={Colors.black500}>
             {eventDate !== null
               ? moment(eventDate).format('MMM DD YYYY')
@@ -177,7 +200,7 @@ const EventHostScreen = () => {
             placeholder="Input the Start time here"
             value={startTime}
             onChangeText={value => {
-              setStartTime(value);
+              setStartTime(value)
             }}
           />
           <ClockIcon />
@@ -198,7 +221,7 @@ const EventHostScreen = () => {
             placeholder="Input the End time here"
             value={endTime}
             onChangeText={value => {
-              setEndTime(value);
+              setEndTime(value)
             }}
           />
           <ClockIcon />
@@ -213,7 +236,7 @@ const EventHostScreen = () => {
             placeholder="Type the event descriptions here"
             value={description}
             onChangeText={value => {
-              setDescription(value);
+              setDescription(value)
             }}
           />
         </View>
@@ -227,11 +250,21 @@ const EventHostScreen = () => {
               <Tag
                 key={index}
                 text={item}
-                selected={selectedTag === item}
-                onPress={() => setSelectedTag(item)}
+                selected={selectedTag?.includes(item)}
+                onPress={() => {
+                  const temp = [...selectedTag]
+
+                  if (temp?.includes(item)) {
+                    const newTemp = temp.filter(d => d !== item)
+                    setSelectedTag(newTemp)
+                  } else {
+                    temp.push(item)
+                    setSelectedTag(temp)
+                  }
+                }}
                 style={styles.tag}
               />
-            );
+            )
           })}
         </View>
       </Content>
@@ -239,9 +272,19 @@ const EventHostScreen = () => {
         <Button
           style={[styles.button, _safeArea]}
           title="Submit"
-          onPress={() => console.log('please create function submit')}
+          onPress={_onPressSubmit}
         />
       </View>
+      <ModalAlert
+        titlemessage={'Event Created Succes!'}
+        submessage={'Invite your friends to join!'}
+        isVisible={isEventSuccess}
+        onCloseModal={() => setIsEventSuccess(false)}
+        onYes={() => {
+          setIsEventSuccess(false)
+          navigation.goBack()
+        }}
+      />
 
       <ModalCalendar
         title="Event Date"
@@ -253,31 +296,31 @@ const EventHostScreen = () => {
         onConfirm={_onConfirmDate}
       />
     </Container>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   uploadBtn: {
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   underline: {
     height: 0.5,
     width: '90%',
     alignSelf: 'center',
     marginVertical: 20,
-    backgroundColor: Colors.border,
+    backgroundColor: Colors.border
   },
   smallLabel: {
-    fontSize: 15,
+    fontSize: 15
   },
   containerButton: {
     backgroundColor: Colors.white200,
     borderTopWidth: 1,
-    borderTopColor: Colors.white300,
+    borderTopColor: Colors.white300
   },
   button: {
-    margin: 16,
+    margin: 16
   },
   containerAddImage: {
     borderRadius: 8,
@@ -286,11 +329,11 @@ const styles = StyleSheet.create({
     marginTop: 8,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Colors.white200,
+    backgroundColor: Colors.white200
   },
   textAddImage: {
     flex: 1,
-    marginHorizontal: 10,
+    marginHorizontal: 10
   },
   containerInput: {
     paddingHorizontal: 16,
@@ -299,17 +342,17 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     borderRadius: 8,
     flexDirection: 'row',
-    backgroundColor: Colors.white200,
+    backgroundColor: Colors.white200
   },
   input: {
     marginRight: 8,
     fontFamily: Fonts.fontFamily.rubikRegular,
-    color: Colors.black600,
+    color: Colors.black600
   },
   inputTime: {
     fontFamily: Fonts.fontFamily.rubikRegular,
     color: Colors.black600,
-    flex: 1,
+    flex: 1
   },
   containerChooseBox: {
     flexDirection: 'row',
@@ -319,7 +362,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginTop: 8,
     marginBottom: 16,
-    paddingVertical: 12,
+    paddingVertical: 12
   },
   containerMajor: {
     paddingHorizontal: 16,
@@ -330,25 +373,25 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: Colors.white200,
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'space-between'
   },
   chooseButton: {
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 8,
-    backgroundColor: Colors.white200,
+    backgroundColor: Colors.white200
   },
   image: {
     width: '100%',
     height: 220,
-    alignItems: 'flex-end',
+    alignItems: 'flex-end'
   },
   containerImage: {
     padding: 12,
     borderRadius: 8,
     marginTop: 8,
     borderWidth: 1,
-    borderColor: Colors.black400,
+    borderColor: Colors.black400
   },
   containerTrash: {
     height: 32,
@@ -357,7 +400,7 @@ const styles = StyleSheet.create({
     borderRadius: 32,
     backgroundColor: Colors.white100,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   containerEventDate: {
     paddingHorizontal: 16,
@@ -368,10 +411,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: Colors.white200,
+    backgroundColor: Colors.white200
   },
   timeSelect: {
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   containerEventTime: {
     paddingHorizontal: 16,
@@ -380,23 +423,23 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     flexDirection: 'row',
     backgroundColor: Colors.white200,
-    alignItems: 'center',
+    alignItems: 'center'
   },
   textTimeSelect: {
-    marginRight: 4,
+    marginRight: 4
   },
   borderHeight: {
     borderWidth: 1,
     borderColor: Colors.white300,
     height: 24,
-    marginHorizontal: 10,
+    marginHorizontal: 10
   },
   tag: {
     paddingHorizontal: 10,
     paddingVertical: 6,
     marginRight: 10,
-    marginBottom: 12,
-  },
-});
+    marginBottom: 12
+  }
+})
 
-export default EventHostScreen;
+export default EventHostScreen

@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {Image, StyleSheet} from 'react-native';
+import React, {useState, useEffect} from 'react'
+import {Image, StyleSheet} from 'react-native'
 import {
   View,
   Card,
@@ -8,86 +8,92 @@ import {
   Avatar,
   Title,
   Tag,
-  Button,
-} from '../../../common';
-import Text from '../../../common/TextV2';
-import MemberList from '../components/EventDetails/MemberList';
-import UserImage from '../../../assets/images/user.png';
-import {useRoute} from '@react-navigation/native';
-import userService from '../../../services/user';
-import eventService from '../../../services/event';
-import * as Colors from '../../../config/colors';
-import session from '../../../store/session';
-import keys from '../../../store/keys';
-import utils from '../../../utils/utils';
-import moment from 'moment';
-import Header from '../../../user/component/Header';
-import Underline from '../../../user/component/Underline';
-import Gap from '../../../common/Gap';
-import LocationIcon from '../../../assets/icons/icon-location.svg';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+  Button
+} from '../../../common'
+import Text from '../../../common/TextV2'
+import MemberList from '../components/Events/MemberList'
+import UserImage from '../../../assets/images/user.png'
+import {useIsFocused, useRoute} from '@react-navigation/native'
+import userService from '../../../services/user'
+import eventService from '../../../services/event'
+import * as Colors from '../../../config/colors'
+import session from '../../../store/session'
+import keys from '../../../store/keys'
+import utils from '../../../utils/utils'
+import moment from 'moment'
+import Header from '../../../user/component/Header'
+import Underline from '../../../user/component/Underline'
+import Gap from '../../../common/Gap'
+import LocationIcon from '../../../assets/icons/icon-location.svg'
+import {useSafeAreaInsets} from 'react-native-safe-area-context'
+import reactotron from 'reactotron-react-native'
+import ModalConfirm from '../../../auth/components/Modal/modalconfirm'
 
 /* =============================================================================
 <EventDetailsScreen />
 ============================================================================= */
 const EventDetailsScreen = props => {
-  const route = useRoute();
-  const [record, setRecord] = useState(null);
-  const [data, setData] = useState(route.params?.data || null);
-  const insets = useSafeAreaInsets();
+  const route = useRoute()
+  const [record, setRecord] = useState(null)
+  const [data, setData] = useState(route.params?.data || null)
+  const [viewModal, setViewModal] = useState(false)
+  const insets = useSafeAreaInsets()
+  const isFocused = useIsFocused()
+  const tokenData = utils.decodeJwt(session.get(keys.token))
 
+  reactotron.log('EVENTS DETAILS! : ', data)
   const _safeArea = {
-    marginBottom: 16 + insets.bottom,
-  };
+    marginBottom: 16 + insets.bottom
+  }
 
   useEffect(() => {
-    if (!data) return;
-    userService.getById(session.get(keys.token), data.userId).then(result => {
+    if (!data) return
+    userService.getById(session.get(keys.token), tokenData?.id).then(result => {
       if (result.data && result.data.success === true) {
-        let r = result.data.data;
-        setRecord(r);
+        let r = result.data.data
+        setRecord(r)
       }
-    });
-  }, []);
-
-  useEffect(() => {
-    reload();
-  }, []);
-
-  const reload = () => {
-    eventService.getById(session.get(keys.token), data._id).then(result => {
-      if (result.data && result.data.success === true) {
-        setData(result.data.data);
-      }
-    });
-  };
+    })
+  }, [])
 
   const _handleJoinRsvp = () => {
-    if (!data) return;
+    if (!data) return
 
-    const tokenData = utils.decodeJwt(session.get(keys.token));
-    if (!tokenData) return;
+    if (!tokenData) return
 
-    let arr = data.rsvp;
-    let alreadyMember = arr.find(k => k.userId === tokenData._id);
-    if (alreadyMember) return;
+    let arr = data?.membersinfo
+    let alreadyMember = arr.find(k => k.id === tokenData.id)
+    if (alreadyMember) {
+      setViewModal(true)
+      return
+    }
 
     arr.push({
-      userId: tokenData._id,
+      userId: tokenData.id,
       date: moment().format(),
-      imageUrl: record.imageUrl,
-    });
-    eventService
-      .update(session.get(keys.token), data._id, {
-        ...data,
-        rsvp: arr,
-      })
-      .then(result => {
-        reload();
-      });
-  };
+      imageUrl: record.imageUrl
+    })
+    eventService.joinRSVP(session.get(keys.token), data.id).then(result => {
+      //Noted: !!! :Temporary need BE adjustments
+      setData({...data, membersinfo: arr})
+    })
+  }
+  const checkIfUserIncludes = () => {
+    const result = data?.membersinfo.find(item => item?.id === tokenData?.id)
+    return result
+  }
 
-  if (!data) return <></>;
+  const _cancelRsvp = () => {
+    eventService.cancel(session.get(keys.token), data.id).then(result => {
+      const res = data?.membersinfo.filter(k => k.id !== tokenData.id)
+      reactotron.log('natitia :!! :', res)
+      setViewModal(false)
+      //Noted: !!! :Temporary need BE adjustments
+      setData({...data, membersinfo: res})
+    })
+  }
+
+  if (!data) return <></>
 
   return (
     <Container>
@@ -95,34 +101,38 @@ const EventDetailsScreen = props => {
 
       <Content padding={16} bottomSafeArea>
         <View style={styles.userContainer}>
-          {record && (
+          {data && (
             <>
               <Avatar
                 size={48}
-                source={{uri: record.imageUrl ? record.imageUrl : null}}
+                source={
+                  data?.userinfo?.imageUrl
+                    ? {uri: data?.userinfo?.imageUrl}
+                    : null
+                }
               />
               <Text family="semi" size="big" customStyle={styles.name}>
-                {record.firstName} {record.lastName}
+                {data?.userinfo?.name}
               </Text>
             </>
           )}
         </View>
+        {data?.imageUrl && (
+          <Image source={{uri: data.imageUrl}} style={styles.image} />
+        )}
 
-        <Image
-          source={{uri: data.imageUrl ? data.imageUrl : null}}
-          style={styles.image}
-        />
-
-        <Text size="big">{data.title} </Text>
+        <Text size="big" customStyle={{marginTop: 20}}>
+          {data.title}
+        </Text>
 
         <View style={styles.tagContainer}>
-          {data.tags.map(k => {
-            return <Tag text={k} key={k} redBorder />;
+          {data?.tags?.map(k => {
+            return <Tag text={k} key={k} redBorder />
           })}
         </View>
-
-        <MemberList rsvp={data.rsvp} />
-
+        <View style={{paddingVertical: 15}}>
+          <MemberList data={data?.membersinfo} />
+        </View>
         <Underline marginHorizontal={0} marginVertical={16} />
 
         <Text family="semi" size="big">
@@ -149,7 +159,7 @@ const EventDetailsScreen = props => {
         </Text>
 
         <View style={styles.boxLocation}>
-          <Text>{data.location}</Text>
+          <Text>{data?.location || 'Not available'}</Text>
           <LocationIcon />
         </View>
 
@@ -159,70 +169,80 @@ const EventDetailsScreen = props => {
           Description
         </Text>
         <View style={styles.boxDescription}>
-          <Text>{data.detail}</Text>
+          <Text>{data?.description || 'Not available'}</Text>
         </View>
       </Content>
-      <View style={styles.containerButton}>
-        <Button
-          style={[styles.button, _safeArea]}
-          title="RSVP"
-          onPress={_handleJoinRsvp}
-        />
-      </View>
+      {data?.userinfo?.id !== tokenData.id && (
+        <View style={styles.containerButton}>
+          <Button
+            style={[styles.button, _safeArea]}
+            type={checkIfUserIncludes() ? 'outline' : 'primary'}
+            title={checkIfUserIncludes() ? 'CANCEL RSVP' : 'RSVP'}
+            onPress={_handleJoinRsvp}
+          />
+        </View>
+      )}
+      <ModalConfirm
+        titlemessage={'Are you sure want to cancel this RVSP?'}
+        isVisible={viewModal}
+        onCloseModal={() => setViewModal(false)}
+        onYes={_cancelRsvp}
+      />
     </Container>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   userContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   image: {
     width: '100%',
     height: 266,
     borderRadius: 8,
-    marginVertical: 16,
+    marginVertical: 16
   },
   name: {
-    marginLeft: 16,
+    marginLeft: 16
   },
   tagContainer: {
     marginTop: 5,
     flexDirection: 'row',
-    marginVertical: 16,
+    marginVertical: 16
   },
   boxDate: {
     paddingVertical: 12,
     flex: 1,
     backgroundColor: Colors.white200,
     alignItems: 'center',
-    borderRadius: 8,
+    borderRadius: 8
   },
   boxLocation: {
-    flex: 1,
+    // flex: 1,
     paddingHorizontal: 16,
     paddingVertical: 12,
     backgroundColor: Colors.white200,
     marginTop: 12,
     justifyContent: 'space-between',
     flexDirection: 'row',
-    borderRadius: 8,
+    borderRadius: 8
   },
   boxDescription: {
+    flex: 1,
     padding: 16,
     backgroundColor: Colors.white200,
     borderRadius: 8,
-    marginTop: 12,
+    marginTop: 12
   },
   containerButton: {
     backgroundColor: Colors.white200,
     borderTopWidth: 1,
-    borderTopColor: Colors.white300,
+    borderTopColor: Colors.white300
   },
   button: {
-    margin: 16,
-  },
-});
+    margin: 16
+  }
+})
 
-export default EventDetailsScreen;
+export default EventDetailsScreen

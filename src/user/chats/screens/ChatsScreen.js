@@ -33,14 +33,13 @@ const ChatsScreen = () => {
   const [records, setRecords] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [keyword, setKeyword] = useState('');
-  // const [sortBy, setSortBy] = useState('Newest');
+  const [sortBy, setSortBy] = useState('Newest');
   const [filters, setFilters] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
   const navigation = useNavigation();
   const route = useRoute();
   const [viewFilter, setViewFilter] = useState(false);
-  const [sortBy, setSortBy] = useState('')
 
   const _moveToCreatePost = () => {
     navigation.navigate('PostCreate');
@@ -78,7 +77,7 @@ const ChatsScreen = () => {
 
       if (sortBy === 'Most Popular') {
         arr = arr.sort((a, b) => b.likes.length - a.likes.length);
-      } else if (sortBy === 'Recent') {
+      } else if (sortBy === 'Newest') {
         arr = arr.sort((a, b) => moment(b.created_at) - moment(a.created_at));
       }
 
@@ -169,8 +168,6 @@ const ChatsScreen = () => {
         isVisible={viewFilter}
         onCloseModal={() => console.log('ji') || setViewFilter(false)}
         onYes={() => setViewFilter(false)}
-        setSortBy={(e)=>setSortBy(e)}
-        sortBy={sortBy}
       />
     </Container>
   );
