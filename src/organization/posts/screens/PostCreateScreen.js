@@ -244,7 +244,7 @@ const PostCreateScreen = () => {
         <Button
           style={[styles.button, _safeArea]}
           title="Submit"
-          onPress={() => _handleSubmit()}
+          onPress={() =>galleryImage?.file?.assets?.[0] === undefined ? postApi('') : _handleSubmit()}
         />
       </View>
     </Container>
