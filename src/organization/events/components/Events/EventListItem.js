@@ -19,7 +19,7 @@ import ModalConfirm from '../../../../auth/components/Modal/modalconfirm'
 <EventListItem />
 ============================================================================= */
 const EventListItem = props => {
-  const data = props.data
+  const data = props?.data
   const navigation = useNavigation()
   const [viewModal, setViewModal] = useState(false)
 
@@ -30,18 +30,18 @@ const EventListItem = props => {
     if (!tokenData) return
 
     let arr = data.membersinfo
-    let alreadyMember = arr.find(k => k.id === tokenData.id)
+    let alreadyMember = arr.find(k => k?.id === tokenData?.id)
     if (alreadyMember) {
       setViewModal(true)
       return
     } else {
-      arr.push({
-        userId: tokenData.id,
-        date: moment().format(),
+      arr?.push({
+        userId: tokenData?.id,
+        date: moment()?.format(),
         imageUrl: props?.sessionUser?.imageUrl || null
       })
       eventService.joinRSVP(session.get(keys.token), data.id).then(result => {
-        if (result.data && result.data.success === true) {
+        if (result?.data && result?.data?.success === true) {
           props.reload()
         }
       })
@@ -78,7 +78,7 @@ const EventListItem = props => {
               <Text style={styles.name}>{data?.userinfo?.name}</Text>
             </>
           </View>
-          <Text style={styles.time}> {moment(data.createdAt).fromNow()}</Text>
+          <Text style={styles.time}> {moment(data?.createdAt).fromNow()}</Text>
         </View>
 
         <View marginTop={16} marginBottom={8}>
@@ -86,7 +86,7 @@ const EventListItem = props => {
           {data.title}{' '}
           <Text fontFamily="Montserrat-SemiBold">{data.detail}</Text>
         </Text> */}
-          <Text size="big">{data.title}</Text>
+          <Text size="big">{data?.title}</Text>
         </View>
         {data?.imageUrl && (
           <Image source={{uri: data?.imageUrl}} style={styles.image} />
