@@ -43,7 +43,7 @@ export default class {
         return result;
     }
 
-    static login = async (email, password) => {
+    static login = async (email, password,club) => {
         let result = {
             data: null,
             error: null
@@ -51,7 +51,8 @@ export default class {
 
         const data = {
             email: email,
-            password: password
+            password: password,
+            isClub:club
         };
 
         await axios.post(`${constants.API_URL}/users/login`, data)

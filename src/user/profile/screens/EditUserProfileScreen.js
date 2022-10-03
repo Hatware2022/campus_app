@@ -172,7 +172,6 @@ const EditUserProfileScreen = () => {
           .then(result => {
             
             if (result.data && result.data.success === true) {
-              alert(JSON.stringify(result))
               setImageUrl(result.data.url);
               // postApi(result.data.url)
               // navigation.goBack()

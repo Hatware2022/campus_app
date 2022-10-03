@@ -49,10 +49,11 @@ const ProfileScreen = () => {
 	const reload = () => {
 		const tokenData = utils.decodeJwt(session.get(keys.token)) || null;
 		if (!tokenData) return;
-		userService.getById(session.get(keys.token), tokenData._id)
+		userService.getById(session.get(keys.token), tokenData.id)
 			.then(result => {
 				if (result.data && result.data.success === true) {
-					let r = result.data.data;
+					let r = result?.data?.data;
+					alert(JSON.stringify(r))
 					setRecord(r);
 				}
 			});

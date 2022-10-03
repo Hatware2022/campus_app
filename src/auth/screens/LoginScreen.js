@@ -80,7 +80,7 @@ const LoginScreen = () => {
       return;
     }
 
-    userService.login(email, password).then(result => {
+    userService.login(email, password,rememberMe).then(result => {
       console.log(result)
       if (result.error) {
         setErrorMessage(result?.error?.message || '');
@@ -91,21 +91,31 @@ const LoginScreen = () => {
         return;
       }
       if (result.data && result.data.success === true) {
-        session.set(keys.token, result.data.userData.token);
+        // alert(JSON.stringify(result.data?.userData))
+        if (result.data?.userData.clubDetails === false) {
+          session.set(keys.token, result.data.userData.token);
+          session.set(keys.userId, result.data.userData.id);
+          session.set(keys.isLoggedIn, 'true');
+          navigation.navigate('UserTab');
+          
+        }else{
+          session.set(keys.token, result.data.userData.token);
         session.set(keys.userId, result.data.userData.id);
         session.set(keys.isLoggedIn, 'true');
-
-        let tokenData = utils.decodeJwt(result.data.userData.token);
-        if (tokenData.role === 'user') {
-          if (rememberMe) {
-            console.log('trueee');
-            setLoginAsClub(true);
-          }
-          session.set(keys.loginType, 'user');
-          navigation.navigate('UserTab');
-        } else if (tokenData.role === 'organization') {
-          navigation.navigate('Home');
+        navigation.navigate('OrganizationTab');
         }
+        // let tokenData = utils.decodeJwt(result.data.userData.token);
+        // if (tokenData.role === 'user') {
+        //   if (rememberMe) {
+        //     console.log('trueee');
+        //     setLoginAsClub(true);
+        //   }
+        //   session.set(keys.loginType, 'user');
+        //   navigation.navigate('UserTab');
+        //   } else if (tokenData.role === 'organization') {
+        //   // } else if (result.data.clubDetails != undefined) {
+        //   navigation.navigate('Home');
+        // }
       }
     });
   };

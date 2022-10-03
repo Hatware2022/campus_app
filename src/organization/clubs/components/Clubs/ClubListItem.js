@@ -38,7 +38,26 @@ const ClubListItem = ({data}) => {
           // 'Content-Type': 'application/json'
         }
       }).then((e)=>{
-        setJoinClub(!joinClub)
+        setJoinClub(true)
+            alert('Join Club Successfully')
+      });
+    } catch (error) {
+      console.log('Error while Sending Password Reset Email => ' + error);
+    }
+  }
+
+  const handleLeaveClub =(id)=>{
+    let aa = session.get(keys.token)
+    try {
+      let response =  axios({
+        url: `${constants.API_URL}/club/leave/${id}`,
+        method: 'POST',
+        headers:{
+          'Authorization': aa,
+          // 'Content-Type': 'application/json'
+        }
+      }).then((e)=>{
+        setJoinClub(false)
             alert('Join Club Successfully')
       });
     } catch (error) {
@@ -73,7 +92,7 @@ const ClubListItem = ({data}) => {
         data={data}
         joinClub={joinClub}
         // onPress={() => setJoinClub(!joinClub)}
-        onPress={()=>handleJoinClub(data.id)}
+        onPress={()=> joinClub ? handleLeaveClub(data.id) : handleJoinClub(data.id)}
         onPressGroup={() => console.log('create club screen')}
       />
     </Touchable>

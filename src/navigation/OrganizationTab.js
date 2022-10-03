@@ -23,7 +23,7 @@ const OrganizationTab = () => (
     <Tab.Screen name="Home" component={HomeScreen} />
     <Tab.Screen name="Post" component={EventsScreen} />
     <Tab.Screen name="Search" component={SearchScreen} />
-    <Tab.Screen name="Inbox" component={InboxScreen} />
+    {/* <Tab.Screen name="Inbox" component={InboxScreen} /> */}
     <Tab.Screen name="Profile" component={ProfileScreen} />
   </Tab.Navigator>
 );
