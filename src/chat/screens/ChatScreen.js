@@ -27,7 +27,7 @@ const renderDay = props => {
   return (
     <Day
       {...props}
-      dateFormat="ddd, d MMM, YYYY HH:mm"
+      dateFormat="ddd, d MMM, YYYY hh:mm"
       textStyle={{color: '#373C3E', fontWeight: 'bold'}}
     />
   )
@@ -69,9 +69,10 @@ const ChatScreen = ({}) => {
   const [record, setRecord] = useState(null)
   const insets = useSafeAreaInsets()
   const navigation = useNavigation()
+  const [params, setParams] = useState({page: 1, perPage: 10})
   const tokenData = utils.decodeJwt(session.get(keys.token))
   const [state, setState] = useState({
-    isAppReady: false,
+    isRefreshing: false,
     isTyping: false
   })
   var socket = useRef()
@@ -98,18 +99,22 @@ const ChatScreen = ({}) => {
 
   useEffect(() => {
     if (isFocused) {
-      setState({...state, isAppReady: true})
-
+      userService
+        .getById(session.get(keys.token), tokenData.id)
+        .then(result => {
+          if (result.data && result.data.success === true) {
+            let r = result.data.data
+            setRecord(r)
+          }
+        })
       socket.current = io('https://staging-api.bondo.app')
       socket.current.emit('addUser', tokenData?.id)
-      setState({...state, isAppReady: false})
     }
   }, [isFocused])
 
   useEffect(() => {
     socket.current.on('getMessage', data => {
       reactotron.log('MESSAGE RECEIVED! LL:', data)
-      // setMessages([{...data, _id: data?.senderId}, ...messages])
       chatRef.current.scrollToBottom()
       reload()
     })
@@ -117,40 +122,39 @@ const ChatScreen = ({}) => {
 
   const reload = async () => {
     try {
-      setState({...state, isAppReady: true})
+      setState({...state, isRefreshing: true})
 
-      let temp = null
       const tokenData = utils.decodeJwt(session.get(keys.token))
       if (!chat || !tokenData) return
-      userService
-        .getById(session.get(keys.token), tokenData.id)
+      const temp = {
+        pagination: {
+          page: params.page,
+          perPage: params.perPage + 10
+        }
+      }
+      setParams({page: params.page, perPage: params.perPage + 10})
+      messageService
+        .getAll(session.get(keys.token), chat.id, temp)
         .then(result => {
           if (result.data && result.data.success === true) {
-            let r = result.data.data
-            setRecord(r)
-            temp = r
+            let arr = result.data.data
+            const finalArr = arr.map(item => {
+              return {
+                ...item,
+                _id: item.id,
+                user: {
+                  _id: item.senderId === tokenData?.id ? 1 : item.senderId
+                }
+              }
+            })
+
+            setMessages(finalArr)
           }
         })
-      messageService.getAll(session.get(keys.token), chat.id).then(result => {
-        if (result.data && result.data.success === true) {
-          let arr = result.data.data
-          const finalArr = arr.map(item => {
-            return {
-              ...item,
-              _id: item.id,
-              user: {
-                _id: item.senderId === temp?.id ? 1 : item.senderId
-              }
-            }
-          })
-          setMessages(finalArr)
-        }
-      })
     } catch (err) {
     } finally {
-      setState({...state, isAppReady: false})
       setTimeout(() => {
-        chatRef?.current?.scrollToBottom()
+        setState({...state, isRefreshing: false})
       }, 1500)
     }
   }
@@ -176,6 +180,13 @@ const ChatScreen = ({}) => {
       _id: chat?.id
     })
   }
+  const isCloseToTop = ({layoutMeasurement, contentOffset, contentSize}) => {
+    const paddingToTop = 10
+    return (
+      contentSize.height - layoutMeasurement.height - paddingToTop <=
+      contentOffset.y
+    )
+  }
 
   return (
     <Container backgroundColor="#FFFF">
@@ -197,13 +208,14 @@ const ChatScreen = ({}) => {
       <ScrollView
         contentContainerStyle={{flex: 1, height: '100%'}}
         refreshControl={
-          <RefreshControl refreshing={state.isAppReady} onRefresh={reload} />
+          <RefreshControl refreshing={state.isRefreshing} onRefresh={reload} />
         }
+        scrollEnabled={false}
       >
-        <>
+        <View>
           <View
             style={{
-              marginTop: 10,
+              paddingTop: 10,
               alignItems: 'center'
             }}
           >
@@ -212,11 +224,11 @@ const ChatScreen = ({}) => {
               source={chat?.imageUrl ? {uri: chat?.imageUrl} : null}
               style={styles.avatarProfile}
             />
-            <Gap height={12} />
+            <Gap customStyle={{paddingVertical: 12}} />
             <Text size="big" family="semi">
               {chat?.senderName}
             </Text>
-            <Gap height={12} />
+            <Gap customStyle={{paddingVertical: 12}} />
             <TouchableOpacity
               style={styles.viewProfile}
               onPress={onPressViewProfile}
@@ -226,14 +238,11 @@ const ChatScreen = ({}) => {
               </Text>
             </TouchableOpacity>
           </View>
-          <Underline />
-        </>
+        </View>
         <GiftedChat
           ref={chatRef}
-          dateFormat="DD/MM/YYYY"
           renderUsernameOnMessage
           alwaysShowSend={false}
-          scrollToBottom={true}
           messages={messages}
           user={{
             _id: 1,
@@ -245,6 +254,14 @@ const ChatScreen = ({}) => {
           )}
           textInputProps={{
             color: '#373C3E'
+          }}
+          listViewProps={{
+            scrollEventThrottle: 400,
+            onScroll: ({nativeEvent}) => {
+              if (isCloseToTop(nativeEvent)) {
+                reload()
+              }
+            }
           }}
           keyboardShouldPersistTaps="never"
           renderDay={renderDay}
@@ -259,7 +276,7 @@ const ChatScreen = ({}) => {
           )}
           minInputToolbarHeight={60}
           onSend={_handleSend}
-          inverted={false}
+          inverted
         />
       </ScrollView>
     </Container>

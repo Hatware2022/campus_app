@@ -119,7 +119,7 @@ const GroupDetailsScreen = () => {
             <View padding={0}>
               <ImageBackground
                 // source={data.image}
-                source={SurfingImage}
+                source={data.imageUrl ? {uri: data.imageUrl} : SurfingImage}
                 style={styles.coverImage}>
                 <Touchable
                   onPress={() => navigation.goBack()}
@@ -158,7 +158,8 @@ const GroupDetailsScreen = () => {
                     'GroupMember', 
                     {
                       members: data?.members, 
-                      title: data?.title
+                      title: data?.title,
+                      imageUrl: data?.imageUrl,
                     }
                   )}
                   isUserAGroupMember={isUserAGroupMember}

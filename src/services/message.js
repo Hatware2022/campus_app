@@ -2,7 +2,7 @@ import axios from 'axios'
 import constants from '../utils/constants'
 
 export default class {
-  static getAll = async (token, conversationId) => {
+  static getAll = async (token, conversationId, params) => {
     let result = {
       data: null,
       error: null
@@ -10,6 +10,7 @@ export default class {
 
     await axios
       .get(`${constants.API_URL}/messages/conversation/${conversationId}`, {
+        params: params,
         headers: {Authorization: token}
       })
       .then(resp => {

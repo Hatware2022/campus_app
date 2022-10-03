@@ -22,7 +22,7 @@ import Gap from '../../../common/Gap';
 ============================================================================= */
 const GroupMemberScreen = () => {
   const route = useRoute();
-  const {members, title} = route.params || {};
+  const {members, title, imageUrl} = route.params || {};
   const [membersDetails, setMembersDetails] = useState(null);
   const insets = useSafeAreaInsets();
 
@@ -59,7 +59,7 @@ const GroupMemberScreen = () => {
           ListHeaderComponent={
             <>
               <View style={styles.userDetails}>
-                <Avatar source={UserImage} size={48} />
+                <Avatar source={imageUrl || UserImage} size={48} />
                 <Text size="big" family="semi" customStyle={styles.textTitle}>
                   {title}
                 </Text>
@@ -78,7 +78,6 @@ const styles = StyleSheet.create({
   textTitle: {
     marginHorizontal: 16,
   },
-
   userDetails: {
     paddingTop: 20,
     paddingHorizontal: 20,

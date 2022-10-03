@@ -20,7 +20,7 @@ const GroupListItem = ({data}) => {
 
   return (
     <Touchable onPress={_moveToDetails} style={styles.container}>
-      <Avatar size={48} source={data.image} />
+      <Avatar size={48} source={data.imageUrl} />
       <View flex={1} justifyContent="center" marginHorizontal={12}>
         <Text family="semi">{data.title}</Text>
         <Gap height={4} />
@@ -32,15 +32,6 @@ const GroupListItem = ({data}) => {
         <Text>{data.members.length}</Text>
         <PeopleIcon />
       </View>
-
-      {/* <ImageBackground
-        source={data.image}
-        style={styles.backgroundImage}
-        imageStyle={styles.backgroundImageStyle}>
-        <View style={styles.innerContainer}>
-          <Text style={styles.name}>{data.name}</Text>
-        </View>
-      </ImageBackground> */}
     </Touchable>
   );
 };
@@ -48,14 +39,7 @@ const GroupListItem = ({data}) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    // paddingHorizontal: 16,
     paddingVertical: 8,
-    // flex: 1,
-    // height: 134.1,
-    // borderRadius: 5,
-    // marginVertical: 10,
-    // alignItems: 'center',
-    // justifyContent: 'center',
   },
   backgroundImage: {
     width: 151.3,

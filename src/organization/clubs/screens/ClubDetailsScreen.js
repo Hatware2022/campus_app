@@ -33,7 +33,7 @@ const ClubDetailsScreen = ({ route, navigation }) => {
           <Avatar source={UserImage} size={80} />
           <Gap height={8} />
           <Text size="big" family="semi">
-            {item.title}
+            {item?.title}
           </Text>
 
           <SocialButtons />
@@ -50,7 +50,7 @@ const ClubDetailsScreen = ({ route, navigation }) => {
 
           <Card>
             <Text>
-              {item.bio}
+              {item?.bio}
             </Text>
           </Card>
         </View>
@@ -61,7 +61,7 @@ const ClubDetailsScreen = ({ route, navigation }) => {
           Contact us
         </Text>
         <Gap height={16} />
-        <Text>{item.email}</Text>
+        <Text>{item?.email}</Text>
 
         <Underline marginHorizontal={0} />
 
@@ -71,10 +71,9 @@ const ClubDetailsScreen = ({ route, navigation }) => {
           </Text>
           <Gap height={16} />
           <View style={styles.tagContainer}>
-            <Tag text="Business" size="medium" />
-            <Tag text="Hiking" size="medium" />
-            <Tag text="Reading" size="medium" />
-            <Tag text="Art" size="medium" />
+            {item?.tags.map((item, index) => (
+              <Tag key={index} text={item} />
+            ))}
           </View>
         </View>
       </Content>

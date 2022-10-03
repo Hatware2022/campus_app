@@ -16,13 +16,14 @@ const Avatar = ({source, style, size, border, round, radius, onPress, editProfil
     borderRadius: round ? size / 2 : radius,
     backgroundColor: Colors.card,
   };
+  const remoteUri = typeof source === 'string' && source.includes('http');
 
-  if (source) {
+  if (source) { 
     return (
       <Pressable onPress={onPress}>
         <Image
           style={[styles.image, _layout, style]}
-          source={source}
+          source={remoteUri ? {uri : `${source}`}: source}
           resizeMode={editProfile?'contain':'cover'}
         />
       </Pressable>

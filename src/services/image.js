@@ -19,7 +19,7 @@ export default class {
         })
             .then(resp => {
                 // console.log("resp: ", JSON.stringify(resp));
-                if (resp.status === 200) {
+                if (resp.status === 200 || resp.status === 201) {
                     result.data = resp.data;
                 }
             })

@@ -17,8 +17,8 @@ const SocialButtons = ({data}) => {
   useEffect(() => {
     if (!data) return;
     // if (data?.insta || data?.insta.length > 0) setBtn1(true);
-    if (data?.tiktok || data?.tiktok.length > 0) setBtn2(true);
-    if (data?.linkedin || data?.linkedin.length > 0) setBtn3(true);
+    // if (data?.tiktok || data?.tiktok.length > 0) setBtn2(true);
+    // if (data?.linkedin || data?.linkedin.length > 0) setBtn3(true);
   }, []);
 
   // const _openIGLink = () => {
@@ -29,20 +29,20 @@ const SocialButtons = ({data}) => {
   //     return
   //   }
   // };
-  const _openTiktokLink = () => {
-    if (!data) return;
-    if (!data?.tiktok || data?.tiktok.length === 0) return;
-    Linking.openURL(data?.tiktok);
-  };
-  const _openLinkedInLink = () => {
-    if (!data) return;
-    if (!data?.linkedin || data?.linkedin.length === 0) return;
-    Linking.openURL(data?.linkedin);
-  };
+  // const _openTiktokLink = () => {
+  //   if (!data) return;
+  //   if (!data?.tiktok || data?.tiktok.length === 0) return;
+  //   Linking.openURL(data?.tiktok);
+  // };
+  // const _openLinkedInLink = () => {
+  //   if (!data) return;
+  //   if (!data?.linkedin || data?.linkedin.length === 0) return;
+  //   Linking.openURL(data?.linkedin);
+  // };
 
   return (
     <View style={styles.container}>
-        <Touchable onPress={{}} style={styles.button}>
+        <Touchable style={styles.button}>
           <InstagramIcon />
         </Touchable>
 

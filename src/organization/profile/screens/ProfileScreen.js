@@ -53,7 +53,6 @@ const ProfileScreen = () => {
 			.then(result => {
 				if (result.data && result.data.success === true) {
 					let r = result?.data?.data;
-					alert(JSON.stringify(r))
 					setRecord(r);
 				}
 			});

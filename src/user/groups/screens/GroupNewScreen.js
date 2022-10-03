@@ -1,15 +1,18 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, TextInput, Pressable} from 'react-native';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
+import ImagePicker from 'react-native-image-crop-picker';
+import FastImage from 'react-native-fast-image';
 
 import {View, Container, Content, Tag, Button} from '../../../common';
 import Text from '../../../common/TextV2';
 import groupService from '../../../services/group';
+import imageService from '../../../services/image';
 import tagService from '../../../services/tag';
 import session from '../../../store/session';
 import keys from '../../../store/keys';
 
-import DemoImage from '../../../assets/images/empty-image.png';
+import TrashIcon from '../../../assets/icons/icon-trash-red.svg';
 
 import PlusIcon from '../../../assets/icons/icon-plus-red.svg';
 import PictureIcon from '../../../assets/icons/icon-picture.svg';
@@ -30,6 +33,7 @@ const GroupNewScreen = () => {
   const [groupDescription, setGroupDescription] = useState('');
   const [groupTags, setGroupTags] = useState([]);
   const insets = useSafeAreaInsets();
+	const [file, setFile] = useState(null);
 
   useEffect(() => {
     try {
@@ -40,20 +44,52 @@ const GroupNewScreen = () => {
     } catch(error) {}
   }, [])
 
-  const handleSubmit = () => {
+  const createGroup = (imageUrl) => {
     groupService.create(session.get(keys.token), JSON.stringify({
-      "title": groupName,
-      "members": [],
-      "type": "public",
-      "description": groupDescription,
-      "tags": groupTags,
+      title: groupName,
+      members: [],
+      type: "public",
+      description: groupDescription,
+      tags: groupTags,
+      imageUrl,
     })).then((res) => {
       const {data} = res;
       if(data?.success) {
         navigation.pop();
       }
-    }).catch((_err) => {})
+    })
   }
+
+  const handleSubmit = () => {
+    try {
+      imageService.create(file)
+        .then((imageResponse) => {
+          if (imageResponse.data.success === true) {
+            createGroup(imageResponse.data.url);
+          }
+        }).catch((error) => {
+          createGroup();
+        })
+    } catch (error) {}
+  }
+
+  const _handleChooseFile = () => {
+		try {
+			ImagePicker.openPicker({
+				cropping: false,
+				multiple: false
+			})
+				.then(k => {
+					setFile({
+						name: k.path.split("/").pop(),
+						type: k.mime,
+						uri: Platform.OS === 'ios' ? k.path.replace('file://', '') : k.path
+					});
+				})
+				.catch(err => { });
+		}
+		catch (err) { }
+	}
 
   const _safeArea = {
     marginBottom: 16 + insets.bottom,
@@ -88,13 +124,31 @@ const GroupNewScreen = () => {
         </View>
 
         <Text family="semi">Profile Picture</Text>
-        <View style={styles.containerAddImage}>
-          <PictureIcon />
-          <Text color={Colors.black500} customStyle={styles.textAddImage}>
-            Click to add image
-          </Text>
-          <PlusIcon />
-        </View>
+        { file ? 
+          ( <View style={styles.containerImage}>
+              <FastImage
+                resizeMode={FastImage.resizeMode.contain}
+                style={styles.image}
+                source={file}>
+                <Pressable
+                  onPress={() => setFile(null)}
+                  style={styles.containerTrash}>
+                  <TrashIcon />
+                </Pressable>
+              </FastImage>
+            </View>
+          ) : (
+            <Pressable style={styles.containerAddImage}
+              onPress={_handleChooseFile}
+            >
+              <PictureIcon />
+              <Text color={Colors.black500} customStyle={styles.textAddImage}>
+                Click to add image
+              </Text>
+              <PlusIcon />
+            </Pressable>
+          )
+        }
 
         <Text family="semi">Add Tags</Text>
 
@@ -209,6 +263,18 @@ const styles = StyleSheet.create({
   },
   button: {
     margin: 16,
+  },
+  containerImage: {
+    padding: 12,
+    borderRadius: 8,
+    marginTop: 8,
+    borderWidth: 1,
+    borderColor: Colors.black400,
+  },
+  image: {
+    width: '100%',
+    height: 220,
+    alignItems: 'flex-end',
   },
 });
 

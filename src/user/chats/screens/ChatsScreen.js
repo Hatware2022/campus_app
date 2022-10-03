@@ -1,104 +1,104 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react'
 import {
   FlatList,
   StatusBar,
   StyleSheet,
   RefreshControl,
-  TouchableOpacity,
-} from 'react-native';
-import {Container, TextInput, Title, View, TextArea} from '../../../common';
-import Text from '../../../common/TextV2';
+  TouchableOpacity
+} from 'react-native'
+import {Container, TextInput, Title, View, TextArea} from '../../../common'
+import Text from '../../../common/TextV2'
 
-import ChatForm from '../components/Chats/ChatForm';
-import ChatsFilter from '../components/Chats/ChatsFilter';
-import ChatListItem from '../components/Chats/ChatListItem';
-import SearchIcon from '../../../assets/icons/icon-search.svg';
-import FilterIcon from '../../../assets/icons/icon-filter.svg';
-import session from '../../../store/session';
-import keys from '../../../store/keys';
-import ArrowDownIcon from '../../../assets/icons/app-arrow-down.svg';
-import * as Colors from '../../../config/colors';
-import CHATS from '../../../constants/chats';
-import postService from '../../../services/post';
-import moment from 'moment';
-import {useNavigation, useIsFocused, useRoute} from '@react-navigation/native';
-import ModalFilter from '../../../auth/components/Modal/modalfilter';
+import ChatForm from '../components/Chats/ChatForm'
+import ChatsFilter from '../components/Chats/ChatsFilter'
+import ChatListItem from '../components/Chats/ChatListItem'
+import SearchIcon from '../../../assets/icons/icon-search.svg'
+import FilterIcon from '../../../assets/icons/icon-filter.svg'
+import session from '../../../store/session'
+import keys from '../../../store/keys'
+import ArrowDownIcon from '../../../assets/icons/app-arrow-down.svg'
+import * as Colors from '../../../config/colors'
+import CHATS from '../../../constants/chats'
+import postService from '../../../services/post'
+import moment from 'moment'
+import {useNavigation, useIsFocused, useRoute} from '@react-navigation/native'
+import ModalFilter from '../../../auth/components/Modal/modalfilter'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
 /* =============================================================================
 <ChatsScreen />
 ============================================================================= */
 const ChatsScreen = () => {
-  const isFocused = useIsFocused();
-  const [records, setRecords] = useState([]);
-  const [refreshing, setRefreshing] = useState(false);
-  const [keyword, setKeyword] = useState('');
-  const [sortBy, setSortBy] = useState('Newest');
-  const [filters, setFilters] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [successMessage, setSuccessMessage] = useState(null);
-  const navigation = useNavigation();
-  const route = useRoute();
-  const [viewFilter, setViewFilter] = useState(false);
+  const isFocused = useIsFocused()
+  const [records, setRecords] = useState([])
+  const [refreshing, setRefreshing] = useState(false)
+  const [keyword, setKeyword] = useState('')
+  const [sortBy, setSortBy] = useState('Newest')
+  const [filters, setFilters] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [successMessage, setSuccessMessage] = useState(null)
+  const navigation = useNavigation()
+  const route = useRoute()
+  const [viewFilter, setViewFilter] = useState(false)
 
   const _moveToCreatePost = () => {
-    navigation.navigate('PostCreate');
-  };
+    navigation.navigate('PostCreate')
+  }
 
   useEffect(() => {
-    let isMounted = true;
+    let isMounted = true
     if (isMounted) {
-      reload();
+      reload()
     }
 
     return () => {
-      isMounted = false;
-    };
-  }, [isFocused, keyword, sortBy, filters]);
+      isMounted = false
+    }
+  }, [isFocused, keyword, sortBy, filters])
 
   const reload = () => {
     postService.getAll(session.get(keys.token)).then(result => {
       if (result.error) {
-        setErrorMessage(result.error);
-        return;
+        setErrorMessage(result.error)
+        return
       }
 
       if (result.data && result.data.success === false) {
-        setErrorMessage(result.data.message);
-        return;
+        setErrorMessage(result.data.message)
+        return
       }
 
-      let arr = result.data.data;
+      let arr = result.data.data
 
       if (keyword.length > 0 || (filters && filters.keyword.length > 0)) {
-        let f = filters.keyword || keyword;
-        arr = arr.filter(k => k.detail.toLowerCase().includes(f.toLowerCase()));
+        let f = filters.keyword || keyword
+        arr = arr.filter(k => k.detail.toLowerCase().includes(f.toLowerCase()))
       }
 
       if (sortBy === 'Most Popular') {
-        arr = arr.sort((a, b) => b.likes.length - a.likes.length);
+        arr = arr.sort((a, b) => b.likes.length - a.likes.length)
       } else if (sortBy === 'Newest') {
-        arr = arr.sort((a, b) => moment(b.created_at) - moment(a.created_at));
+        arr = arr.sort((a, b) => moment(b.created_at) - moment(a.created_at))
       }
 
       if (filters) {
         if (filters.interests.length > 0) {
-          arr = arr.filter(k => k.downFor.includes(filters.interests));
+          arr = arr.filter(k => k.downFor.includes(filters.interests))
         }
       }
 
-      setRecords(arr);
-    });
-  };
+      setRecords(arr)
+    })
+  }
 
   const onRefresh = () => {
-    setRefreshing(true);
-    reload();
-    setRefreshing(false);
-  };
+    setRefreshing(true)
+    reload()
+    setRefreshing(false)
+  }
 
-  const renderItem = ({item}) => <ChatListItem data={item} reload={reload} />;
- 
+  const renderItem = ({item}) => <ChatListItem data={item} reload={reload} />
+
   return (
     <Container backgroundColor={Colors.white250} style={{padding: 16}}>
       <StatusBar backgroundColor={Colors.primary} barStyle="light-content" />
@@ -108,7 +108,7 @@ const ChatsScreen = () => {
           left={<SearchIcon />}
           value={keyword}
           onChange={setKeyword}
-          style={{height:35,paddingTop:8}}
+          style={{height: 35, paddingTop: 8}}
           placeholder="Search posts here"
         />
         <TouchableOpacity
@@ -116,8 +116,9 @@ const ChatsScreen = () => {
           style={{
             marginLeft: 16,
             alignItems: 'center',
-            justifyContent: 'center',
-          }}>
+            justifyContent: 'center'
+          }}
+        >
           <FilterIcon />
         </TouchableOpacity>
       </View>
@@ -133,18 +134,30 @@ const ChatsScreen = () => {
             marginVertical={16}
             horizontal
             alignItems="center"
-            justifyContent="space-between">
-               <Text color={'black'} customStyle={{fontWeight:'bold'}}  size="big">
-            {/* <Text size="big" color={'black'} customStyle={{color:'black'}} family="semi"> */}
+            justifyContent="space-between"
+          >
+            <Text color={'black'} customStyle={{fontWeight: 'bold'}} size="big">
+              {/* <Text size="big" color={'black'} customStyle={{color:'black'}} family="semi"> */}
               Posts
             </Text>
             <View horizontal>
-            <TouchableOpacity
-              style={styles.buttonPost}
-              onPress={_moveToCreatePost}>
-              <Text color={'red'} customStyle={{fontWeight:'bold'}}  size="medium">Create Post </Text>
-            </TouchableOpacity>
-            <AntDesign name="pluscircle" size={20} color={Colors.primary} style={{marginTop:9,marginLeft:-7}} />
+              <TouchableOpacity
+                style={styles.buttonPost}
+                onPress={_moveToCreatePost}
+              >
+                <Text
+                  color={Colors.primary}
+                  size="small"
+                >
+                  Create Post{' '}
+                </Text>
+              </TouchableOpacity>
+              <AntDesign
+                name="pluscircle"
+                size={20}
+                color={Colors.primary}
+                style={{marginTop: 9, marginLeft: -7}}
+              />
             </View>
             {/* <ChatForm reload={reload} /> */}
           </View>
@@ -165,13 +178,15 @@ const ChatsScreen = () => {
       />
 
       <ModalFilter
+        sortBy={sortBy}
+        setSortBy={e => setSortBy(e)}
         isVisible={viewFilter}
         onCloseModal={() => console.log('ji') || setViewFilter(false)}
         onYes={() => setViewFilter(false)}
       />
     </Container>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   headerContainer: {
@@ -179,27 +194,27 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderBottomEndRadius: 15,
     borderBottomStartRadius: 15,
-    backgroundColor: Colors.primary,
+    backgroundColor: Colors.primary
   },
   container: {
-    flex: 1,
+    flex: 1
   },
   list: {
-    flex: 1,
+    flex: 1
   },
   listContent: {
-    paddingBottom: 20,
+    paddingBottom: 20
   },
   buttonPost: {
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderWidth: 1,
     borderRadius: 8,
-    borderColor: Colors.white300,
+    borderColor: Colors.white300
   },
-  buttonPostTxt:{
-    color:Colors.primary
+  buttonPostTxt: {
+    color: Colors.primary
   }
-});
+})
 
-export default ChatsScreen;
+export default ChatsScreen

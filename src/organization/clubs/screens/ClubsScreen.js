@@ -27,7 +27,6 @@ import SyncStorage from 'sync-storage';
 <ClubsScreen />
 ============================================================================= */
 const ClubsScreen = () => {
-
   const isFocused = useIsFocused();
   const [sortBy, setSortBy] = useState('Newest');
   const [filters, setFilters] = useState(null);
@@ -37,7 +36,7 @@ const ClubsScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    let isMounted = true;
+    let isMounted = true
     if (isMounted) {
       setTimeout(() => {
         
@@ -53,14 +52,13 @@ const ClubsScreen = () => {
   
   const reload = async () => {
     clubAPI.getClub(session.get(keys.token)).then(result => {
-      
       let arr = result.data.data;
       if (
         keyword.length > 0 ||
         (filters && filters.keyword && filters.keyword.length > 0)
       ) {
-        let f = (filters && filters.keyword) || keyword;
-        arr = arr.filter(k => k.title.toLowerCase().includes(f.toLowerCase()));
+        let f = (filters && filters.keyword) || keyword
+        arr = arr.filter(k => k.title.toLowerCase().includes(f.toLowerCase()))
       }
 
       if (sortBy === 'Ending Soon') {
@@ -136,6 +134,8 @@ const ClubsScreen = () => {
         />
       </View>
       <ModalFilter
+        sortBy={sortBy}
+        setSortBy={e => setSortBy(e)}
         isVisible={viewFilter}
         onCloseModal={() => setViewFilter(false)}
         onYes={() => setViewFilter(false)}

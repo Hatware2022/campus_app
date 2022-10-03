@@ -14,6 +14,7 @@ import * as Colors from '../../../../config/colors';
 <ClubMember />
 ============================================================================= */
 const ClubMember = ({onPress, onPressGroup, joinClub, data}) => {
+  console.log('data?.members : ',data?.members)
   return (
     <View style={styles.container}>
       <Touchable style={styles.memberContainer} onPress={onPressGroup}>
@@ -31,7 +32,7 @@ const ClubMember = ({onPress, onPressGroup, joinClub, data}) => {
           size="small"
           color={Colors.black500}
           customStyle={{marginHorizontal: 8}}>
-          {data?.members} people has joined
+          {data?.members ? data?.members.length : 0} people has joined
         </Text>
       </Touchable>
       {joinClub ? (

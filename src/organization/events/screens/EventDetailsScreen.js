@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {Image, StyleSheet} from 'react-native'
+import {Image, StyleSheet, ScrollView, RefreshControl} from 'react-native'
 import {
   View,
   Card,
@@ -28,6 +28,7 @@ import LocationIcon from '../../../assets/icons/icon-location.svg'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import reactotron from 'reactotron-react-native'
 import ModalConfirm from '../../../auth/components/Modal/modalconfirm'
+import {RFValue} from 'react-native-responsive-fontsize'
 
 /* =============================================================================
 <EventDetailsScreen />
@@ -40,6 +41,7 @@ const EventDetailsScreen = props => {
   const insets = useSafeAreaInsets()
   const isFocused = useIsFocused()
   const tokenData = utils.decodeJwt(session.get(keys.token))
+  const [refreshing, setRefreshing] = useState(false)
 
   reactotron.log('EVENTS DETAILS! : ', data)
   const _safeArea = {
@@ -47,14 +49,33 @@ const EventDetailsScreen = props => {
   }
 
   useEffect(() => {
+    if (isFocused) {
+      userService
+        .getById(session.get(keys.token), tokenData?.id)
+        .then(result => {
+          if (result.data && result.data.success === true) {
+            let r = result.data.data
+            setRecord(r)
+          }
+        })
+      reload()
+    }
+  }, [isFocused])
+
+  const reload = () => {
     if (!data) return
-    userService.getById(session.get(keys.token), tokenData?.id).then(result => {
+    setRefreshing(true)
+
+    eventService.getById(session.get(keys.token), data?.id).then(result => {
       if (result.data && result.data.success === true) {
-        let r = result.data.data
-        setRecord(r)
+        let r = result?.data?.data[0]
+        setData(r)
       }
+      setTimeout(() => {
+        setRefreshing(false)
+      }, 1500)
     })
-  }, [])
+  }
 
   const _handleJoinRsvp = () => {
     if (!data) return
@@ -74,22 +95,19 @@ const EventDetailsScreen = props => {
       imageUrl: record.imageUrl
     })
     eventService.joinRSVP(session.get(keys.token), data.id).then(result => {
-      //Noted: !!! :Temporary need BE adjustments
-      setData({...data, membersinfo: arr})
+      reload()
     })
   }
   const checkIfUserIncludes = () => {
-    const result = data?.membersinfo.find(item => item?.id === tokenData?.id)
+    const result = data?.membersinfo?.find(item => item?.id === tokenData?.id)
     return result
   }
 
   const _cancelRsvp = () => {
     eventService.cancel(session.get(keys.token), data.id).then(result => {
       const res = data?.membersinfo.filter(k => k.id !== tokenData.id)
-      reactotron.log('natitia :!! :', res)
       setViewModal(false)
-      //Noted: !!! :Temporary need BE adjustments
-      setData({...data, membersinfo: res})
+      reload()
     })
   }
 
@@ -99,7 +117,20 @@ const EventDetailsScreen = props => {
     <Container>
       <Header title={'Event Details'} />
 
-      <Content padding={16} bottomSafeArea>
+      <ScrollView
+        style={{
+          flex: 1,
+          padding: RFValue(16)
+        }}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={reload}
+            tintColor={Colors.primary}
+            colors={Colors.primary}
+          />
+        }
+      >
         <View style={styles.userContainer}>
           {data && (
             <>
@@ -171,7 +202,7 @@ const EventDetailsScreen = props => {
         <View style={styles.boxDescription}>
           <Text>{data?.description || 'Not available'}</Text>
         </View>
-      </Content>
+      </ScrollView>
       {data?.userinfo?.id !== tokenData.id && (
         <View style={styles.containerButton}>
           <Button

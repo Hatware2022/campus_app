@@ -18,7 +18,7 @@ import {useNavigation} from '@react-navigation/native'
 import Fonts from '../../../config/fonts'
 import PlusIcon from '../../../assets/icons/icon-plus-circle.svg'
 
-const ModalFilter = ({onYes, onCloseModal, isVisible,setSortBy,sortBy}) => {
+const ModalFilter = ({onYes, onCloseModal, isVisible, setSortBy, sortBy}) => {
   const navigation = useNavigation()
   // const [sortBy, setSortBy] = useState('Recent')
   const [location, setLocation] = useState('')
@@ -385,16 +385,18 @@ const ModalFilter = ({onYes, onCloseModal, isVisible,setSortBy,sortBy}) => {
                 </Text>
                 <TouchableOpacity
                   style={{flexDirection: 'row', alignItems: 'center'}}
-                  onPress={()=> {_clearFilter() ||onCloseModal()}}
+                  onPress={() => {
+                    _clearFilter() || onCloseModal()
+                  }}
                   // onPress={()=>()}
                 >
-                  <Text size="Medium" family="semi" color="#A70032" >
+                  <Text size="Medium" family="semi" color="#A70032">
                     Clear Filter
                   </Text>
                   <PlusIcon
                     style={{
                       transform: [{rotate: '45deg'}],
-                      marginHorizontal: 10,
+                      marginHorizontal: 10
                     }}
                   />
                 </TouchableOpacity>
@@ -406,19 +408,19 @@ const ModalFilter = ({onYes, onCloseModal, isVisible,setSortBy,sortBy}) => {
                 <Tag
                   text="Recent"
                   selected={sortBy === 'Recent'}
-                  onPress={(e)=>setSortBy(e)}
+                  onPress={e => setSortBy(e)}
                   style={{paddingHorizontal: 10, paddingVertical: 6}}
                 />
                 <Tag
                   text="A-Z"
                   selected={sortBy === 'A-Z'}
-                  onPress={(e)=>setSortBy(e)}
+                  onPress={e => setSortBy(e)}
                   style={{paddingHorizontal: 10, paddingVertical: 6}}
                 />
                 <Tag
                   text="Z-A"
                   selected={sortBy === 'Z-A'}
-                  onPress={(e)=>setSortBy(e)}
+                  onPress={e => setSortBy(e)}
                   style={{paddingHorizontal: 10, paddingVertical: 6}}
                 />
               </View>

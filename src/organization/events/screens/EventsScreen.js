@@ -208,6 +208,8 @@ const EventsScreen = () => {
         }
       />
       <ModalFilter
+        sortBy={sortBy}
+        setSortBy={e => setSortBy(e)}
         isVisible={viewFilter}
         onCloseModal={() => setViewFilter(false)}
         onYes={() => setViewFilter(false)}
