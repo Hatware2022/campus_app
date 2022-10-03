@@ -31,6 +31,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 const ChatsScreen = () => {
   const isFocused = useIsFocused()
   const [records, setRecords] = useState([])
+  const [displayRecords, setDisplayRecords] = useState([])
   const [refreshing, setRefreshing] = useState(false)
   const [keyword, setKeyword] = useState('')
   const [sortBy, setSortBy] = useState('Newest')
@@ -54,7 +55,21 @@ const ChatsScreen = () => {
     return () => {
       isMounted = false
     }
-  }, [isFocused, keyword, sortBy, filters])
+  }, [isFocused, sortBy, filters])
+
+  useEffect(() => {
+    if (!keyword) {
+      setDisplayRecords(records)
+    } else {
+      setDisplayRecords(
+        records.filter(
+          record =>
+            record?.user?.name?.toLowerCase().includes(keyword.toLowerCase()) ||
+            record.content?.toLowerCase().includes(keyword.toLowerCase())
+        )
+      )
+    }
+  }, [keyword, records])
 
   const reload = () => {
     postService.getAll(session.get(keys.token)).then(result => {
@@ -76,14 +91,14 @@ const ChatsScreen = () => {
       }
 
       if (sortBy === 'Most Popular') {
-        arr = arr.sort((a, b) => b.likes.length - a.likes.length)
+        arr = arr.sort((a, b) => b.likes - a.likes)
       } else if (sortBy === 'Newest') {
-        arr = arr.sort((a, b) => moment(b.created_at) - moment(a.created_at))
+        arr = arr.sort((a, b) => moment(b.createdAt) - moment(a.createdAt))
       }
 
       if (filters) {
         if (filters.interests.length > 0) {
-          arr = arr.filter(k => k.downFor.includes(filters.interests))
+          arr = arr.filter(k => k.tags.includes(filters.interests))
         }
       }
 
@@ -124,7 +139,7 @@ const ChatsScreen = () => {
       </View>
 
       <FlatList
-        data={records}
+        data={displayRecords}
         style={styles.list}
         renderItem={renderItem}
         keyExtractor={item => item._id}
@@ -178,6 +193,7 @@ const ChatsScreen = () => {
       />
 
       <ModalFilter
+        postFilter={true}
         sortBy={sortBy}
         setSortBy={e => setSortBy(e)}
         isVisible={viewFilter}

@@ -8,7 +8,6 @@ import CommentIcon from '../../../../assets/icons/app-comments.svg';
 import UserImage from '../../../../assets/images/user.png';
 import {useNavigation} from '@react-navigation/native';
 import userService from '../../../../services/user';
-import postService from '../../../../services/post';
 import session from '../../../../store/session';
 import keys from '../../../../store/keys';
 import moment from 'moment';
@@ -23,24 +22,24 @@ import DemoImage from '../../../../assets/images/empty-image.png';
 ============================================================================= */
 const ChatListItem = props => {
   const navigation = useNavigation();
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
 
   const _moveToChatComments = () => {
     navigation.navigate('ChatPostComments', {post: props.data});
   };
 
-  useEffect(() => {
-    const tokenData = utils.decodeJwt(session.get(keys.token)) || props.data.id;
-    if (!props.data) return;
-    userService
-      .getById(session.get(keys.token), tokenData.id)
-      .then(result => {
-        if (result.data && result.data.success === true) {
-          let r = result.data.data;
-          setUser(r);
-        }
-      });
-  }, []);
+  // useEffect(() => {
+  //   const tokenData = utils.decodeJwt(session.get(keys.token)) || props.data.id;
+  //   if (!props.data) return;
+  //   userService
+  //     .getById(session.get(keys.token), tokenData.id)
+  //     .then(result => {
+  //       if (result.data && result.data.success === true) {
+  //         let r = result.data.data;
+  //         setUser(r);
+  //       }
+  //     });
+  // }, []);
 
   const _handleLike = () => {
     const tokenData = utils.decodeJwt(session.get(keys.token));
@@ -57,17 +56,17 @@ const ChatListItem = props => {
       ...props.data,
       likes: arr,
     };
-    let aa = session.get(keys.token)
+    let token = session.get(keys.token)
     try {
       let response =  axios({
         url: `${constants.API_URL}/post/like/${props.data.id}`,
         method: 'POST',
         headers:{
-          'Authorization': aa,
+          'Authorization': token,
           // 'Content-Type': 'application/json'
         }
       }).then((e)=>{
-                if (e.data && e.data.success === true) {
+        if (e.data && e.data.success === true) {
           props.reload();
         }});
     } catch (error) {
@@ -78,19 +77,19 @@ const ChatListItem = props => {
 return (
     <Touchable onPress={_moveToChatComments} style={styles.container}>
       <View style={styles.topContainer}>
-        {user && (
+        {props.data && props.data?.user && (
           <View style={styles.userContainer}>
             <Avatar
               size={48}
-              source={{uri: user?.imageUrl ? user?.imageUrl : null}}
+              source={{uri: props.data?.user?.imageUrl ? props.data?.user?.imageUrl : null}}
             />
             <Text size="big" family="semi" customStyle={styles.name}>
-              {user?.name ? user?.name : 'dummy'}
+              {props.data?.user?.name ? props.data?.user?.name : 'dummy'}
             </Text>
           </View>
         )}
         <Text size="small" customStyle={styles.time}>
-          {moment(props.data.createdAt).fromNow()}
+          {moment(props.data?.createdAt).fromNow()}
         </Text>
       </View>
       <Gap height={16} />

@@ -18,7 +18,7 @@ import {useNavigation} from '@react-navigation/native'
 import Fonts from '../../../config/fonts'
 import PlusIcon from '../../../assets/icons/icon-plus-circle.svg'
 
-const ModalFilter = ({onYes, onCloseModal, isVisible, setSortBy, sortBy}) => {
+const ModalFilter = ({onYes, onCloseModal, isVisible, setSortBy, sortBy, postFilter}) => {
   const navigation = useNavigation()
   // const [sortBy, setSortBy] = useState('Recent')
   const [location, setLocation] = useState('')
@@ -123,7 +123,7 @@ const ModalFilter = ({onYes, onCloseModal, isVisible, setSortBy, sortBy}) => {
   }
 
   const _clearFilter = () => {
-    setSortBy('Recent')
+    setSortBy(postFilter ? 'Newest' : 'Recent')
     setSearchMajor('')
     setSearchDownfor('')
     setSearchInterest('')
@@ -404,6 +404,22 @@ const ModalFilter = ({onYes, onCloseModal, isVisible, setSortBy, sortBy}) => {
               <Gap height={16} />
               <Text family="semi">Sort by</Text>
               <Gap height={12} />
+              {postFilter?
+              <View horizontal>
+                <Tag
+                  text={'Newest'}
+                  selected={sortBy === 'Newest'}
+                  onPress={e => setSortBy(e)}
+                  style={{paddingHorizontal: 10, paddingVertical: 6}}
+                />
+                <Tag
+                  text={'Most Popular'}
+                  selected={sortBy === 'Most Popular'}
+                  onPress={e => setSortBy(e)}
+                  style={{paddingHorizontal: 10, paddingVertical: 6}}
+                />
+              </View>
+              :
               <View horizontal>
                 <Tag
                   text="Recent"
@@ -423,10 +439,12 @@ const ModalFilter = ({onYes, onCloseModal, isVisible, setSortBy, sortBy}) => {
                   onPress={e => setSortBy(e)}
                   style={{paddingHorizontal: 10, paddingVertical: 6}}
                 />
-              </View>
+              </View>}
 
-              <Gap height={12} />
+              <Gap height={15} />
 
+              {!postFilter?
+              <>
               <Text family="semi">Major</Text>
               <Gap height={8} />
               <Touchable
@@ -442,6 +460,8 @@ const ModalFilter = ({onYes, onCloseModal, isVisible, setSortBy, sortBy}) => {
 
                 <ArrowRightIcon />
               </Touchable>
+              </>:null}
+
 
               <Text family="semi">Down For</Text>
               <Gap height={8} />
@@ -464,6 +484,8 @@ const ModalFilter = ({onYes, onCloseModal, isVisible, setSortBy, sortBy}) => {
                 <ArrowRightIcon />
               </Touchable>
 
+              {!postFilter?
+              <>
               <Text family="semi">Interest</Text>
               <Gap height={8} />
               <Touchable
@@ -484,7 +506,10 @@ const ModalFilter = ({onYes, onCloseModal, isVisible, setSortBy, sortBy}) => {
                 </Text>
                 <ArrowRightIcon />
               </Touchable>
+              </>:null}
 
+              {!postFilter?
+              <>
               <Text family="semi">From</Text>
               <Gap height={8} />
 
@@ -502,7 +527,10 @@ const ModalFilter = ({onYes, onCloseModal, isVisible, setSortBy, sortBy}) => {
                 />
                 <LocationIcon />
               </Touchable>
+              </>:null}
 
+              {!postFilter?
+              <>
               <Text family="semi">Grad Year</Text>
               <Gap height={8} />
               <View horizontal>
@@ -531,7 +559,10 @@ const ModalFilter = ({onYes, onCloseModal, isVisible, setSortBy, sortBy}) => {
                   style={{paddingHorizontal: 10, paddingVertical: 6}}
                 />
               </View>
+              </>:null}
 
+              {!postFilter?
+              <>
               <Gap height={16} />
 
               <Text family="semi">Gender</Text>
@@ -556,6 +587,7 @@ const ModalFilter = ({onYes, onCloseModal, isVisible, setSortBy, sortBy}) => {
                   style={{paddingHorizontal: 10, paddingVertical: 6}}
                 />
               </View>
+              </>:null}
 
               <Gap height={16} />
               <View horizontal>

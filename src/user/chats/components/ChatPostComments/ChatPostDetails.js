@@ -59,17 +59,18 @@ const ChatPostDetails = props => {
       });
   };
 
+
   return (
     <View>
       <View style={styles.topContainer}>
-        {user && (
+        {data && data?.user && (
           <View style={styles.userContainer}>
             <Avatar
               size={48}
-              source={{uri: user?.imageUrl ? user?.imageUrl : null}}
+              source={{uri: data?.user?.imageUrl ? data?.user?.imageUrl : null}}
             />
             <Text customStyle={styles.name} family="semi" size="big">
-              {user?.name}
+              {data?.user?.name}
             </Text>
           </View>
         )}

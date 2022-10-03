@@ -184,6 +184,8 @@ const ProfilesScreen = () => {
 
       <ModalFilter
         isVisible={viewFilter}
+        sortBy={sortBy}
+        setSortBy={e => setSortBy(e)}
         onCloseModal={() => setViewFilter(false)}
         onYes={() => setViewFilter(false)}
       />
