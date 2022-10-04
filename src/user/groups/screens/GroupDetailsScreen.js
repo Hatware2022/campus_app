@@ -38,6 +38,7 @@ const GroupDetailsScreen = () => {
   const [viewModalLeave, setViewModalLeave] = useState(false);
   const [isUserAGroupMember, setIsUserAGroupMember] = 
     useState((data?.members || []).includes(session.get(keys.userId)))
+  const [members,setMembers]=useState(data?.members)
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
 
@@ -86,6 +87,7 @@ const GroupDetailsScreen = () => {
         if(data?.success) {
           setIsUserAGroupMember(false);
           setViewModalLeave(false);
+          navigation.goBack()
         }
       }).catch((_err) => {})      
     } catch (_err) {}
@@ -99,6 +101,7 @@ const GroupDetailsScreen = () => {
         const {data} = res;
         if(data?.success) {
           setIsUserAGroupMember(true);
+          setMembers(members+1)
         }
       }).catch((_err) => {})
     }
@@ -157,13 +160,13 @@ const GroupDetailsScreen = () => {
                   onPressGroup={() => navigation.navigate(
                     'GroupMember', 
                     {
-                      members: data?.members, 
+                      members: members, 
                       title: data?.title,
                       imageUrl: data?.imageUrl,
                     }
                   )}
                   isUserAGroupMember={isUserAGroupMember}
-                  members={data?.members}
+                  members={members}
                 />
               </View>
             </View>

@@ -69,7 +69,14 @@ const ChatsScreen = () => {
         )
       )
     }
-  }, [keyword, records])
+  }, [keyword, records,isFocused])
+
+  useEffect(() => {
+    // const focus = navigation.addListener('focus', () => {
+      onRefresh()
+    // });
+    // return focus;
+  }, [navigation,isFocused]);
 
   const reload = () => {
     postService.getAll(session.get(keys.token)).then(result => {

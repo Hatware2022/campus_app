@@ -22,10 +22,14 @@ import DemoImage from '../../../../assets/images/empty-image.png';
 ============================================================================= */
 const ChatListItem = props => {
   const navigation = useNavigation();
-  // const [user, setUser] = useState(null);
+  const [totalLikes, setTotalLikes] = useState();
+
+  useEffect(()=>{
+    setTotalLikes(props?.data?.likes)
+  },[props?.data])
 
   const _moveToChatComments = () => {
-    navigation.navigate('ChatPostComments', {post: props.data});
+    navigation.navigate('GroupPostComments', {post: props.data});
   };
 
   // useEffect(() => {
@@ -67,6 +71,7 @@ const ChatListItem = props => {
         }
       }).then((e)=>{
         if (e.data && e.data.success === true) {
+          setTotalLikes(totalLikes+1)
           props.reload();
         }});
     } catch (error) {
@@ -116,11 +121,14 @@ return (
         <Touchable style={styles.likeButton}>
           <LikeIcon onPress={_handleLike} />
           <Text customStyle={styles.likeButtonText}>
-            {props?.data?.likes || '0'}
+            {totalLikes || '0'}
           </Text>
         </Touchable>
-        <Touchable style={styles.commentButton} onPress={()=>navigation.navigate('GroupPostComments', {post: props.data})}>
-          <CommentIcon />
+        <Touchable style={styles.commentButton} 
+        // onPress={()=>navigation.navigate('ChatPostComments', {post: props.data,reload:props.reload()})}
+        onPress={()=>navigation.navigate('GroupPostComments', {post: props.data})}
+        >
+          <CommentIcon /> 
           <Text customStyle={styles.commentButtonText}>
             {props?.data?.comments ? props?.data?.comments?.length : '0'}
           </Text>

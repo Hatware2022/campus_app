@@ -15,13 +15,17 @@ import utils from '../../../../utils/utils';
 import FastImage from 'react-native-fast-image';
 import Underline from '../../../../user/component/Underline';
 import MockImage from '../../../../assets/images/empty-image.png';
+import axios from 'axios';
+import constants from '../../../../utils/constants';
 
 /* =============================================================================
 <ChatPostDetails />
 ============================================================================= */
 const ChatPostDetails = props => {
-  const [user, setUser] = useState(null);
   const data = props.data;
+  const [user, setUser] = useState(null);
+  const [totalLikes,setTotalLikes]=useState(data?.likes)
+  
 
   useEffect(() => {
     const tokenData = utils.decodeJwt(session.get(keys.token)) || data.id;
@@ -38,24 +42,44 @@ const ChatPostDetails = props => {
     const tokenData = utils.decodeJwt(session.get(keys.token));
     if (!tokenData) return;
 
-    let arr = Array.from(props?.data?.likes) || [];
-    if (arr.find(k => k.userId === tokenData.id)) return;
-
-    arr.push({
-      userId: tokenData.id,
-      date: moment().format(),
-    });
-    let t = {
-      ...props.data,
-      likes: arr,
-    };
-    postService
-      .update(session.get(keys.token), props.data.id, t)
-      .then(result => {
-        if (result.data && result.data.success === true) {
-          props.reload();
+    let token = session.get(keys.token)
+    try {
+      let response =  axios({
+        url: `${constants.API_URL}/post/like/${props.data.id}`,
+        method: 'POST',
+        headers:{
+          'Authorization': token,
+          // 'Content-Type': 'application/json'
         }
-      });
+      }).then((e)=>{
+        if (e.data && e.data.success === true) {
+          setTotalLikes(totalLikes+1)
+          props.reload();
+        }});
+    } catch (error) {
+      console.log(error)
+    }
+
+    // let arr = Array.from(props?.data?.likes) || [];
+    // if (arr.find(k => k.userId === tokenData.id)) return;
+
+    // arr.push({
+    //   userId: tokenData.id,
+    //   date: moment().format(),
+    // });
+    // let t = {
+    //   ...props.data,
+    //   likes: arr,
+    // };
+    // postService
+    //   .update(session.get(keys.token), props.data.id, t)
+    //   .then(result => {
+    //     if (result.data && result.data.success === true) {
+    //       alert('i')
+    //       setTotalLikes(totalLikes+1)
+    //       props.reload();
+    //     }
+    //   }).catch((err)=>console.log(err))
   };
 
 
@@ -92,7 +116,7 @@ const ChatPostDetails = props => {
         <View style={styles.actionButtonContainer}>
           <Touchable style={styles.likeButton}>
             <LikeIcon onPress={_handleLike} />
-            <Text customStyle={styles.likeButtonText}>{data?.likes ? data?.likes : 0}</Text>
+            <Text customStyle={styles.likeButtonText}>{totalLikes || 0}</Text>
           </Touchable>
           <Touchable style={styles.commentButton}>
             <CommentIcon />

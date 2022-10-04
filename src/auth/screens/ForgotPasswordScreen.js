@@ -12,6 +12,8 @@ import Gap from '../../common/Gap';
 import Header from '../../user/component/Header';
 import Fonts from '../../config/fonts';
 import ModalAlert from '../components/Modal/modalalert';
+import axios from 'axios';
+import constants from '../../utils/constants';
 
 /* =============================================================================
 <ForgotPasswordScreen />
@@ -20,6 +22,33 @@ const ForgotPasswordScreen = () => {
   const route = useRoute();
   const [email, setEmail] = useState('');
   const [viewModal, setViewModal] = useState(false);
+
+
+  const handleValidation = () =>{
+    if(email === ""){
+      alert('Email is required')
+    }
+    else{
+      handleforgotPassword()
+    }
+  }
+  const handleforgotPassword=()=>{
+    try {
+      let response =  axios({
+        url: `${constants.API_URL}/users/forgotPassword`,
+        method: 'POST',
+        data:{
+          "email":email
+        }
+      }).then((res)=>{
+        if (res.data && res.data.success === true) {
+          setViewModal(true)
+        }
+      });
+    } catch (error) {
+      console.log('Error while Sending Password Reset Email => ' + error);
+    }
+  }
 
   return (
     <Container>
@@ -47,7 +76,7 @@ const ForgotPasswordScreen = () => {
       </Content>
       <Button
         title="Confirm"
-        onPress={() => setViewModal(true)}
+        onPress={() => handleValidation()}
         bottom
         disabled={false}
       />

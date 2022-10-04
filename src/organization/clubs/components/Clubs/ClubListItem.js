@@ -50,14 +50,14 @@ const ClubListItem = ({data}) => {
     try {
       let response =  axios({
         url: `${constants.API_URL}/club/leave/${id}`,
-        method: 'POST',
+        method: 'DELETE',
         headers:{
           'Authorization': aa,
           // 'Content-Type': 'application/json'
         }
       }).then((e)=>{
         setJoinClub(false)
-            alert('Join Club Successfully')
+            alert('Leave Club Successfully')
       });
     } catch (error) {
     }

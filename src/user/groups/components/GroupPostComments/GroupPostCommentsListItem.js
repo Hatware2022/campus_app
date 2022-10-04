@@ -9,22 +9,21 @@ import DotIcon from '../../../../assets/icons/icon-dot.svg';
 /* =============================================================================
 <GroupPostCommentListItem />
 ============================================================================= */
-const GroupPostCommentListItem = ({data}) => {
+const GroupPostCommentListItem = ({data,allComments}) => {
   return (
     <View style={styles.container}>
       <Avatar source={data?.user?.avatar} size={34} />
-
       <View marginLeft={12} flex={1}>
         <View horizontal justifyContent={'space-between'}>
           <Text size="small" family="semi">
-            Hardcode Name
+            {data?.createdBy || 'Hardcode Name'}
           </Text>
           <Text size="small" color={Colors.black400}>
             {data.time}
           </Text>
         </View>
 
-        <Text customStyle={styles.comment}>{data.comment}</Text>
+        <Text customStyle={styles.comment}>{allComments}</Text>
 
         <View horizontal marginBottom={20}>
           <Touchable

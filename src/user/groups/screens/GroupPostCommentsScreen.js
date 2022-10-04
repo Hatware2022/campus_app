@@ -68,7 +68,6 @@ const GroupPostCommentsScreen = () => {
   return (
     <Container>
       <Header title={'Comments'} />
-
       <FlatList
         style={styles.list}
         // data={GROUP_POST_COMMENTS}
@@ -84,8 +83,8 @@ const GroupPostCommentsScreen = () => {
   );
 };
 
-const renderCommentItem = ({item}) => <GroupPostCommentListItem data={item} />;
-
+const renderCommentItem = ({item}) => <GroupPostCommentListItem allComments={item?.comments || []}  data={item} />;
+ 
 const styles = StyleSheet.create({
   list: {
     flex: 1,
