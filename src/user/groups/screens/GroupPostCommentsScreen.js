@@ -48,8 +48,8 @@ const GroupPostCommentsScreen = () => {
     postService
     .addComment(session.get(keys.token), data)
     .then(result => {
-      alert(JSON.stringify(result))
       if (result.data && result.data.success === true) {
+        alert(JSON.stringify(result?.data?.message))
         allComments.push({
           "id": 3,
           "createdBy": 27,

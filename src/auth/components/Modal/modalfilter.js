@@ -18,7 +18,7 @@ import {useNavigation} from '@react-navigation/native'
 import Fonts from '../../../config/fonts'
 import PlusIcon from '../../../assets/icons/icon-plus-circle.svg'
 
-const ModalFilter = ({onYes, onCloseModal, isVisible, setSortBy, sortBy, postFilter}) => {
+const ModalFilter = ({onYes, onCloseModal, isVisible, setSortBy, sortBy, postFilter, setFilters, filterFlag}) => {
   const navigation = useNavigation()
   // const [sortBy, setSortBy] = useState('Recent')
   const [location, setLocation] = useState('')
@@ -130,6 +130,24 @@ const ModalFilter = ({onYes, onCloseModal, isVisible, setSortBy, sortBy, postFil
     setLocation('')
     setGradYear('')
     setGender('')
+    if(filterFlag){
+    setFilters({downfor: [],
+      from: "",
+      gradeYear: "",
+      gender: "",
+      major: ""
+      })
+    }
+  }
+
+  const updateFilter = () => {
+    setFilters({downfor: valuedownfor,
+    from: location,
+    gradeYear: gradYear,
+    gender: gender,
+    major: valuemajor
+    })
+    onYes()
   }
 
   const renderMajor = () => {
@@ -593,7 +611,7 @@ const ModalFilter = ({onYes, onCloseModal, isVisible, setSortBy, sortBy, postFil
               <View horizontal>
                 <Button
                   title="Submit"
-                  onPress={onYes}
+                  onPress={filterFlag ? () => updateFilter() : onYes}
                   containerStyle={{flex: 1}}
                 />
               </View>

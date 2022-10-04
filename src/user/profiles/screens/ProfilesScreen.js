@@ -30,7 +30,7 @@ const ProfilesScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [keyword, setKeyword] = useState('');
   const [sortBy, setSortBy] = useState('A-Z');
-  const [filters, setFilters] = useState(null);
+  const [filters, setFilters] = useState([]);
   const [viewFilter, setViewFilter] = useState(false);
 
   useEffect(() => {
@@ -67,7 +67,8 @@ const ProfilesScreen = () => {
         (filters && filters.keyword && filters.keyword.length > 0)
       ) {
         let f = (filters && filters.keyword) || keyword;
-        arr = arr.filter(k => k.bio.toLowerCase().includes(f.toLowerCase()));
+        arr = arr.filter(k => k?.bio?.toLowerCase().includes(f.toLowerCase()) ||
+        k?.name?.toLowerCase().includes(f.toLowerCase()));
       }
 
       if (sortBy === 'A-Z') {
@@ -75,31 +76,31 @@ const ProfilesScreen = () => {
       } else if (sortBy === 'Z-A') {
         arr = arr.sort((a, b) => b.name.localeCompare(a.name));
       } else if (sortBy === 'Newest') {
-        arr = arr.sort((a, b) => moment(b.created_at) - moment(a.created_at));
+        arr = arr.sort((a, b) => moment(b.createdAt) - moment(a.createdAt));
       }
-
       if (filters) {
-        if (filters.major.length > 0) {
+        if (filters?.major.length > 0) {
           arr = arr.filter(k =>
-            k.major.toLowerCase().includes(filters.major.toLowerCase()),
+            k?.major && k?.major != null && k?.major.toLowerCase().includes(filters.major.toLowerCase()),
           );
         }
         if (filters.gradeYear.length > 0) {
           arr = arr.filter(
-            k => k.gradYear.toLowerCase() === filters.gradeYear.toLowerCase(),
+            k => k?.gradYear && k?.gradYear != null && k?.gradYear.toLowerCase() === filters.gradeYear.toLowerCase(),
           );
         }
-        if (filters.interests.length > 0) {
-          arr = arr.filter(k => k.downFor.includes(filters.interests));
-        }
+        // if (filters.downfor.length > 0) {
+        //   arr = arr.filter(k => k?.downFor && k?.downFor != null && k?.downFor.includes(filters.downfor.toLowerCase()));
+        // }
         if (filters.from.length > 0) {
           arr = arr.filter(
-            k => k.city.toLowerCase() === filters.from.toLowerCase(),
+            k => k?.address && k?.address != null && k?.address.toLowerCase().includes(filters.from.toLowerCase())||
+            k?.city && k?.city != null && k?.city.toLowerCase().includes(filters.from.toLowerCase()),
           );
         }
         if (filters.gender.length > 0) {
           arr = arr.filter(
-            k => k.gender.toLowerCase() === filters.gender.toLowerCase(),
+            k => k?.gender && k?.gender != null & k?.gender.toLowerCase() === filters.gender.toLowerCase(),
           );
         }
       }
@@ -185,6 +186,8 @@ const ProfilesScreen = () => {
       <ModalFilter
         isVisible={viewFilter}
         sortBy={sortBy}
+        setFilters={value => setFilters(value)}
+        filterFlag={true}
         setSortBy={e => setSortBy(e)}
         onCloseModal={() => setViewFilter(false)}
         onYes={() => setViewFilter(false)}

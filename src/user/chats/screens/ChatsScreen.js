@@ -103,11 +103,11 @@ const ChatsScreen = () => {
         arr = arr.sort((a, b) => moment(b.createdAt) - moment(a.createdAt))
       }
 
-      if (filters) {
-        if (filters.interests.length > 0) {
-          arr = arr.filter(k => k.tags.includes(filters.interests))
-        }
-      }
+      // if (filters) {
+      //   if (filters.interests.length > 0) {
+      //     arr = arr.filter(k => k.tags.includes(filters.interests))
+      //   }
+      // }
 
       setRecords(arr)
     })

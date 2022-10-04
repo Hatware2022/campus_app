@@ -58,11 +58,11 @@ const ProfilesScreen = () => {
 					arr = arr.sort((a, b) => b.name.localeCompare(a.name));
 				}
 				else if(sortBy === "Newest") {
-					arr = arr.sort((a, b) => moment(b.created_at) - moment(a.created_at));
+					arr = arr.sort((a, b) => moment(b.createdAt) - moment(a.createdAt));
 				}
 
 				if(filters) {
-					if(filters.major.length > 0) {
+					if(filters?.major.length > 0) {
 						arr = arr.filter(k => k.major.toLowerCase().includes(filters.major.toLowerCase()));
 					}
 					if(filters.gradeYear.length > 0) {
