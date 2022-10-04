@@ -54,7 +54,6 @@ const ProfileScreen = () => {
   const reload = () => {
     if (!tokenData) return;
     userService.getById(session.get(keys.token), tokenData.id).then(result => {     
-      console.log('result', result);
       if (result.data && result.data.success === true) {
         let r = result.data.data;
         setRecord(r);

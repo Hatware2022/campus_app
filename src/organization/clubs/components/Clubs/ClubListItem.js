@@ -42,7 +42,6 @@ const ClubListItem = ({data}) => {
             alert('Join Club Successfully')
       });
     } catch (error) {
-      console.log('Error while Sending Password Reset Email => ' + error);
     }
   }
 
@@ -61,7 +60,6 @@ const ClubListItem = ({data}) => {
             alert('Join Club Successfully')
       });
     } catch (error) {
-      console.log('Error while Sending Password Reset Email => ' + error);
     }
   }
 
@@ -93,7 +91,7 @@ const ClubListItem = ({data}) => {
         joinClub={joinClub}
         // onPress={() => setJoinClub(!joinClub)}
         onPress={()=> joinClub ? handleLeaveClub(data.id) : handleJoinClub(data.id)}
-        onPressGroup={() => console.log('create club screen')}
+        onPressGroup={() => {}}
       />
     </Touchable>
   );

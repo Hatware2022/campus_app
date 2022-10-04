@@ -57,7 +57,6 @@ const PostListItem = props => {
     postService
       .update(session.get(keys.token), props.data?.id)
       .then(result => {
-        console.log('_handleLike : ',result)
         if (result.data && result.data.success === true) {
           props.reload();
         }

@@ -41,8 +41,6 @@ const MajorScreen = () => {
   const insets = useSafeAreaInsets();
   const [valuemajor, setValuemajor] = useState('');
 
-  console.log('route', route);
-
   const _safeArea = {
     marginBottom: 16 + insets.bottom,
   };

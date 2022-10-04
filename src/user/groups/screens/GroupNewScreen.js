@@ -47,7 +47,7 @@ const GroupNewScreen = () => {
   const createGroup = (imageUrl) => {
     groupService.create(session.get(keys.token), JSON.stringify({
       title: groupName,
-      members: [],
+      members: [session.get(keys.userId)],
       type: "public",
       description: groupDescription,
       tags: groupTags,

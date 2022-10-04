@@ -93,7 +93,7 @@ const InterestScreen = () => {
         <Button
           style={[styles.button, _safeArea]}
           title="Submit"
-          onPress={() => console.log('a')}
+          onPress={() => {}}
         />
       </View>
     </Container>

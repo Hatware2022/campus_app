@@ -86,7 +86,6 @@ export default class {
                 }
             })
             .catch(err => {
-                console.log('uploadPostImage err : ',err.response)
                 result.error = err.response.data;
             });
 
@@ -107,7 +106,6 @@ export default class {
                 }
             })
             .catch(err => {
-                console.log('Like Error',err.response)
                 result.error = err.response.data;
             });
 
@@ -128,7 +126,6 @@ export default class {
                 }
             })
             .catch(err => {
-                console.log(err.response)
                 result.error = err.response.data;
             });
 
@@ -149,7 +146,6 @@ export default class {
                 }
             })
             .catch(err => {
-                console.log(err.response)
                 result.error = err.response.data;
             });
 

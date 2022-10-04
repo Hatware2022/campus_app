@@ -39,8 +39,6 @@ const OtpScreen = (props) => {
       }
       else{
           userService.sendOtp(registrationData?.email, code).then(result => {
-            console.log("result.data",result)
-            console.log(result)
             if (result.error) {
               alert(JSON.stringify(result.error.message))
               setErrorMessage(result.error);

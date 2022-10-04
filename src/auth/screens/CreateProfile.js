@@ -171,7 +171,6 @@ export default function CreateProfile(props) {
     }
     userService.createUserProfile(props.route.params?.token, props.route.params?.userId, data).then(result => {
       // console.log("result.data",result)
-      console.log(result)
       if (result.error) {
         alert(JSON.stringify(result.error))
         return;

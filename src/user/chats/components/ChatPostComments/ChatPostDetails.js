@@ -36,7 +36,6 @@ const ChatPostDetails = props => {
 
   const _handleLike = () => {
     const tokenData = utils.decodeJwt(session.get(keys.token));
-    console.log('postService ',tokenData)
     if (!tokenData) return;
 
     let arr = Array.from(props?.data?.likes) || [];

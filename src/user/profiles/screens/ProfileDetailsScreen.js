@@ -134,7 +134,7 @@ const ProfileDetailsScreen = () => {
         <Button
           style={[styles.button, _safeArea]}
           title="Start Conversation"
-          onPress={() => console.log('a')}
+          onPress={() => {}}
         />
       </View>
     </Container>

@@ -94,7 +94,6 @@ const EventCreateScreen = () => {
 						.then(result => {
 							if (result.data && result.data.success === true) {
 								setSuccessMessage("Event created successfully!");
-								console.log("Created");
 								navigation.navigate("OrganizationTab", { screen: 'Home' });
 							}
 						});

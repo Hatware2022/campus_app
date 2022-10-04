@@ -42,7 +42,7 @@ const GroupCreateScreen = () => {
       })).then((_res) => {
         navigation.pop();
       })
-    } catch(error) {console.log(error)}
+    } catch(error) {}
   }
 
   return (

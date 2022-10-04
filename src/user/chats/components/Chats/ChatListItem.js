@@ -70,7 +70,6 @@ const ChatListItem = props => {
           props.reload();
         }});
     } catch (error) {
-      console.log('Error while Sending Password Reset Email => ' + error);
     }
   };
 

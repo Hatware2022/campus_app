@@ -3,13 +3,11 @@ import {launchImageLibrary} from 'react-native-image-picker';
 const SelectPhoto = {};
 
 const takephotofromLibrary = ({setImage = () => {}}) => {
-  console.log('AA');
   const options = {
     mediaType: 'photo',
     quality: 0.3,
   };
   launchImageLibrary(options, response => {
-    console.log('xkxx');
     if (response.didCancel) {
       // empty action
     } else if (response.errorCode) {

@@ -25,7 +25,6 @@ const TabBar = ({
     paddingTop: insets.top,
   };
 
-  console.log(navigationState.index);
   return (
     <View style={[styles.container, _safeArea, containerStyle]}>
       {navigationState.routes.map((item, index) => (

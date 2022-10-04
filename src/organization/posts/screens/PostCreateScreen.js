@@ -77,7 +77,7 @@ const PostCreateScreen = () => {
   const takephotofromLibrary = () => {
     const options = {
       mediaType: 'photo',
-      quality: 0.01,
+      quality: 0.3,
     };
     launchImageLibrary(options, response => {
       if (response.didCancel) {

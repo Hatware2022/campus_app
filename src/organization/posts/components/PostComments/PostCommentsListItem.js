@@ -50,7 +50,7 @@ const PostCommentListItem = ({data}) => {
         <View horizontal marginBottom={20}>
           <Touchable
             flex={1}
-            onPress={() => console.log('create function reply')}>
+            onPress={() => {}}>
             <Text family="semi" color={Colors.black500}>
               Reply
             </Text>

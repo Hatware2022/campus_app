@@ -143,7 +143,6 @@ const RegisterScreen = () => {
 
     userService.register(userName, email, password,birthDate,phoneNo).then(result => {
       // console.log("result.data",result.data.data)
-      console.log(result.data)
       if (result.error) {
         alert(JSON.stringify(result.error.message))
         setErrorMessage(result.error);
