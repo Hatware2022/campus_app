@@ -1,38 +1,37 @@
-import React, {useState, useEffect} from 'react';
-import {StyleSheet, FlatList} from 'react-native';
-import {useRoute} from '@react-navigation/native';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import moment from 'moment';
+import React, {useState, useEffect} from 'react'
+import {StyleSheet, FlatList} from 'react-native'
+import {useRoute} from '@react-navigation/native'
+import {useSafeAreaInsets} from 'react-native-safe-area-context'
+import moment from 'moment'
 
-import {View, Container, Content, Avatar} from '../../../common';
-import Text from '../../../common/TextV2';
-import userService from '../../../services/user';
-import session from '../../../store/session';
-import keys from '../../../store/keys';
+import {View, Container, Avatar} from '../../../common'
+import Text from '../../../common/TextV2'
+import userService from '../../../services/user'
+import session from '../../../store/session'
+import keys from '../../../store/keys'
 
-import UserImage from '../../../assets/images/user.png';
-
-import * as Colors from '../../../config/colors';
-import Header from '../../component/Header';
-import Underline from '../../component/Underline';
-import Gap from '../../../common/Gap';
+import * as Colors from '../../../config/colors'
+import Header from '../../component/Header'
+import Underline from '../../component/Underline'
+import Gap from '../../../common/Gap'
 
 /* =============================================================================
 <GroupMemberScreen />
 ============================================================================= */
 const GroupMemberScreen = () => {
-  const route = useRoute();
-  const {members, title, imageUrl} = route.params || {};
-  const [membersDetails, setMembersDetails] = useState(null);
-  const insets = useSafeAreaInsets();
+  const route = useRoute()
+  const {members, title, imageUrl} = route.params || {}
+  const [membersDetails, setMembersDetails] = useState(null)
+  const insets = useSafeAreaInsets()
 
   useEffect(() => {
     try {
-      const membersData = members?.map((item) => 
-        userService.getById(session.get(keys.token), item));
-      Promise.all(membersData).then((res) => {
-        const membersDataDetails = res.map(member => member?.data?.data);
-        setMembersDetails(membersDataDetails);
+      const membersData = members?.map(item =>
+        userService.getById(session.get(keys.token), item)
+      )
+      Promise.all(membersData).then(res => {
+        const membersDataDetails = res.map(member => member?.data?.data)
+        setMembersDetails(membersDataDetails)
       })
     } catch (error) {}
   }, [members])
@@ -53,46 +52,46 @@ const GroupMemberScreen = () => {
   return (
     <Container>
       <Header title={'Group Member List'} />
-        <View style={{height: insets.top, backgroundColor: Colors.primary}} />
+      <View style={{height: insets.top, backgroundColor: Colors.primary}} />
 
-        <FlatList
-          ListHeaderComponent={
-            <>
-              <View style={styles.userDetails}>
-                <Avatar source={imageUrl || UserImage} size={48} />
-                <Text size="big" family="semi" customStyle={styles.textTitle}>
-                  {title}
-                </Text>
-              </View>    
-              <Underline marginVertical={16} />
-            </>        
-          }
-          data={membersDetails}
-          renderItem={renderItem}
-        />
+      <FlatList
+        ListHeaderComponent={
+          <>
+            <View style={styles.userDetails}>
+              <Avatar source={imageUrl} size={48} />
+              <Text size="big" family="semi" customStyle={styles.textTitle}>
+                {title}
+              </Text>
+            </View>
+            <Underline marginVertical={16} />
+          </>
+        }
+        data={membersDetails}
+        renderItem={renderItem}
+      />
     </Container>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   textTitle: {
-    marginHorizontal: 16,
+    marginHorizontal: 16
   },
   userDetails: {
     paddingTop: 20,
     paddingHorizontal: 20,
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   containerMember: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 12,
-    paddingHorizontal: 20,
+    paddingHorizontal: 20
   },
   contentTextMember: {
-    marginHorizontal: 16,
-  },
-});
+    marginHorizontal: 16
+  }
+})
 
-export default GroupMemberScreen;
+export default GroupMemberScreen
