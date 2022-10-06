@@ -1,136 +1,143 @@
-import axios from 'axios';
-import constants from '../utils/constants';
+import axios from 'axios'
+import constants from '../utils/constants'
 
 export default class {
-
-    static getAll = async token => {
-        let result = {
-            data: null,
-            error: null
-        };
-
-        await axios.get(`${constants.API_URL}/group`, 
-            { headers: 
-                { 
-                    'Authorization': token, 
-                    'slug': constants.SLUG,
-                }
-            })
-            .then(resp => {
-                if (resp.status === 200) {
-                    result.data = resp.data;
-                }
-            })
-            .catch(err => {
-                result.error = err.response.data;
-            });
-
-        return result;
+  static getAll = async token => {
+    let result = {
+      data: null,
+      error: null
     }
 
-    static getById = async (token, postId) => {
-        let result = {
-            data: null,
-            error: null
-        };
+    await axios
+      .get(`${constants.API_URL}/group`, {
+        headers: {
+          Authorization: token,
+          slug: constants.SLUG
+        }
+      })
+      .then(resp => {
+        if (resp.status === 200) {
+          result.data = resp.data
+        }
+      })
+      .catch(err => {
+        result.error = err.response.data
+      })
 
-        await axios.get(`${constants.API_URL}/group/${postId}`,
-        { headers: { 'Authorization': token }})
-            .then(resp => {
-                if (resp.status === 200) {
-                    result.data = resp.data;
-                }
-            })
-            .catch(err => {
-                result.error = err.response.data;
-            });
+    return result
+  }
 
-        return result;
+  static getById = async (token, postId) => {
+    let result = {
+      data: null,
+      error: null
     }
 
-    static create = async (token, data) => {
-        let result = {
-            data: null,
-            error: null
-        };
+    await axios
+      .get(`${constants.API_URL}/group/${postId}`, {
+        headers: {Authorization: token}
+      })
+      .then(resp => {
+        if (resp.status === 200) {
+          result.data = resp.data
+        }
+      })
+      .catch(err => {
+        result.error = err.response.data
+      })
 
-        await axios.post(`${constants.API_URL}/group`, data,
-            { headers: 
-                { 
-                    'Authorization': token, 
-                    'slug': constants.SLUG,
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(resp => {
-                if (resp.status === 200) {
-                    result.data = resp.data;
-                }
-            })
-            .catch(err => {
-                result.error = err.response.data;
-            });
+    return result
+  }
 
-        return result;
+  static create = async (token, data) => {
+    let result = {
+      data: null,
+      error: null
     }
 
-    static update = async (token, id, data) => {
-        let result = {
-            data: null,
-            error: null
-        };
+    await axios
+      .post(`${constants.API_URL}/group`, data, {
+        headers: {
+          Authorization: token,
+          slug: constants.SLUG,
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(resp => {
+        if (resp.status === 200) {
+          result.data = resp.data
+        }
+      })
+      .catch(err => {
+        result.error = err.response.data
+      })
 
-        await axios.put(`${constants.API_URL}/group/${id}`, data,
-            { headers: { 'Authorization': token }})
-            .then(resp => {
-                if (resp.status === 200) {
-                    result.data = resp.data;
-                }
-            })
-            .catch(err => {
-                result.error = err.response.data;
-            });
+    return result
+  }
 
-        return result;
+  static update = async (token, id, data) => {
+    let result = {
+      data: null,
+      error: null
     }
 
-    static join = async (token, id) => {
-        let result = {
-            data: null,
-            error: null
-        };
-        
-        await axios.post(`${constants.API_URL}/group/join/${id}`, '',
-            { headers: { 'Authorization': token }})
-            .then(resp => {
-                if (resp.status === 200) {
-                    result.data = resp.data;
-                }
-            })
-            .catch(err => {
-                result.error = err.response.data;
-            });
+    await axios
+      .put(`${constants.API_URL}/group/${id}`, data, {
+        headers: {Authorization: token}
+      })
+      .then(resp => {
+        if (resp.status === 200) {
+          result.data = resp.data
+        }
+      })
+      .catch(err => {
+        result.error = err.response.data
+      })
 
-        return result;        
+    return result
+  }
+
+  static join = async (token, id) => {
+    let result = {
+      data: null,
+      error: null
     }
 
-    static leave = async (token, id) => {
-        let result = {
-            data: null,
-            error: null
-        };
-        
-        await axios.delete(`${constants.API_URL}/group/leave/${id}`,
-            { headers: { 'Authorization': token }})
-            .then(resp => {
-                if (resp.status === 200) {
-                    result.data = resp.data;
-                }
-            })
-            .catch(err => {
-                result.error = err.response.data;
-            });
+    await axios
+      .post(`${constants.API_URL}/group/join/${id}`, '', {
+        headers: {Authorization: token}
+      })
+      .then(resp => {
+        if (resp.status === 200) {
+          result.data = resp.data
+        }
+      })
+      .catch(err => {
+        result.error = err.response.data
+      })
 
-        return result;        
+    return result
+  }
+
+  static leave = async (token, id) => {
+    let result = {
+      data: null,
+      error: null
     }
+
+    await axios
+      .delete(`${constants.API_URL}/group/leave/${id}`, {
+        headers: {Authorization: token}
+      })
+      .then(resp => {
+        if (resp.status === 200) {
+          result.data = resp.data
+        }
+      })
+      .catch(err => {
+        result.error = err.response.data
+      })
+
+    return result
+  }
 }

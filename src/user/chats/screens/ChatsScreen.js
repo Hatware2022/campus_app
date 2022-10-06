@@ -129,7 +129,7 @@ const ChatsScreen = () => {
     <Container backgroundColor={Colors.white250} style={{padding: 16}}>
       <StatusBar backgroundColor={Colors.primary} barStyle="light-content" />
 
-      <View horizontal>
+      {/* <View horizontal>
         <TextInput
           left={<SearchIcon />}
           value={keyword}
@@ -147,7 +147,7 @@ const ChatsScreen = () => {
         >
           <FilterIcon />
         </TouchableOpacity>
-      </View>
+      </View> */}
 
       <FlatList
         data={displayRecords}

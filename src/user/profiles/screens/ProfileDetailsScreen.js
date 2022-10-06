@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react'
+import {StyleSheet} from 'react-native'
 import {
   Avatar,
   Container,
@@ -7,51 +7,76 @@ import {
   Button,
   View,
   Card,
-  Title,
-  Tag,
-  Touchable,
-  TagInput,
-} from '../../../common';
-import Text from '../../../common/TextV2';
-import UserImage from '../../../assets/images/user.png';
-import SocialButtons from '../components/ProfileDetails/SocialButtons';
-import * as Colors from '../../../config/colors';
-import utils from '../../../utils/utils';
-import {useRoute} from '@react-navigation/native';
-import session from '../../../store/session';
-import keys from '../../../store/keys';
-import userService from '../../../services/user';
-import BackIcon from '../../../assets/icons/icon-back.svg';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import Gap from '../../../common/Gap';
-import Header from '../../component/Header';
+  TagInput
+} from '../../../common'
+import Text from '../../../common/TextV2'
+import SocialButtons from '../components/ProfileDetails/SocialButtons'
+import * as Colors from '../../../config/colors'
+import utils from '../../../utils/utils'
+import {useRoute} from '@react-navigation/native'
+import session from '../../../store/session'
+import keys from '../../../store/keys'
+import userService from '../../../services/user'
+import {useSafeAreaInsets} from 'react-native-safe-area-context'
+import Gap from '../../../common/Gap'
+import Header from '../../component/Header'
+import conversationService from '../../../services/conversation'
 
 /* =============================================================================
 <ProfileDetailsScreen />
 ============================================================================= */
-const ProfileDetailsScreen = () => {
-  const route = useRoute();
-  const [record, setRecord] = useState(null);
-  const insets = useSafeAreaInsets();
-
+const ProfileDetailsScreen = ({navigation}) => {
+  const route = useRoute()
+  const [record, setRecord] = useState(null)
+  const insets = useSafeAreaInsets()
+  const tokenData = utils.decodeJwt(session.get(keys.token))
+  const [existingConversationData, setExistingConversationData] = useState(null)
   useEffect(() => {
-    const _id = route.params._id;
-    if (!_id) return;
+    const _id = route.params._id
+    if (!_id) return
     userService.getById(session.get(keys.token), _id).then(result => {
       if (result.data && result.data.success === true) {
-        let r = result.data.data;
-        setRecord(r);
+        let r = result.data.data
+        setRecord(r)
       }
-    });
-  }, []);
-
-  const _safeAreaStyle = {
-    paddingTop: insets.top,
-  };
+    })
+    conversationService
+      .findConversationByIds(session.get(keys.token), tokenData.id, _id)
+      .then(res => {
+        if (res?.data?.success) {
+          setExistingConversationData(res?.data?.data)
+        }
+      })
+  }, [])
 
   const _safeArea = {
-    marginBottom: 16 + insets.bottom,
-  };
+    marginBottom: 16 + insets.bottom
+  }
+
+  const onPressStartConversation = () => {
+    const {fromScreen, setPreviousData, previousData} = route?.params || {}
+    if (fromScreen === 'Chat' && previousData) {
+      navigation.goBack()
+      setPreviousData(previousData)
+    }
+    if (existingConversationData) {
+      navigation.navigate('Chat', {
+        data: existingConversationData
+      })
+    } else {
+      const payload = {
+        user1: tokenData.id,
+        user2: record.id
+      }
+      conversationService.create(session.get(keys.token), payload).then(res => {
+        if (res?.data?.success) {
+          navigation.navigate('Chat', {
+            data: res?.data?.data
+          })
+        }
+      })
+    }
+  }
 
   return (
     <Container>
@@ -90,13 +115,27 @@ const ProfileDetailsScreen = () => {
         </View>
 
         <View>
-          <Card subCard leftTitle={'Major'} subContent={record?.major ? record?.major : "Biologi"} />
-          <Card subCard leftTitle={'Year'} subContent={record?.gradYear ? record?.gradYear : "Junior"} />
-          <Card subCard leftTitle={'Gender'} subContent={record?.gender ? record?.gender :"Male"} />
+          <Card
+            subCard
+            leftTitle={'Major'}
+            subContent={record?.major ? record?.major : 'Biologi'}
+          />
+          <Card
+            subCard
+            leftTitle={'Year'}
+            subContent={record?.gradYear ? record?.gradYear : 'Junior'}
+          />
+          <Card
+            subCard
+            leftTitle={'Gender'}
+            subContent={record?.gender ? record?.gender : 'Male'}
+          />
           <Card
             subCard
             leftTitle={'From'}
-            subContent={record?.address ? record?.address : "dummy address, USA"}
+            subContent={
+              record?.address ? record?.address : 'dummy address, USA'
+            }
           />
 
           <View
@@ -104,17 +143,16 @@ const ProfileDetailsScreen = () => {
             borderColor={Colors.white300}
             marginVertical={24}
           />
-
         </View>
 
         <Text family="semi" size="big">
           Interest
         </Text>
-        {record?.interest && record?.interest.length > 0 ?
-        <TagInput label="Interests" tags={record?.interest} />
-        :null}
+        {record?.interest && record?.interest.length > 0 ? (
+          <TagInput label="Interests" tags={record?.interest} />
+        ) : null}
         <Gap height={12} />
-        
+
         <View
           borderWidth={1}
           borderColor={Colors.white300}
@@ -124,9 +162,9 @@ const ProfileDetailsScreen = () => {
         <Text family="semi" size="big">
           Down For
         </Text>
-        {record?.downFor && record?.downFor.length > 0 ?
-         <TagInput label="Interests" tags={record?.downFor} />
-        :null}
+        {record?.downFor && record?.downFor.length > 0 ? (
+          <TagInput label="Interests" tags={record?.downFor} />
+        ) : null}
         <Gap height={12} />
       </Content>
 
@@ -134,22 +172,22 @@ const ProfileDetailsScreen = () => {
         <Button
           style={[styles.button, _safeArea]}
           title="Start Conversation"
-          onPress={() => {}}
+          onPress={onPressStartConversation}
         />
       </View>
     </Container>
-  );
-};
+  )
+}
 const styles = StyleSheet.create({
   underline: {
     height: 0.5,
     width: '90%',
     alignSelf: 'center',
     marginVertical: 20,
-    backgroundColor: Colors.border,
+    backgroundColor: Colors.border
   },
   tagContainer: {
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   tag: {
     minWidth: 80,
@@ -157,23 +195,23 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingHorizontal: 5,
     borderColor: Colors.card,
-    backgroundColor: Colors.card,
+    backgroundColor: Colors.card
   },
   headerContainer: {
     padding: 16,
-    backgroundColor: Colors.primary,
+    backgroundColor: Colors.primary
   },
   iconBack: {
-    marginRight: 16,
+    marginRight: 16
   },
   containerButton: {
     backgroundColor: Colors.white200,
     borderTopWidth: 1,
-    borderTopColor: Colors.white300,
+    borderTopColor: Colors.white300
   },
   button: {
-    margin: 16,
-  },
-});
+    margin: 16
+  }
+})
 
-export default ProfileDetailsScreen;
+export default ProfileDetailsScreen

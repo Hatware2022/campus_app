@@ -53,11 +53,11 @@ export default class {
     }
 
     await axios
-      .conversation(`${constants.API_URL}/conversation/addnew`, data, {
+      .post(`${constants.API_URL}/conversations/add`, data, {
         headers: {Authorization: token}
       })
       .then(resp => {
-        if (resp.status === 200) {
+        if (resp.status === 200 || resp.status === 201) {
           result.data = resp.data
         }
       })
@@ -76,6 +76,28 @@ export default class {
 
     await axios
       .put(`${constants.API_URL}/conversation/${id}`, data, {
+        headers: {Authorization: token}
+      })
+      .then(resp => {
+        if (resp.status === 200) {
+          result.data = resp.data
+        }
+      })
+      .catch(err => {
+        result.error = err.response.data
+      })
+
+    return result
+  }
+
+  static findConversationByIds = async (token, userId, otherId) => {
+    let result = {
+      data: null,
+      error: null
+    }
+
+    await axios
+      .get(`${constants.API_URL}/conversations/find/${userId}/${otherId}`, {
         headers: {Authorization: token}
       })
       .then(resp => {

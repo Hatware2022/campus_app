@@ -9,8 +9,6 @@ import groupPostService from '../../../services/grouppost'
 import session from '../../../store/session'
 import keys from '../../../store/keys'
 
-import UserImage from '../../../assets/images/user.png'
-
 import * as Colors from '../../../config/colors'
 import Header from '../../component/Header'
 import Underline from '../../component/Underline'
@@ -25,7 +23,7 @@ const GroupCreateScreen = () => {
   const [valuePost, setValuePost] = useState('')
   const route = useRoute()
   const navigation = useNavigation()
-  const {groupId} = route.params
+  const {groupDetails} = route.params
 
   const insets = useSafeAreaInsets()
 
@@ -55,9 +53,9 @@ const GroupCreateScreen = () => {
       <Header title={'Create Post'} />
       <Content padding={16}>
         <View style={styles.userDetails}>
-          <Avatar source={UserImage} size={48} />
+          <Avatar source={groupDetails?.imageUrl} size={48} />
           <Text size="big" family="semi" customStyle={styles.textTitle}>
-            Surf Up Group
+            {groupDetails?.title}
           </Text>
         </View>
 

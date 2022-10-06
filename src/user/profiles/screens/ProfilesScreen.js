@@ -79,12 +79,12 @@ const ProfilesScreen = () => {
         arr = arr.sort((a, b) => moment(b.createdAt) - moment(a.createdAt));
       }
       if (filters) {
-        if (filters?.major.length > 0) {
+        if (filters?.major?.length > 0) {
           arr = arr.filter(k =>
             k?.major && k?.major != null && k?.major.toLowerCase().includes(filters.major.toLowerCase()),
           );
         }
-        if (filters.gradeYear.length > 0) {
+        if (filters?.gradeYear?.length > 0) {
           arr = arr.filter(
             k => k?.gradYear && k?.gradYear != null && k?.gradYear.toLowerCase() === filters.gradeYear.toLowerCase(),
           );
@@ -92,13 +92,13 @@ const ProfilesScreen = () => {
         // if (filters.downfor.length > 0) {
         //   arr = arr.filter(k => k?.downFor && k?.downFor != null && k?.downFor.includes(filters.downfor.toLowerCase()));
         // }
-        if (filters.from.length > 0) {
+        if (filters?.from?.length > 0) {
           arr = arr.filter(
             k => k?.address && k?.address != null && k?.address.toLowerCase().includes(filters.from.toLowerCase())||
             k?.city && k?.city != null && k?.city.toLowerCase().includes(filters.from.toLowerCase()),
           );
         }
-        if (filters.gender.length > 0) {
+        if (filters?.gender?.length > 0) {
           arr = arr.filter(
             k => k?.gender && k?.gender != null & k?.gender.toLowerCase() === filters.gender.toLowerCase(),
           );
@@ -145,7 +145,7 @@ const ProfilesScreen = () => {
           contentContainerStyle={styles.listContent}
           ListHeaderComponent={
             <>
-              <View horizontal>
+              {/* <View horizontal>
                 <TextInput
                   left={<SearchIcon />}
                   value={keyword}
@@ -160,7 +160,7 @@ const ProfilesScreen = () => {
                   }}>
                   <FilterIcon />
                 </TouchableOpacity>
-              </View>
+              </View> */}
               <Text customStyle={styles.title} family="semi" size="big">
                 Profiles
               </Text>

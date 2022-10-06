@@ -1,29 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import {StyleSheet,Image} from 'react-native';
-import {Touchable, View, Avatar} from '../../../../common';
-import Text from '../../../../common/TextV2';
+import React, {useEffect, useState} from 'react'
+import {StyleSheet, Image} from 'react-native'
+import {Touchable, View, Avatar} from '../../../../common'
+import Text from '../../../../common/TextV2'
 
-import * as Colors from '../../../../config/colors';
+import * as Colors from '../../../../config/colors'
 
-import LikeIcon from '../../../../assets/icons/app-likes.svg';
-import CommentIcon from '../../../../assets/icons/app-comments.svg';
-import FastImage from 'react-native-fast-image';
+import LikeIcon from '../../../../assets/icons/app-likes.svg'
+import CommentIcon from '../../../../assets/icons/app-comments.svg'
+import FastImage from 'react-native-fast-image'
 
-import UserImage from '../../../../assets/images/user.png';
-import Underline from '../../../../user/component/Underline';
-import moment from 'moment';
-import session from '../../../../store/session';
-import keys from '../../../../store/keys';
-import utils from '../../../../utils/utils';
-import axios from 'axios';
-import constants from '../../../../utils/constants';
+import userService from '../../../../services/user'
+
+import UserImage from '../../../../assets/images/user.png'
+import Underline from '../../../../user/component/Underline'
+import moment from 'moment'
+import session from '../../../../store/session'
+import keys from '../../../../store/keys'
+import utils from '../../../../utils/utils'
+import axios from 'axios'
+import constants from '../../../../utils/constants'
 // import { Image } from 'react-native-svg';
 
 /* =============================================================================
 <GroupPostDetails />
 ============================================================================= */
 const GroupPostDetails = ({data,reload,totalcomments}) => {
-  const [totalLikes, setTotalLikes] = useState();
+  const [totalLikes, setTotalLikes] = useState()
   // const [totalcomments, setTotalComments] = useState();
 
   useEffect(()=>{
@@ -108,14 +110,14 @@ const GroupPostDetails = ({data,reload,totalcomments}) => {
       </View>
       <Underline />
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   topContainer: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    justifyContent: 'space-between',
+    justifyContent: 'space-between'
   },
   userContainer: {
     flexDirection: 'row',
@@ -124,14 +126,14 @@ const styles = StyleSheet.create({
   },
   name: {
     marginLeft: 16,
-    marginTop:10,
-    fontWeight:'bold',
-    fontSize:16
+    marginTop: 10,
+    fontWeight: 'bold',
+    fontSize: 16
   },
   time: {
     color: Colors.black400,
     alignSelf: 'center',
-    marginLeft: 'auto',
+    marginLeft: 'auto'
   },
   bottomContainer: {
     flexDirection: 'row',
@@ -141,42 +143,42 @@ const styles = StyleSheet.create({
   },
   actionButtonContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   likeButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingRight: 10,
+    paddingRight: 10
   },
   likeButtonText: {
     marginLeft: 5,
-    color: Colors.primary,
+    color: Colors.primary
   },
   commentButton: {
     paddingRight: 10,
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   commentButtonText: {
-    marginLeft: 5,
+    marginLeft: 5
   },
   image: {
     width: 343,
     height: 232,
     borderRadius: 8,
-    marginTop: 12,
+    marginTop: 12
   },
   textDetail: {
     marginVertical: 12,
-    marginLeft:10
+    marginLeft: 10
   },
-  images:{
-    width:'97%',
-    height:230,
-    borderRadius:10,
+  images: {
+    width: '97%',
+    height: 230,
+    borderRadius: 10,
     backgroundColor: 'rgba(0,0,0,0.05)',
-    marginLeft:5
+    marginLeft: 5
   }
-});
+})
 
-export default GroupPostDetails;
+export default GroupPostDetails

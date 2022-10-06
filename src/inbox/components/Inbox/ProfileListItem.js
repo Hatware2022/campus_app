@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {StyleSheet} from 'react-native'
+import {StyleSheet, TouchableOpacity} from 'react-native'
 import {Touchable, View, Avatar} from '../../../common'
 import Text from '../../../common/TextV2'
 import * as Colors from '../../../config/colors'
@@ -13,49 +13,37 @@ import Gap from '../../../common/Gap'
 import reactotron from 'reactotron-react-native'
 
 /* =============================================================================
-<InboxListItem />
+<ProfileListItem />
 ============================================================================= */
-const InboxListItem = ({data}) => {
+const ProfileListItem = ({data}) => {
   const navigation = useNavigation()
-  const [record, setRecord] = useState(null)
 
-  useEffect(() => {
-    const tokenData = utils.decodeJwt(session.get(keys.token))
-    if (!tokenData) return
-    let otherUser = data.members.find(k => k !== tokenData.id)
-    if (!otherUser) return
-    userService.getById(session.get(keys.token), otherUser).then(result => {
-      if (result.data && result.data.success === true) {
-        let r = result.data.data
-        setRecord(r)
-      }
+  const _moveToProfile = () => {
+    navigation.navigate('ProfileDetails', {
+      _id: data?.id,
+      fromScreen: 'NewChat'
     })
-  }, [])
-
-  const _moveToChat = () => {
-    navigation.navigate('Chat', {data})
   }
 
   return (
-    <Touchable onPress={_moveToChat} style={styles.container}>
+    <Touchable onPress={_moveToProfile} style={styles.container}>
       <Avatar
         size={48}
-        source={record?.imageUrl ? {uri: record?.imageUrl} : null}
+        source={data?.imageUrl ? {uri: data?.imageUrl} : null}
       />
       <View style={styles.centerContainer}>
         <View horizontal alignItems="center" justifyContent="space-between">
           <Text size="big" family="semi">
-            {data?.senderName}
+            {data?.name}
           </Text>
-          <Text size="small" color={Colors.black400}>
-            {`${moment(data?.updatedAt).format('DD MMM')}`}
-          </Text>
+          <TouchableOpacity style={styles.viewProfile} onPress={_moveToProfile}>
+            <Text size="big" family="semi" color={Colors.black500}>
+              View Profile
+            </Text>
+          </TouchableOpacity>
         </View>
 
         <Gap height={4} />
-        <Text numberOfLines={1} color={Colors.black500}>
-          {data?.latestMessage}
-        </Text>
       </View>
     </Touchable>
   )
@@ -86,7 +74,14 @@ const styles = StyleSheet.create({
   time: {
     fontSize: 13,
     color: Colors.secondaryText
+  },
+  viewProfile: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: Colors.black500
   }
 })
 
-export default InboxListItem
+export default ProfileListItem

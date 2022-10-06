@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react'
+import { useDispatch } from 'react-redux'
 import {
   FlatList,
   StatusBar,
@@ -6,13 +7,14 @@ import {
   RefreshControl,
   TouchableOpacity
 } from 'react-native'
+import { useSelector } from 'react-redux'
 import {Container, TextInput, View, Title} from '../../../common'
 import Text from '../../../common/TextV2'
 import GroupsFilter from '../components/Groups/GroupsFilter'
 import GroupListItem from '../components/Groups/GroupListItem'
 import SearchIcon from '../../../assets/icons/icon-search.svg'
 import FilterIcon from '../../../assets/icons/icon-filter.svg'
-import PlusIcon from '../../../assets/icons/icon-plus-circle.svg'
+import PlusIcon from '../../../assets/icons/icon-plus-circle-big.svg'
 import ArrowDownIcon from '../../../assets/icons/app-arrow-down.svg'
 import * as Colors from '../../../config/colors'
 import GROUPS from '../../../constants/groups'
@@ -22,6 +24,7 @@ import utils from '../../../utils/utils'
 import session from '../../../store/session'
 import keys from '../../../store/keys'
 import ModalFilter from '../../../auth/components/Modal/modalfilter'
+import { setKey } from '../../../store/actions'
 
 /* =============================================================================
 <GroupsScreen />
@@ -31,12 +34,17 @@ const GroupsScreen = () => {
   const [records, setRecords] = useState([])
   const [displayRecords, setDisplayRecords] = useState([])
   const [refreshing, setRefreshing] = useState(false)
-  const [keyword, setKeyword] = useState('')
+  // const [keyword, setKeyword] = useState('')
   const [sortBy, setSortBy] = useState('Newest')
   const [errorMessage, setErrorMessage] = useState(null)
   const [successMessage, setSuccessMessage] = useState(null)
   const navigation = useNavigation()
   const [viewFilter, setViewFilter] = useState(false)
+  const dispatch = useDispatch()
+
+  const appSession = useSelector(state => state.session)
+  const keyword = appSession[keys.groupsSearchKeyword];
+  console.log(appSession)
 
   useEffect(() => {
     let isMounted = true
@@ -104,11 +112,15 @@ const GroupsScreen = () => {
     navigation.navigate('GroupNew')
   }
 
+  const handleCloseFilterModal = () => {
+    dispatch(setKey(keys.groupsShowModalFilter, false))
+  }
+
   return (
     <Container style={{padding: 16}}>
-      <StatusBar backgroundColor={Colors.primary} barStyle="light-content" />
-
-      <View horizontal>
+      <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
+      
+       {/* <View horizontal>
         <TextInput
           left={<SearchIcon />}
           value={keyword}
@@ -125,7 +137,7 @@ const GroupsScreen = () => {
         >
           <FilterIcon />
         </TouchableOpacity>
-      </View>
+      </View> */}
 
       <View style={styles.container}>
         {/* <GroupsFilter /> */}
@@ -144,7 +156,7 @@ const GroupsScreen = () => {
                 onPress={_moveToCreateGroup}
                 style={styles.iconPlus}
               >
-                <Text size="small" family="medium" color={Colors.primary}>
+                <Text size="medium" family="medium" color={Colors.primary}>
                   {`Create New  `}
                 </Text>
                 <PlusIcon />
@@ -170,9 +182,9 @@ const GroupsScreen = () => {
       <ModalFilter
         sortBy={sortBy}
         setSortBy={e => setSortBy(e)}
-        isVisible={viewFilter}
-        onCloseModal={() => setViewFilter(false)}
-        onYes={() => setViewFilter(false)}
+        isVisible={appSession[keys.groupsShowModalFilter]}
+        onCloseModal={handleCloseFilterModal}
+        onYes={handleCloseFilterModal}
       />
     </Container>
   )
@@ -189,7 +201,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary
   },
   container: {
-    flex: 1
+    flex: 1,
+    marginTop: -10
   },
   list: {
     flex: 1

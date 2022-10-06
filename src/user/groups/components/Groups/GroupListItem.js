@@ -20,16 +20,16 @@ const GroupListItem = ({data}) => {
 
   return (
     <Touchable onPress={_moveToDetails} style={styles.container}>
-      <Avatar size={48} source={data.imageUrl} />
+      <Avatar size={60} source={data.imageUrl} />
       <View flex={1} justifyContent="center" marginHorizontal={12}>
-        <Text family="semi">{data.title}</Text>
+        <Text family="semi" size="big">{data.title}</Text>
         <Gap height={4} />
-        <Text size="small" numberOfLines={1}>
+        <Text size="medium" numberOfLines={1}>
           {data.description}
         </Text>
       </View>
       <View horizontal alignItems="center">
-        <Text>{data.members.length}</Text>
+        <Text customStyle={{color: '#A8ACAD'}}>{data.members.length}</Text>
         <PeopleIcon />
       </View>
     </Touchable>

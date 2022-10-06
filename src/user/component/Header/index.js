@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, Platform, StatusBar} from 'react-native';
-import BackIcon from '../../../assets/icons/icon-back.svg';
+import BackIcon from '../../../assets/icons/icon-back-red.svg';
 
 import {View} from '../../../common';
 import Text from '../../../common/TextV2';
@@ -24,7 +24,7 @@ const Header = ({title, rightIcon, onPressRightIcon}) => {
         </TouchableOpacity>
 
         <View flex={1}>
-          <Text size="big" family="semi" color={Colors.whiteText}>
+          <Text size="big" family="semi" color={Colors.primary}>
             {title}
           </Text>
         </View>
@@ -42,7 +42,7 @@ const Header = ({title, rightIcon, onPressRightIcon}) => {
 const styles = StyleSheet.create({
   headerContainer: {
     height: Platform.OS === 'ios' ? 90 : 50,
-    backgroundColor: Colors.primary,
+    backgroundColor: Colors.white100,
     alignItems:'center',
     justifyContent:'center',
   },

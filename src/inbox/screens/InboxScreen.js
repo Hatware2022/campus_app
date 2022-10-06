@@ -4,7 +4,8 @@ import {
   StatusBar,
   StyleSheet,
   RefreshControl,
-  TextInput
+  TextInput,
+  TouchableOpacity
 } from 'react-native'
 import {Container, StackHeader, View, Title} from '../../common'
 import Text from '../../common/TextV2'
@@ -30,7 +31,7 @@ import {io} from 'socket.io-client'
 /* =============================================================================
 <InboxScreen />
 ============================================================================= */
-const InboxScreen = () => {
+const InboxScreen = ({navigation}) => {
   const isFocused = useIsFocused()
   const [records, setRecords] = useState([])
   const [refreshing, setRefreshing] = useState(false)
@@ -59,12 +60,12 @@ const InboxScreen = () => {
         let arr = result.data.data
         if (keyword.length > 0) {
           arr = arr.filter(k =>
-            k.title.toLowerCase().includes(keyword.toLowerCase())
+            k?.senderName?.toLowerCase().includes(keyword.toLowerCase())
           )
         }
-        arr = arr.sort((a, b) => moment(a.updated_at) - moment(b.updated_at))
+        arr = arr.sort((a, b) => moment(a.updatedAt) - moment(b.updatedAt))
 
-        setRecords(arr)
+        setRecords(arr?.reverse())
       })
       .finally(() =>
         setTimeout(() => {
@@ -102,7 +103,9 @@ const InboxScreen = () => {
           <Text size="big" family="bold" color={Colors.whiteText}>
             Chat
           </Text>
-          <PlusIcon />
+          <TouchableOpacity onPress={() => navigation.navigate('NewChat')}>
+            <PlusIcon />
+          </TouchableOpacity>
         </View>
 
         <View horizontal style={styles.containerSearch}>

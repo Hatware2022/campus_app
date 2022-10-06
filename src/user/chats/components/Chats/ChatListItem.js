@@ -22,6 +22,7 @@ import DemoImage from '../../../../assets/images/empty-image.png';
 ============================================================================= */
 const ChatListItem = props => {
   const navigation = useNavigation();
+  const [user, setUser] = useState(null);
   const [totalLikes, setTotalLikes] = useState();
 
   useEffect(()=>{
@@ -33,10 +34,9 @@ const ChatListItem = props => {
   };
 
   // useEffect(() => {
-  //   const tokenData = utils.decodeJwt(session.get(keys.token)) || props.data.id;
   //   if (!props.data) return;
   //   userService
-  //     .getById(session.get(keys.token), tokenData.id)
+  //     .getById(session.get(keys.token), props.data.id)
   //     .then(result => {
   //       if (result.data && result.data.success === true) {
   //         let r = result.data.data;
@@ -81,34 +81,39 @@ const ChatListItem = props => {
 return (
     <Touchable onPress={_moveToChatComments} style={styles.container}>
       <View style={styles.topContainer}>
-        {props.data && props.data?.user && (
+        {props?.data && props?.data?.user && (
           <View style={styles.userContainer}>
             <Avatar
               size={48}
-              source={{uri: props.data?.user?.imageUrl ? props.data?.user?.imageUrl : null}}
+              source={{uri: props?.data?.user.imageUrl ? props?.data?.user.imageUrl : null}}
             />
             <Text size="big" family="semi" customStyle={styles.name}>
-              {props.data?.user?.name ? props.data?.user?.name : 'dummy'}
+              {props?.data?.user?.name ? props?.data?.user?.name : 'dummy'}
             </Text>
           </View>
         )}
-        <Text size="small" customStyle={styles.time}>
-          {moment(props.data?.createdAt).fromNow()}
-        </Text>
+     <Touchable style={{flexDirection:'row',}}>
+       <View style={styles.dot}/>
+       <View style={styles.dot}/>
+       <View style={styles.dot}/>
+     </Touchable>
       </View>
       <Gap height={16} />
 
-
+      <Text customStyle={{marginLeft:7}}>{props.data?.content}dsd</Text>
+      <Gap height={6} />
+{props?.data?.imageUrl != null &&
       <Image 
       style={{height:200,width:'98%',borderColor:'#000',borderWidth:0.1,
       borderRadius:10,alignSelf:'center',backgroundColor:'rgba(0,0,0,0.05)'}}
       resizeMode={'cover'}
       source={props?.data?.imageUrl != null ? {uri: props?.data?.imageUrl} : DemoImage} />
-      <Gap height={6} />
-      <Text>{props.data?.content}</Text>
+}
+      
+      
 
       <View style={styles.tagContainer}>
-        {props.data?.tags.map(k => {
+        {props?.data && props?.data?.tags?.length > 0 && props?.data?.tags.map(k => {
           return (
             <View style={styles.tag} key={k}>
               <Text customStyle={styles.tagText}>{k}</Text>
@@ -118,22 +123,22 @@ return (
       </View>
 
       <View style={styles.actionButtonContainer}>
-        <Touchable style={styles.likeButton}>
-          <LikeIcon onPress={_handleLike} />
+        <Touchable style={styles.likeButton} onPress={_handleLike}>
+          <LikeIcon />
           <Text customStyle={styles.likeButtonText}>
             {totalLikes || '0'}
           </Text>
         </Touchable>
-        <Touchable style={styles.commentButton} 
-        // onPress={()=>navigation.navigate('ChatPostComments', {post: props.data,reload:props.reload()})}
-        onPress={()=>navigation.navigate('GroupPostComments', {post: props.data})}
-        >
-          <CommentIcon /> 
+        <Touchable style={styles.commentButton} onPress={()=>navigation.navigate('GroupPostComments', {post: props.data})}>
+          <CommentIcon />
           <Text customStyle={styles.commentButtonText}>
             {props?.data?.comments ? props?.data?.comments?.length : '0'}
           </Text>
         </Touchable>
       </View>
+      <Text size="small" customStyle={styles.time}>
+          {moment(props.data.createdAt).fromNow()}
+        </Text>
     </Touchable>
   );
 };
@@ -156,10 +161,13 @@ const styles = StyleSheet.create({
   },
   name: {
     marginLeft: 16,
+    fontWeight:'bold'
   },
   time: {
     color: Colors.black400,
-    alignSelf: 'center',
+    marginTop:10,
+    marginLeft:3
+    // alignSelf: 'center',
   },
   image: {
     width: '100%',
@@ -200,6 +208,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
     flexDirection: 'row',
     justifyContent: 'flex-start',
+    marginLeft:5
   },
   tag: {
     height: 31,
@@ -216,6 +225,14 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     paddingHorizontal: 6,
   },
+  dot:{
+    width:3,
+    height:3,
+    backgroundColor:'grey',
+    borderRadius:20,
+    marginLeft:1.5
+  },
+
 });
 
 export default ChatListItem;

@@ -3,7 +3,8 @@ import {
   ImageBackground,
   StyleSheet,
   FlatList,
-  TouchableOpacity
+  TouchableOpacity,
+  StatusBar
 } from 'react-native'
 import {View, Tag, Container, Touchable} from '../../../common'
 import Text from '../../../common/TextV2'
@@ -75,7 +76,7 @@ const GroupDetailsScreen = () => {
   }
 
   const _moveToGroupPost = () => {
-    navigation.navigate('GroupCreate', {groupId: data?.id})
+    navigation.navigate('GroupCreate', {groupDetails: data})
   }
 
   const _handleLeaveGroup = () => {
@@ -112,8 +113,7 @@ const GroupDetailsScreen = () => {
 
   return (
     <Container backgroundColor={Colors.white200}>
-      <View style={{height: insets.top, backgroundColor: Colors.primary}} />
-
+      <StatusBar backgroundColor={Colors.primary} barStyle="light-content" />
       <FlatList
         data={posts}
         style={styles.list}
@@ -140,13 +140,19 @@ const GroupDetailsScreen = () => {
                 <Text size="big" family="semi" customStyle={styles.title}>
                   {data.title}
                 </Text>
-                <Text color={Colors.black500} customStyle={styles.description}>
+                <Text
+                  size="medium"
+                  color={Colors.black500}
+                  customStyle={styles.description}
+                >
                   {data.description}
                 </Text>
 
                 <View style={styles.tagContainer}>
                   {data.tags?.map((item, index) => (
-                    <Tag key={index} text={item} redBorder />
+                    <View key={index} style={{paddingVertical: 3}}>
+                      <Tag text={item} redBorder />
+                    </View>
                   ))}
                 </View>
                 <GroupMembers
@@ -199,7 +205,8 @@ const renderPostItem = ({item}) => <GroupPostListItem data={item} />
 const styles = StyleSheet.create({
   coverImage: {
     width: '100%',
-    height: 216
+    height: 256,
+    paddingTop: 30
   },
 
   coverInnerContainer: {

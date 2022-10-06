@@ -63,7 +63,7 @@ const renderBubble = props => {
 const ChatScreen = ({}) => {
   const route = useRoute()
   const isFocused = useIsFocused()
-  const chat = route.params.data || null
+  const [chat, setChatData] = useState(route.params.data || null)
   const [text, setText] = useState('')
   const [messages, setMessages] = useState([])
   const [record, setRecord] = useState(null)
@@ -87,7 +87,7 @@ const ChatScreen = ({}) => {
     setText('')
     const data = {
       conversationId: chat?.id,
-      receiverId: chat.members.find(item => item.id !== record?.id),
+      receiverId: chat.members.find(item => item !== record.id),
       senderId: record?.id,
       text: values[0]?.text
     }
@@ -177,9 +177,13 @@ const ChatScreen = ({}) => {
 
   const onPressViewProfile = () => {
     navigation.navigate('ProfileDetails', {
-      _id: chat?.id
+      _id: chat.members.find(item => item !== record?.id),
+      setPreviousData: setChatData,
+      previousData: chat,
+      fromScreen: 'Chat'
     })
   }
+
   const isCloseToTop = ({layoutMeasurement, contentOffset, contentSize}) => {
     const paddingToTop = 10
     return (
