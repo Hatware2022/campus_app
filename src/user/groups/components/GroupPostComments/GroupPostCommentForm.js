@@ -48,7 +48,7 @@ const GroupPostCommentForm = (props) => {
             onChangeText={setComment}
           />
         </View>
-        <Touchable style={styles.button} onPress={() => props.sendMsg('a')}>
+        <Touchable style={styles.button} onPress={() => props.sendMsg(comment) || setComment('')}>
           <SendButtonIcon />
         </Touchable>
       </View>

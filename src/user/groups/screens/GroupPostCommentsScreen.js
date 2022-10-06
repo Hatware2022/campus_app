@@ -24,10 +24,12 @@ const GroupPostCommentsScreen = () => {
   const post = route.params?.post || {};
  
   const [allComments,setAllComments]= useState(route.params?.post?.comments || [])
-
+  const [totalcomments, setTotalComments] = useState(route.params?.post?.comments.length);
  
   useEffect(()=>{
+    // alert(route.params?.post?.comments.length)
     // getComments()
+    // reload()
   },[])
 
   // const getComments =()=>{
@@ -50,6 +52,7 @@ const GroupPostCommentsScreen = () => {
     .then(result => {
       if (result.data && result.data.success === true) {
         alert(JSON.stringify(result?.data?.message))
+        setTotalComments(totalcomments+1)
         allComments.push({
           "id": 3,
           "createdBy": 27,
@@ -75,7 +78,7 @@ const GroupPostCommentsScreen = () => {
         renderItem={renderCommentItem}
         keyExtractor={item => item._id}
         contentContainerStyle={styles.listContent}
-        ListHeaderComponent={<GroupPostDetails data={post} />}
+        ListHeaderComponent={<GroupPostDetails data={post} totalcomments={totalcomments} reload={()=>console.log('k')} />}
       />
 
       <GroupPostCommentForm sendMsg={(e)=>handleSendComment(e)} />

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {StyleSheet,Image} from 'react-native';
 import {Touchable, View, Avatar} from '../../../../common';
 import Text from '../../../../common/TextV2';
@@ -12,12 +12,53 @@ import FastImage from 'react-native-fast-image';
 import UserImage from '../../../../assets/images/user.png';
 import Underline from '../../../../user/component/Underline';
 import moment from 'moment';
+import session from '../../../../store/session';
+import keys from '../../../../store/keys';
+import utils from '../../../../utils/utils';
+import axios from 'axios';
+import constants from '../../../../utils/constants';
 // import { Image } from 'react-native-svg';
 
 /* =============================================================================
 <GroupPostDetails />
 ============================================================================= */
-const GroupPostDetails = ({data}) => {
+const GroupPostDetails = ({data,reload,totalcomments}) => {
+  const [totalLikes, setTotalLikes] = useState();
+  // const [totalcomments, setTotalComments] = useState();
+
+  useEffect(()=>{
+    setTotalLikes(data?.likes)
+    // setTotalComments(data?.comments.length)
+  },[data])
+
+  const _handleLike = () => {
+    const tokenData = utils.decodeJwt(session.get(keys.token));
+    if (!tokenData) return;
+
+    let arr = Array.from(data?.likes) || [];
+    if (arr.find(k => k.userId === tokenData.id)) return;
+
+    arr.push({
+      userId: tokenData.id,
+      date: moment().format(),
+    });
+    let token = session.get(keys.token)
+    try {
+      let response =  axios({
+        url: `${constants.API_URL}/post/like/${data.id}`,
+        method: 'POST',
+        headers:{
+          'Authorization': token,
+          // 'Content-Type': 'application/json'
+        }
+      }).then((e)=>{
+        if (e.data && e.data.success === true) {
+          setTotalLikes(totalLikes+1)
+          reload();
+        }});
+    } catch (error) {
+    }
+  };
   return (
     <View>
       <View style={{flexDirection:'row',margin:10}}>
@@ -55,13 +96,13 @@ const GroupPostDetails = ({data}) => {
 
       <View style={styles.bottomContainer}>
         <View style={styles.actionButtonContainer}>
-          <Touchable style={styles.likeButton}>
+          <Touchable style={styles.likeButton} onPress={()=>_handleLike()}>
             <LikeIcon />
-            <Text customStyle={styles.likeButtonText}>{data?.likes}</Text>
+            <Text customStyle={styles.likeButtonText}>{totalLikes}</Text>
           </Touchable>
           <Touchable style={styles.commentButton}>
             <CommentIcon />
-            <Text customStyle={styles.commentButtonText}>{data?.comments.length}</Text>
+            <Text customStyle={styles.commentButtonText}>{totalcomments}</Text>
           </Touchable>
         </View>
       </View>

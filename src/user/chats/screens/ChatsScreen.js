@@ -57,6 +57,10 @@ const ChatsScreen = () => {
     }
   }, [isFocused, sortBy, filters])
 
+  useEffect(()=>{
+    reload()
+  },[isFocused,navigation])
+
   useEffect(() => {
     if (!keyword) {
       setDisplayRecords(records)
