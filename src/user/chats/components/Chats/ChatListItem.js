@@ -100,7 +100,7 @@ return (
       </View>
       <Gap height={16} />
 
-      <Text customStyle={{marginLeft:7}}>{props.data?.content}dsd</Text>
+      <Text customStyle={{marginLeft:7}}>{props.data?.content}</Text>
       <Gap height={6} />
 {props?.data?.imageUrl != null &&
       <Image 

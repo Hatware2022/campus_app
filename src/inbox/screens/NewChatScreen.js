@@ -7,6 +7,7 @@ import {
 } from 'react-native'
 import {Container, View, Title} from '../../common'
 import Text from '../../common/TextV2'
+import Header from '../../user/component/Header'
 
 import SearchIcon from '../../assets/icons/icon-search.svg'
 
@@ -64,22 +65,10 @@ const NewChatScreen = ({navigation}) => {
 
   return (
     <Container backgroundColor="#FFFF">
-      <View style={[_safeAreaStyle, styles.headerContainer]}>
-        <View horizontal alignItems="center">
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <BackIcon />
-          </TouchableOpacity>
+      {/* <View style={[_safeAreaStyle, styles.headerContainer]}> */}
+      {/* ? */}
+      <Header title={'New Chat'} />
 
-          <Text
-            size="big"
-            family="semi"
-            color={Colors.whiteText}
-            customStyle={{paddingLeft: 20}}
-          >
-            New Chat
-          </Text>
-        </View>
-      </View>
       <View style={{padding: 10, flex: 1}}>
         <View horizontal style={styles.containerSearch}>
           <SearchIcon />
@@ -128,7 +117,7 @@ const renderItem = ({item}) => {
 const styles = StyleSheet.create({
   headerContainer: {
     padding: 16,
-    backgroundColor: Colors.primary
+    backgroundColor: Colors.white100
   },
   containerSearch: {
     paddingHorizontal: 8,

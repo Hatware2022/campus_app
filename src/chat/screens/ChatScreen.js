@@ -14,7 +14,8 @@ import userService from '../../services/user'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import {StyleSheet, TouchableOpacity} from 'react-native'
 import * as Colors from '../../config/colors'
-import BackIcon from '../../assets/icons/icon-back.svg'
+import BackIcon from '../../assets/icons/icon-back-black.svg'
+import InfoIcon from '../../assets/icons/info-circle-black.svg'
 import Gap from '../../common/Gap'
 import Underline from '../../user/component/Underline'
 import reactotron from 'reactotron-react-native'
@@ -27,7 +28,7 @@ const renderDay = props => {
   return (
     <Day
       {...props}
-      dateFormat="ddd, d MMM, YYYY hh:mm"
+      dateFormat="MMMM d"
       textStyle={{color: '#373C3E', fontWeight: 'bold'}}
     />
   )
@@ -195,18 +196,31 @@ const ChatScreen = ({}) => {
   return (
     <Container backgroundColor="#FFFF">
       <View style={[_safeAreaStyle, styles.headerContainer]}>
-        <View horizontal alignItems="center">
+        <View horizontal justifyContent="space-between" alignItems="center">
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <BackIcon />
           </TouchableOpacity>
-          <Avatar
-            size={36}
-            source={chat?.imageUrl ? {uri: chat?.imageUrl} : null}
-            style={styles.avatar}
-          />
-          <Text size="big" family="semi" color={Colors.whiteText}>
-            {chat?.senderName}
-          </Text>
+          <TouchableOpacity
+            style={{alignItems: 'center'}}
+            onPress={onPressViewProfile}
+          >
+            <Avatar
+              size={36}
+              source={chat?.imageUrl ? {uri: chat?.imageUrl} : null}
+              style={styles.avatar}
+            />
+            <Text
+              size="medium"
+              family="regular"
+              color={Colors.black600}
+              customStyle={{paddingTop: 2}}
+            >
+              {chat?.senderName}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <InfoIcon />
+          </TouchableOpacity>
         </View>
       </View>
       <ScrollView
@@ -216,33 +230,6 @@ const ChatScreen = ({}) => {
         }
         scrollEnabled={false}
       >
-        <View>
-          <View
-            style={{
-              paddingTop: 10,
-              alignItems: 'center'
-            }}
-          >
-            <Avatar
-              size={80}
-              source={chat?.imageUrl ? {uri: chat?.imageUrl} : null}
-              style={styles.avatarProfile}
-            />
-            <Gap customStyle={{paddingVertical: 12}} />
-            <Text size="big" family="semi">
-              {chat?.senderName}
-            </Text>
-            <Gap customStyle={{paddingVertical: 12}} />
-            <TouchableOpacity
-              style={styles.viewProfile}
-              onPress={onPressViewProfile}
-            >
-              <Text size="big" family="semi" color={Colors.black500}>
-                View Profile
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
         <GiftedChat
           ref={chatRef}
           renderUsernameOnMessage
@@ -267,6 +254,7 @@ const ChatScreen = ({}) => {
               }
             }
           }}
+          renderTime={() => <></>}
           keyboardShouldPersistTaps="never"
           renderDay={renderDay}
           renderAvatar={renderAvatar}
@@ -275,7 +263,12 @@ const ChatScreen = ({}) => {
           minComposerHeight={60}
           renderInputToolbar={props => (
             <View style={{bottom: 0}}>
-              <Composer {...props} text={text} onChange={setText} />
+              <Composer
+                {...props}
+                text={text}
+                onChange={setText}
+                imageUrl={record?.imageUrl}
+              />
             </View>
           )}
           minInputToolbarHeight={60}
@@ -290,7 +283,7 @@ const ChatScreen = ({}) => {
 const styles = StyleSheet.create({
   headerContainer: {
     padding: 16,
-    backgroundColor: Colors.primary
+    backgroundColor: Colors.white100
   },
   avatar: {
     marginHorizontal: 16

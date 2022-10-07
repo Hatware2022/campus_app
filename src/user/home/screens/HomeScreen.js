@@ -45,7 +45,6 @@ const HomeScreen = () => {
   ])
   const dispatch = useDispatch()
   const appState = useSelector(state => state.session)
-  console.log(appState)
 
   const getTabProps = (props, ndx) => {
     const tabProps = [

@@ -8,14 +8,9 @@ import {TextInput} from '../common'
 
 import * as Colors from '../config/colors'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
-import FastImage from 'react-native-fast-image'
-import LogoIcon from '../assets/images/campuslogo.png'
 import Chapman from '../assets/icons/chapman.svg'
 import FilterIcon from '../assets/icons/icon-filter.svg'
-import NotificationIcon from '../assets/icons/icon-notif.svg'
 import SearchIcon from '../assets/icons/icon-search.svg'
-import Gap from './Gap'
-import {useNavigation} from '@react-navigation/native'
 
 /* =============================================================================
 <TabBar />
@@ -34,11 +29,9 @@ const TabBar = ({
   const insets = useSafeAreaInsets()
 
   const _safeArea = {
-    height: 149 + insets.top,
     paddingTop: insets.top,
-    backgroundColor: 'white'
+    backgroundColor: Colors.white100
   }
-  // const navigation = useNavigation()
 
   return (
     <View style={[styles.container, _safeArea, containerStyle]}>
@@ -51,7 +44,7 @@ const TabBar = ({
         <Chapman />
       </View>
 
-      <View horizontal style={{marginHorizontal: 15}}>
+      <View horizontal style={styles.mainFilterContainer}>
         <TextInput
           left={<SearchIcon />}
           value={searchBarKeyword}
@@ -62,11 +55,7 @@ const TabBar = ({
         />
         <TouchableOpacity
           onPress={filterPressHandler}
-          style={{
-            marginLeft: 16,
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
+          style={styles.filterIconContainer}
         >
           <FilterIcon />
         </TouchableOpacity>
@@ -75,6 +64,11 @@ const TabBar = ({
       <View horizontal>
         {navigationState.routes.map((item, index) => {
           const active = index !== navigationState.index
+          const activeStyle = {
+            marginBottom: 10,
+            fontWeight: !active ? '500' : '400'
+          }
+
           return (
             <Touchable
               key={item.key}
@@ -89,7 +83,7 @@ const TabBar = ({
                 <Text
                   color={active ? '#6B7476' : Colors.primary}
                   size="big"
-                  customStyle={{marginBottom: 10, fontWeight: !active ? '500' : '400'}}
+                  customStyle={activeStyle}
                 >
                   {item.title}
                 </Text>
@@ -104,10 +98,15 @@ const TabBar = ({
 
 const styles = StyleSheet.create({
   container: {
-    // height: 350,
-    // width: '100%',
-    // flexDirection: 'row',
     backgroundColor: Colors.primary
+  },
+  mainFilterContainer: {
+    marginHorizontal: 15
+  },
+  filterIconContainer: {
+    marginLeft: 16,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   item: {
     flex: 1,
@@ -123,13 +122,8 @@ const styles = StyleSheet.create({
   active: {
     borderBottomWidth: 3,
     borderBottomColor: Colors.primary
-
-    // height: 41,
-    // backgroundColor: 'pink'
   },
   inactive: {
-    // borderBottomWidth: 3,
-    // borderBottomColor: 'blue'
     color: '#6B7476'
   },
   activeTextContainer: {

@@ -4,15 +4,15 @@ import {
   StatusBar,
   StyleSheet,
   RefreshControl,
-  TextInput,
   TouchableOpacity
 } from 'react-native'
-import {Container, StackHeader, View, Title} from '../../common'
+import {Container, TextInput, View, Title} from '../../common'
 import Text from '../../common/TextV2'
 import InboxListItem from '../components/Inbox/InboxListItem'
 import SearchIcon from '../../assets/icons/icon-search.svg'
+import FilterIcon from '../../assets/icons/icon-filter.svg'
 import PlusIcon from '../../assets/icons/icon-plus.svg'
-import ArrowDownIcon from '../../assets/icons/app-arrow-down.svg'
+import Chapman from '../../assets/icons/chapman.svg'
 import * as Colors from '../../config/colors'
 import {useIsFocused} from '@react-navigation/native'
 import conversationService from '../../services/conversation'
@@ -20,7 +20,6 @@ import keys from '../../store/keys'
 import session from '../../store/session'
 import utils from '../../utils/utils'
 import moment from 'moment'
-import INBOXES from '../../constants/inboxes'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import Fonts from '../../config/fonts'
 import CampusContext from '../../CampusContext'
@@ -36,11 +35,11 @@ const InboxScreen = ({navigation}) => {
   const [records, setRecords] = useState([])
   const [refreshing, setRefreshing] = useState(false)
   const [keyword, setKeyword] = useState('')
-
   const insets = useSafeAreaInsets()
 
   const _safeAreaStyle = {
-    paddingTop: insets.top
+    paddingTop: insets.top,
+    backgroundColor: Colors.white100
     // minHeight: HEADER_HEIGHT + insets.top,
   }
   useEffect(() => {
@@ -99,16 +98,32 @@ const InboxScreen = ({navigation}) => {
       {/* <StatusBar backgroundColor={Colors.primary} barStyle="light-content" /> */}
 
       <View style={[_safeAreaStyle, styles.headerContainer]}>
-        <View horizontal justifyContent="space-between" alignItems="center">
-          <Text size="big" family="bold" color={Colors.whiteText}>
-            Chat
-          </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('NewChat')}>
-            <PlusIcon />
-          </TouchableOpacity>
+        <View
+          horizontal
+          marginVertical={16}
+          marginHorizontal={16}
+          justifyContent="space-between"
+        >
+          <Chapman />
         </View>
 
-        <View horizontal style={styles.containerSearch}>
+        <View horizontal style={styles.mainFilterContainer}>
+          <TextInput
+            left={<SearchIcon />}
+            value={keyword}
+            onChange={text => {
+              setKeyword(text)
+            }}
+            placeholder={'Find your friends here'}
+          />
+          <TouchableOpacity
+            onPress={() => {}}
+            style={styles.filterIconContainer}
+          >
+            <FilterIcon />
+          </TouchableOpacity>
+        </View>
+        {/* <View horizontal style={styles.containerSearch}>
           <SearchIcon />
           <TextInput
             placeholder="Find your friends here"
@@ -120,6 +135,26 @@ const InboxScreen = ({navigation}) => {
               setKeyword(value)
             }}
           />
+        </View> */}
+        <View
+          horizontal
+          justifyContent="space-between"
+          alignItems="center"
+          padding={20}
+        >
+          <Text size="big" family="medium" color={Colors.primary}>
+            Chats
+          </Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('NewChat')}
+            style={{
+              backgroundColor: Colors.primary,
+              padding: 2,
+              borderRadius: 10
+            }}
+          >
+            <PlusIcon />
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -151,8 +186,15 @@ const renderItem = ({item}) => <InboxListItem data={item} />
 
 const styles = StyleSheet.create({
   headerContainer: {
-    padding: 16,
-    backgroundColor: Colors.primary
+    backgroundColor: Colors.white100
+  },
+  mainFilterContainer: {
+    marginHorizontal: 15
+  },
+  filterIconContainer: {
+    marginLeft: 16,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   container: {
     flex: 1

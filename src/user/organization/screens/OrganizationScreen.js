@@ -1,34 +1,34 @@
-import React from 'react';
-import {TabView, SceneMap} from 'react-native-tab-view';
-import {StyleSheet, Dimensions, View} from 'react-native';
+import React from 'react'
+import {TabView, SceneMap} from 'react-native-tab-view'
+import {StyleSheet, Dimensions, View} from 'react-native'
 
-import ChatsScreen from '../../chats/screens/ChatsScreen';
-import GroupsScreen from '../../groups/screens/GroupsScreen';
-import EventsScreen from '../../../organization/events/screens/EventsScreen';
+import ChatsScreen from '../../chats/screens/ChatsScreen'
+import GroupsScreen from '../../groups/screens/GroupsScreen'
+import EventsScreen from '../../../organization/events/screens/EventsScreen'
 // import EventsScreen from '../../events/screens/EventsScreen';
-import ClubsScreen from '../../../organization/clubs/screens/ClubsScreen';
-import PostsScreen from '../../../organization/posts/screens/PostsScreen';
+import ClubsScreen from '../../../organization/clubs/screens/ClubsScreen'
+import PostsScreen from '../../../organization/posts/screens/PostsScreen'
 
-import {Container, TabBarNoHeader} from '../../../common';
-import Text from '../../../common/TextV2';
-import FastImage from 'react-native-fast-image';
-import campusLogo from '../../../assets/images/campuslogo.png';
+import {Container, TabBar} from '../../../common'
+import Text from '../../../common/TextV2'
+import FastImage from 'react-native-fast-image'
+import campusLogo from '../../../assets/images/campuslogo.png'
 
 const renderScene = SceneMap({
   events: EventsScreen,
   posts: PostsScreen,
-  clubs: ClubsScreen,
-});
+  clubs: ClubsScreen
+})
 
 const renderTabBar = props => (
   <>
-    <TabBarNoHeader
+    <TabBar
       {...props}
       // containerStyle={styles.tabBar}
       // styles={{backgroundColor: 'blue'}}
     />
   </>
-);
+)
 
 // const initialLayout = {width: Dimensions.get('window').width};
 
@@ -36,12 +36,12 @@ const renderTabBar = props => (
 <HomeScreen />
 ============================================================================= */
 const OrganizationScreen = () => {
-  const [index, setIndex] = React.useState(0);
+  const [index, setIndex] = React.useState(0)
   const [routes] = React.useState([
     {key: 'events', title: 'Events'},
     {key: 'posts', title: 'Posts'},
-    {key: 'clubs', title: 'Clubs'},
-  ]);
+    {key: 'clubs', title: 'Clubs'}
+  ])
 
   return (
     <Container backgroundColor="#fff">
@@ -62,18 +62,18 @@ const OrganizationScreen = () => {
         navigationState={{index, routes}}
       />
     </Container>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   tabBar: {
-    paddingHorizontal: 19,
+    paddingHorizontal: 19
     // justifyContent: 'space-between',
   },
   image: {
     width: 135,
-    height: 22,
-  },
-});
+    height: 22
+  }
+})
 
-export default OrganizationScreen;
+export default OrganizationScreen

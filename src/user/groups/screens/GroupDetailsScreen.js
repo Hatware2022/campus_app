@@ -113,7 +113,11 @@ const GroupDetailsScreen = () => {
 
   return (
     <Container backgroundColor={Colors.white200}>
-      <StatusBar backgroundColor={Colors.primary} barStyle="light-content" />
+      <StatusBar
+        backgroundColor={'transparent'}
+        barStyle="light-content"
+        translucent
+      />
       <FlatList
         data={posts}
         style={styles.list}

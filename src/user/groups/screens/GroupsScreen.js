@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { useDispatch } from 'react-redux'
+import {useDispatch} from 'react-redux'
 import {
   FlatList,
   StatusBar,
@@ -7,7 +7,7 @@ import {
   RefreshControl,
   TouchableOpacity
 } from 'react-native'
-import { useSelector } from 'react-redux'
+import {useSelector} from 'react-redux'
 import {Container, TextInput, View, Title} from '../../../common'
 import Text from '../../../common/TextV2'
 import GroupsFilter from '../components/Groups/GroupsFilter'
@@ -24,7 +24,7 @@ import utils from '../../../utils/utils'
 import session from '../../../store/session'
 import keys from '../../../store/keys'
 import ModalFilter from '../../../auth/components/Modal/modalfilter'
-import { setKey } from '../../../store/actions'
+import {setKey} from '../../../store/actions'
 
 /* =============================================================================
 <GroupsScreen />
@@ -43,8 +43,7 @@ const GroupsScreen = () => {
   const dispatch = useDispatch()
 
   const appSession = useSelector(state => state.session)
-  const keyword = appSession[keys.groupsSearchKeyword];
-  console.log(appSession)
+  const keyword = appSession[keys.groupsSearchKeyword]
 
   useEffect(() => {
     let isMounted = true
@@ -118,9 +117,13 @@ const GroupsScreen = () => {
 
   return (
     <Container style={{padding: 16}}>
-      <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
-      
-       {/* <View horizontal>
+      <StatusBar
+        backgroundColor={Colors.white100}
+        barStyle="dark-content"
+        translucent
+      />
+
+      {/* <View horizontal>
         <TextInput
           left={<SearchIcon />}
           value={keyword}
@@ -157,7 +160,7 @@ const GroupsScreen = () => {
                 style={styles.iconPlus}
               >
                 <Text size="medium" family="medium" color={Colors.primary}>
-                  {`Create New  `}
+                  {'Create New  '}
                 </Text>
                 <PlusIcon />
               </TouchableOpacity>

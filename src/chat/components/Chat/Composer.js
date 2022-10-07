@@ -2,7 +2,7 @@ import React from 'react'
 import {StyleSheet, TextInput, ActivityIndicator} from 'react-native'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
 
-import {Touchable, View} from '../../../common'
+import {Avatar, Touchable, View} from '../../../common'
 
 // import SendIcon from '../../../assets/icons/app-send.svg';
 import SendIcon from '../../../assets/icons/icon-send-message.svg'
@@ -13,11 +13,10 @@ import * as Colors from '../../../config/colors'
 /* =============================================================================
 <Composer />
 ============================================================================= */
-const Composer = ({loading, text, onChange, onSend}) => {
+const Composer = ({loading, text, onChange, onSend, imageUrl}) => {
   const insets = useSafeAreaInsets()
 
   const _layout = {
-    opacity: !text ? 0.3 : 1,
     minHeight: 58 + insets.bottom,
     paddingBottom: insets.bottom
   }
@@ -31,14 +30,12 @@ const Composer = ({loading, text, onChange, onSend}) => {
       <View
         horizontal
         style={{
-          padding: 12,
-          borderRadius: 24,
-          backgroundColor: Colors.background,
           flex: 1
         }}
       >
-        <EmojiIcon />
+        <Avatar size={40} source={imageUrl ? {uri: imageUrl} : null} />
         <TextInput
+          multiline={3}
           value={text}
           style={styles.input}
           placeholderTextColor={Colors.secondaryText}
@@ -48,7 +45,12 @@ const Composer = ({loading, text, onChange, onSend}) => {
       </View>
 
       <Touchable
-        style={styles.button}
+        style={[
+          styles.button,
+          {
+            opacity: !text ? 0.3 : 1
+          }
+        ]}
         disabled={!text || loading}
         onPress={_handleSend}
       >
@@ -69,13 +71,15 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: Colors.white200
+    justifyContent: 'space-between'
   },
   input: {
     flex: 1,
     fontFamily: 'Rubik-Regular',
-    marginHorizontal: 12
+    marginHorizontal: 12,
+    paddingHorizontal: 12,
+    borderRadius: 30,
+    backgroundColor: Colors.white200
   },
   button: {
     width: 36,

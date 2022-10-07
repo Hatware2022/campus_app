@@ -67,10 +67,10 @@ const GroupPostDetails = ({data,reload,totalcomments}) => {
        <Avatar
             size={48}
             style={{marginBottom:10}}
-            source={{uri: data.imageUrl ? data.imageUrl : null}}
+            source={{uri: data?.user?.imageUrl ? data?.user?.imageUrl : null}}
           />
           <Text customStyle={styles.name} family="semi" size="big">
-            {data?.name ? data?.name : 'dummy'}
+            {data?.user?.name ? data?.user?.name : 'dummy'}
           </Text>
           <Text size="small" customStyle={styles.time}>
           {moment(new Date()).fromNow()}

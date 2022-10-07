@@ -34,13 +34,14 @@ import Header from '../../component/Header';
 import Gap from '../../../common/Gap';
 import Underline from '../../component/Underline';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation,useIsFocused} from '@react-navigation/native';
 import postService from '../../../services/post';
 
 /* =============================================================================
 <EditUserProfileScreen/>
 ============================================================================= */
 const EditUserProfileScreen = () => {
+  const isFocused = useIsFocused();
   const navigation = useNavigation();
   const [record, setRecord] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
@@ -76,9 +77,16 @@ const EditUserProfileScreen = () => {
   }, []);
 
   useEffect(() => {
-    
-    reload();
-  }, [navigation]);
+    let isMounted = true;
+    if (isMounted) {
+      reload();
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, [isFocused,navigation]);
+
 
   const reload = () => {
     const tokenData = utils.decodeJwt(session.get(keys.token));

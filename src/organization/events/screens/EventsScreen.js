@@ -150,7 +150,7 @@ const EventsScreen = () => {
   return (
     <Container backgroundColor={Colors.white250} style={{padding: 16}}>
       <StatusBar backgroundColor={Colors.primary} barStyle="light-content" />
-      <View horizontal>
+      {/* <View horizontal>
         <TextInput
           left={<SearchIcon />}
           value={keyword}
@@ -166,7 +166,7 @@ const EventsScreen = () => {
         >
           <FilterIcon />
         </TouchableOpacity>
-      </View>
+      </View> */}
       <FlatList
         data={records}
         style={styles.list}
@@ -175,9 +175,9 @@ const EventsScreen = () => {
         contentContainerStyle={styles.listContent}
         ListHeaderComponent={
           <View style={styles.headerText}>
-            <Text family="semi" size="big" customStyle={styles.textEvent}>
+            {/* <Text family="semi" size="big" customStyle={styles.textEvent}>
               Events
-            </Text>
+            </Text> */}
             {loginAsClub && (
               <>
                 <Text size="small" family="medium" color={Colors.primary}>

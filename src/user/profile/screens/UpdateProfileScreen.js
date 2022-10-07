@@ -210,8 +210,10 @@ const UpdateProfileScreen = (props) => {
   const takephotofromLibrary = () => {
     const options = {
       mediaType: 'photo',
-      quality: 0.3,
-    };
+      quality: 0.2,
+      maxWidth: 500,
+      maxHeight: 500,    
+    }
     launchImageLibrary(options, response => {
       if (response.didCancel) {
         // empty action

@@ -51,7 +51,7 @@ const GroupPostCommentsScreen = () => {
     .addComment(session.get(keys.token), data)
     .then(result => {
       if (result.data && result.data.success === true) {
-        alert(JSON.stringify(result?.data?.message))
+        // alert(JSON.stringify(result?.data?.message))
         setTotalComments(totalcomments+1)
         allComments.push({
           "id": 3,
