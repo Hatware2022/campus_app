@@ -14,6 +14,7 @@ import GroupMembers from '../components/GroupDetails/GroupMembers'
 import GroupPostListItem from '../components/GroupDetails/GroupPostListItem'
 import ArrowRedIcon from '../../../assets/icons/icon-red-arrow.svg'
 import SurfingImage from '../../../assets/images/Surfing.png'
+import PlusIcon from '../../../assets/icons/icon-plus-circle-big.svg'
 
 import session from '../../../store/session'
 import keys from '../../../store/keys'
@@ -176,10 +177,13 @@ const GroupDetailsScreen = () => {
             <View style={styles.headerPost}>
               {isUserAGroupMember ? (
                 <TouchableOpacity
-                  style={styles.buttonPost}
-                  onPress={isUserAGroupMember ? _moveToGroupPost : null}
-                >
-                  <Text size="small">Create Post +</Text>
+                   onPress={isUserAGroupMember ? _moveToGroupPost : null}
+                   style={styles.iconPlus}
+                            >
+                              <Text size="medium" family="medium" color={Colors.primary}>
+                                {'Create New  '}
+                              </Text>
+                              <PlusIcon />
                 </TouchableOpacity>
               ) : null}
               {posts.length ? (
@@ -269,7 +273,12 @@ const styles = StyleSheet.create({
   },
   description: {
     marginBottom: 16
-  }
+  },
+  iconPlus: {
+    marginLeft: 6,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
 })
 
 export default GroupDetailsScreen

@@ -101,14 +101,14 @@ return (
       <Gap height={16} />
 
       <Text customStyle={{marginLeft:7}}>{props.data?.content}</Text>
-      <Gap height={6} />
-{props?.data?.imageUrl != null &&
+      <Gap height={12} />
+{props?.data?.imageUrl != null && props?.data?.imageUrl != "" ?
       <Image 
-      style={{height:200,width:'98%',borderColor:'#000',borderWidth:0.1,
-      borderRadius:10,alignSelf:'center',backgroundColor:'rgba(0,0,0,0.05)'}}
+      style={{height:300,width:'98%',marginBottom:10,
+      borderRadius:10,alignSelf:'center'}}
       resizeMode={'cover'}
-      source={props?.data?.imageUrl != null ? {uri: props?.data?.imageUrl} : DemoImage} />
-}
+      source={props?.data?.imageUrl != null ? {uri: props?.data?.imageUrl} : {}} />
+      :null}
       
       
 
@@ -136,7 +136,7 @@ return (
           </Text>
         </Touchable>
       </View>
-      <Text size="small" customStyle={styles.time}>
+      <Text size="medium" customStyle={styles.time}>
           {moment(props.data.createdAt).fromNow()}
         </Text>
     </Touchable>
@@ -145,15 +145,17 @@ return (
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 16,
+    // marginBottom: 16,
     padding: 16,
-    borderRadius: 8,
+    // borderRadius: 8,
     backgroundColor: Colors.background,
   },
   topContainer: {
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
+    alignItems:'center',
+    marginRight: 10,
   },
   userContainer: {
     flexDirection: 'row',
@@ -165,7 +167,7 @@ const styles = StyleSheet.create({
   },
   time: {
     color: Colors.black400,
-    marginTop:10,
+    marginTop:12,
     marginLeft:3
     // alignSelf: 'center',
   },
@@ -184,15 +186,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 16,
+    marginLeft: 5
   },
   likeButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingRight: 10,
+    paddingRight: 18,
   },
   likeButtonText: {
-    fontSize: 12,
-    marginLeft: 5,
+    fontSize: 16,
+    marginLeft: 8,
     color: Colors.primary,
   },
   commentButton: {
@@ -201,11 +204,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   commentButtonText: {
-    fontSize: 12,
-    marginLeft: 5,
+    fontSize: 16,
+    marginLeft: 8,
   },
   tagContainer: {
-    marginTop: 16,
+    // marginTop: 1,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     marginLeft:5

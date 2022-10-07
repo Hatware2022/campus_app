@@ -111,6 +111,12 @@ const InboxScreen = ({navigation}) => {
           <TextInput
             left={<SearchIcon />}
             value={keyword}
+            containerStyle={{
+              borderRadius: 30,
+            }}
+            contentContainerStyle={{
+              borderRadius: 30,
+            }}
             onChange={text => {
               setKeyword(text)
             }}

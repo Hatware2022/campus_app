@@ -5,6 +5,7 @@ import Text from '../../../../common/TextV2';
 
 import * as Colors from '../../../../config/colors';
 import DotIcon from '../../../../assets/icons/icon-dot.svg';
+import moment from 'moment'
 
 /* =============================================================================
 <GroupPostCommentListItem />
@@ -16,14 +17,17 @@ const GroupPostCommentListItem = ({data,allComments}) => {
       <View marginLeft={12} flex={1}>
         <View horizontal justifyContent={'space-between'}>
           <Text size="small" family="semi">
-            {data?.createdBy || 'Hardcode Name'}
+            {data?.updatedBy || 'Hardcode Name'}
           </Text>
           <Text size="small" color={Colors.black400}>
             {data.time}
           </Text>
+          <Text size="small" customStyle={styles.time}>
+          {moment(data.updatedAt).fromNow()}
+        </Text>
         </View>
 
-        <Text customStyle={styles.comment}>{allComments}</Text>
+        <Text customStyle={styles.comment}>{data?.comment}</Text>
 
         <View horizontal marginBottom={20}>
           <Touchable
@@ -60,6 +64,11 @@ const styles = StyleSheet.create({
   comment: {
     marginTop: 4,
     marginBottom: 8,
+  },
+  time: {
+    color: Colors.black400,
+    alignSelf: 'center',
+    marginRight:5
   },
 });
 

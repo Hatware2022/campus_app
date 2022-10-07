@@ -14,6 +14,7 @@ import ChatsFilter from '../components/Chats/ChatsFilter'
 import ChatListItem from '../components/Chats/ChatListItem'
 import SearchIcon from '../../../assets/icons/icon-search.svg'
 import FilterIcon from '../../../assets/icons/icon-filter.svg'
+import PlusIcon from '../../../assets/icons/icon-plus-circle-big.svg'
 import session from '../../../store/session'
 import keys from '../../../store/keys'
 import ArrowDownIcon from '../../../assets/icons/app-arrow-down.svg'
@@ -126,7 +127,7 @@ const ChatsScreen = () => {
   const renderItem = ({item}) => <ChatListItem data={item} reload={reload} />
 
   return (
-    <Container backgroundColor={Colors.white250} style={{padding: 16}}>
+    <Container  style={{}}>
       <StatusBar backgroundColor={Colors.primary} barStyle="light-content" />
 
       {/* <View horizontal>
@@ -156,34 +157,20 @@ const ChatsScreen = () => {
         keyExtractor={item => item._id}
         contentContainerStyle={styles.listContent}
         ListHeaderComponent={
-          <View
-            marginVertical={16}
-            horizontal
-            alignItems="center"
-            justifyContent="space-between"
-          >
-            <Text color={'black'} customStyle={{fontWeight: 'bold'}} size="big">
-              {/* <Text size="big" color={'black'} customStyle={{color:'black'}} family="semi"> */}
-              Posts
-            </Text>
+          <View style={styles.headerText}>
+            <Text family="semi" size="big" customStyle={styles.textGroup}>
+            Posts
+              </Text>
             <View horizontal>
               <TouchableOpacity
-                style={styles.buttonPost}
+                style={styles.iconPlus}
                 onPress={_moveToCreatePost}
               >
-                <Text
-                  color={Colors.primary}
-                  size="small"
-                >
-                  Create Post{' '}
+                <Text size="medium" family="medium" color={Colors.primary}>
+                  {'Create New  '}
                 </Text>
+                <PlusIcon />
               </TouchableOpacity>
-              <AntDesign
-                name="pluscircle"
-                size={20}
-                color={Colors.primary}
-                style={{marginTop: 9, marginLeft: -7}}
-              />
             </View>
             {/* <ChatForm reload={reload} /> */}
           </View>
@@ -230,18 +217,35 @@ const styles = StyleSheet.create({
     flex: 1
   },
   listContent: {
-    paddingBottom: 20
+    paddingBottom: 0
   },
   buttonPost: {
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderWidth: 1,
     borderRadius: 8,
-    borderColor: Colors.white300
+    borderColor: Colors.white300,
+    flexDirection:'row',
+    alignItems:'center'
   },
   buttonPostTxt: {
     color: Colors.primary
-  }
+  },
+  iconPlus: {
+    marginLeft: 6,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  textGroup: {
+    lineHeight: 22,
+    flex: 1
+  },
+  headerText: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 14,
+    padding: 16
+  },
 })
 
 export default ChatsScreen

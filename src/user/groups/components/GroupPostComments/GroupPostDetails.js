@@ -19,6 +19,7 @@ import keys from '../../../../store/keys'
 import utils from '../../../../utils/utils'
 import axios from 'axios'
 import constants from '../../../../utils/constants'
+import Gap from '../../../../common/Gap';
 // import { Image } from 'react-native-svg';
 
 /* =============================================================================
@@ -55,15 +56,20 @@ const GroupPostDetails = ({data,reload,totalcomments}) => {
         }
       }).then((e)=>{
         if (e.data && e.data.success === true) {
-          setTotalLikes(totalLikes+1)
+          if(e.data.code === "REACTION_DELETED"){
+            setTotalLikes(totalLikes-1)
+          }else{
+            setTotalLikes(totalLikes+1)
+          }
           reload();
-        }});
+        }
+      })
     } catch (error) {
     }
   };
   return (
     <View>
-      <View style={{flexDirection:'row',margin:10}}>
+      <View style={{flexDirection:'row',margin:10,}}>
        <Avatar
             size={48}
             style={{marginBottom:10}}
@@ -77,16 +83,17 @@ const GroupPostDetails = ({data,reload,totalcomments}) => {
         </Text>
           </View>
       <View style={styles.topContainer}>
-     
+
+      <Text customStyle={{marginTop:10,color:'black',marginLeft:10, fontSize:15}} >
+      {data?.content}
+      </Text>
+        
+        {data?.imageUrl?
         <View style={styles.userContainer}>
-          
           <Image source={{uri: data?.imageUrl ? data?.imageUrl : null}} style={styles.images} />          
-        </View>
+        </View>:null}
       
       </View>
-      <Text customStyle={{marginTop:20,color:'black',marginLeft:10}} family="semi" size="big">
-            {data?.content}
-          </Text>
       {/* create condition if image exist */}
       {/* <FastImage
         resizeMode={FastImage.resizeMode.contain}
@@ -108,7 +115,8 @@ const GroupPostDetails = ({data,reload,totalcomments}) => {
           </Touchable>
         </View>
       </View>
-      <Underline />
+      {/* <Underline /> */}
+      <Gap height={36} />
     </View>
   )
 }
@@ -132,8 +140,9 @@ const styles = StyleSheet.create({
   },
   time: {
     color: Colors.black400,
-    alignSelf: 'center',
-    marginLeft: 'auto'
+    alignItems:'center',
+    marginLeft: 'auto',
+    marginTop: 10
   },
   bottomContainer: {
     flexDirection: 'row',
@@ -148,11 +157,12 @@ const styles = StyleSheet.create({
   likeButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingRight: 10
+    paddingRight: 18
   },
   likeButtonText: {
-    marginLeft: 5,
-    color: Colors.primary
+    marginLeft: 8,
+    color: Colors.primary,
+    fontSize: 15
   },
   commentButton: {
     paddingRight: 10,
@@ -160,7 +170,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   commentButtonText: {
-    marginLeft: 5
+    marginLeft: 8,
+    fontSize: 15
   },
   image: {
     width: 343,
@@ -176,7 +187,6 @@ const styles = StyleSheet.create({
     width: '97%',
     height: 230,
     borderRadius: 10,
-    backgroundColor: 'rgba(0,0,0,0.05)',
     marginLeft: 5
   }
 })

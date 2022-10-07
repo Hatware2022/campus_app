@@ -48,6 +48,13 @@ const TabBar = ({
         <TextInput
           left={<SearchIcon />}
           value={searchBarKeyword}
+          containerStyle={{
+            borderRadius: 30,
+          }}
+          contentContainerStyle={{
+            borderRadius: 30,
+          }}
+          headerSearch={true}
           onChange={text => {
             searchBarChangeHandler(text)
           }}
@@ -82,7 +89,7 @@ const TabBar = ({
               <View>
                 <Text
                   color={active ? '#6B7476' : Colors.primary}
-                  size="big"
+                  size="slightlyLarge"
                   customStyle={activeStyle}
                 >
                   {item.title}
@@ -109,18 +116,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   item: {
-    flex: 1,
+    // flex: 1,
     paddingTop: 15,
-    paddingLeft: 5,
+    paddingLeft: 10,
     marginLeft: 15,
-    marginRight: 45
+    marginRight: 35,
+    paddingHorizontal: 10
   },
   textContainer: {
     borderBottomWidth: 3,
     borderBottomColor: Colors.primary
   },
   active: {
-    borderBottomWidth: 3,
+    borderBottomWidth: 2,
     borderBottomColor: Colors.primary
   },
   inactive: {

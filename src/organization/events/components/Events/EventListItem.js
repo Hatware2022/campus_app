@@ -124,9 +124,10 @@ const EventListItem = props => {
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 16,
-    padding: 16,
-    paddingHorizontal: 10,
+    // marginVertical: 16,
+    marginBottom: 10,
+    padding: 22,
+    paddingHorizontal: 16,
     // marginHorizontal: 20,
     borderRadius: 8,
     shadowColor: Colors.border,
@@ -137,12 +138,13 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5
+    elevation: 5,
   },
   topContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    marginTop: 20,
   },
   userContainer: {
     flexDirection: 'row',

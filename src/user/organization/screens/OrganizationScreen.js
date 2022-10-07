@@ -16,7 +16,7 @@ import campusLogo from '../../../assets/images/campuslogo.png'
 
 const renderScene = SceneMap({
   events: EventsScreen,
-  posts: PostsScreen,
+  posts: ChatsScreen,
   clubs: ClubsScreen
 })
 

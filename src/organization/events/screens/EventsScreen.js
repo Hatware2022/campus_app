@@ -148,7 +148,7 @@ const EventsScreen = () => {
   }
 
   return (
-    <Container backgroundColor={Colors.white250} style={{padding: 16}}>
+    <Container backgroundColor={Colors.white250} style={{padding: 0}}>
       <StatusBar backgroundColor={Colors.primary} barStyle="light-content" />
       {/* <View horizontal>
         <TextInput
@@ -172,9 +172,9 @@ const EventsScreen = () => {
         style={styles.list}
         renderItem={renderItem}
         keyExtractor={item => item._id}
-        contentContainerStyle={styles.listContent}
+        contentContainerStyle={loginAsClub?styles.listContent:{}}
         ListHeaderComponent={
-          <View style={styles.headerText}>
+          <View style={[styles.headerText,loginAsClub?{marginVertical: 10}:{}]}>
             {/* <Text family="semi" size="big" customStyle={styles.textEvent}>
               Events
             </Text> */}
@@ -235,16 +235,16 @@ const styles = StyleSheet.create({
     flex: 1
   },
   list: {
-    flex: 1
+    flex: 1,
+    
   },
   listContent: {
     paddingTop: 10,
-    paddingBottom: 20
+    paddingBottom: 20,
   },
   headerText: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 10
   },
   iconPlus: {
     marginLeft: 6

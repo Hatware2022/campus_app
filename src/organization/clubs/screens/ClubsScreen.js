@@ -102,7 +102,7 @@ const ClubsScreen = () => {
           contentContainerStyle={styles.listContent}
           ListHeaderComponent={
             <>
-              <View horizontal>
+              {/* <View horizontal>
                 <TextInput
                   left={<SearchIcon />}
                   value={keyword}
@@ -117,7 +117,7 @@ const ClubsScreen = () => {
                   }}>
                   <FilterIcon />
                 </TouchableOpacity>
-              </View>
+              </View> */}
               <Text size="big" family="semi" customStyle={styles.title}>
                 Clubs
               </Text>

@@ -255,167 +255,20 @@ const EditUserProfileScreen = () => {
         <Text family="semi" size="big">
           Interest
         </Text>
+        {record?.interest && record?.interest.length > 0 ?
+        <TagInput label="Interests" tags={record?.interest} />
+        :null}
         <Gap height={12} />
-        <Text >Photography</Text>
-        <Gap height={8} />
-        <View padding={8} backgroundColor={Colors.white200} borderRadius={8}>
-          <Text customStyle={{minHeight:30,paddingLeft:5}}>
-            I’ve been taking photos for 6 years. I love doing portraits and
-            brand photography.
-          </Text>
-        </View>
-
-        <Gap height={12} />
-        <Text>Art</Text>
-        <Gap height={8} />
-        <View padding={8} backgroundColor={Colors.white200} borderRadius={8}>
-          <Text customStyle={{minHeight:30,paddingLeft:5}}>
-            Art has always fascinated me. I love to paint and would like to get
-            a group together to paint on the weekends in different locations!
-          </Text>
-        </View>
 
         <Underline marginHorizontal={0} />
 
         <Text family="semi" size="big">
           Down For
         </Text>
-
-        <Gap height={12} />
-        <Text>Movies</Text>
-        <Gap height={8} />
-        <View padding={8} backgroundColor={Colors.white200} borderRadius={8}>
-          <Text customStyle={{minHeight:30,paddingLeft:5}}>
-            I’ve been taking photos for 6 years. I love doing portraits and
-            brand photography.
-          </Text>
-        </View>
-
-        <Gap height={12} />
-        <Text>Partying</Text>
-        <Gap height={8} />
-        <View padding={8} backgroundColor={Colors.white200} borderRadius={8}>
-          <Text customStyle={{minHeight:30,paddingLeft:5}}>
-            Art has always fascinated me. I love to paint and would like to get
-            a group together to paint on the weekends in different locations!
-          </Text>
-        </View>
-        {/* <TextInput
-          placeholder="First Name"
-          value={firstName}
-          onChange={setFirstName}
-        />
-
-        <TextInput
-          placeholder="Last Name"
-          value={lastName}
-          onChange={setLastName}
-        />
-
-        <TextInput placeholder="Major" value={major} onChange={setMajor} /> */}
-
-        {/* <Select
-					label="Major"
-					data={['Major 1', 'Major 2']}
-					value={major}
-					onChange={setMajor}
-				/> */}
-
-        {/* <Select
-          label="Grade year"
-          data={['1 year', '2 years']}
-          value={gradeYear}
-          onChange={setGradeYear}
-        />
-
-        <Select
-          label="Gender"
-          data={['Male', 'Female']}
-          value={gender}
-          onChange={setGender}
-        /> */}
-
-        {/* <TextArea
-          label="Social Links"
-          height={'auto'}
-          editable={false}
-          placeholder="Directions: here is where you write a little bit more about what you desire to get out of your time at the Company. "
-        />
-
-        <TextInput
-          left={<InstagramIcon />}
-          placeholder="Paste link here"
-          value={insta}
-          onChange={setInsta}
-        />
-        <TextInput
-          left={<TiktokIcon />}
-          placeholder="Paste link here"
-          value={tiktok}
-          onChange={setTiktok}
-        />
-        <TextInput
-          left={<LinkedInIcon />}
-          placeholder="Paste link here"
-          value={linkedin}
-          onChange={setLinkedin}
-        /> */}
-
-        {/* <TextArea
-          label="Bio"
-          height={'auto'}
-          editable={false}
-          placeholder="Include details about who you are and what you seek to get out of your college experience. "
-        />
-
-        <TextArea
-          placeholder="Write here..."
-          value={bio}
-          onChange={setBio}
-          height={'auto'}
-        /> */}
-
-        {/* <TextArea
-          label="Interests"
-          editable={false}
-          height={'auto'}
-          placeholder="Elaborate about your interest here in 1-3 sentence..."
-        />
-
-        <TagInput
-          label="Choose interests"
-          values={interests}
-          onChange={setInterests}
-          height={'auto'}
-          tags={['Business', 'Hiking', 'Reading', 'See all']}
-        />
-        <View style={styles.underline} />
-
-        <TextArea
-          label="Down for"
-          editable={false}
-          height={'auto'}
-          placeholder="Elaborate about your interest here in 1-3 sentence..."
-        />
-
-        <TagInput
-          label="Choose activities"
-          values={activities}
-          onChange={setActivities}
-          tags={['Business', 'Hiking', 'Reading', 'See all']}
-        /> */}
-
-        {/* <View style={styles.underline} /> */}
-
-        {/* {errorMessage && (
-          <Text style={globalStyles.errorHelper}>{errorMessage}</Text>
-        )}
-        {successMessage && (
-          <Text style={globalStyles.successHelper}>{successMessage}</Text>
-        )}
-        <View center>
-          <Button width={146} height={51} title="Update" onPress={_update} />
-        </View> */}
+        {record?.downFor && record?.downFor.length > 0 ?
+         <TagInput label="Interests" tags={record?.downFor}  />
+        :null}
+        
       </Content>
       <View style={styles.containerButton}>
         <Button

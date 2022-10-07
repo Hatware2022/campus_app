@@ -6,41 +6,53 @@ import Header from '../../component/Header';
 import GroupPostDetails from '../components/GroupPostComments/GroupPostDetails';
 import GroupPostCommentForm from '../components/GroupPostComments/GroupPostCommentForm';
 import GroupPostCommentListItem from '../components/GroupPostComments/GroupPostCommentsListItem';
+import {useIsFocused} from '@react-navigation/native';
 
 import GROUP_POST_COMMENTS from '../../../constants/groupPostComments';
  
 import * as Colors from '../../../config/colors';
-
+import utils from '../../../utils/utils';
 import {useRoute} from '@react-navigation/native';
 import postService from '../../../services/post';
 import session from '../../../store/session';
 import keys from '../../../store/keys';
+import userService from '../../../services/user';
+import moment from 'moment';
 
 /* =============================================================================
 <GroupPostCommentsScreen />
 ============================================================================= */
 const GroupPostCommentsScreen = () => {
+  const isFocused = useIsFocused();
   const route = useRoute();
   const post = route.params?.post || {};
- 
+  const [record, setRecord] = useState(null);
   const [allComments,setAllComments]= useState(route.params?.post?.comments || [])
   const [totalcomments, setTotalComments] = useState(route.params?.post?.comments.length);
- 
-  useEffect(()=>{
-    // alert(route.params?.post?.comments.length)
-    // getComments()
-    // reload()
-  },[])
+  const tokenData = utils.decodeJwt(session.get(keys.token)) || null;
 
-  // const getComments =()=>{
-  //   postService
-  //   .getComments(session.get(keys.token), post.id)
-  //   .then(result => {
-  //     alert(JSON.stringify(result))
-  //     if (result.data && result.data.success === true) {
-  //     }
-  //   });
-  // }
+
+  useEffect(() => {
+    let isMounted = true;
+    if (isMounted) {
+      reload();
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, [isFocused]);
+
+  const reload = () => {
+    if (!tokenData) return;
+    userService.getById(session.get(keys.token), tokenData.id).then(result => {     
+      if (result.data && result.data.success === true) {
+        let r = result.data.data;
+        setRecord(r);
+      }
+    });
+  };
+
 
   const handleSendComment =(e)=>{
     let data ={
@@ -54,15 +66,15 @@ const GroupPostCommentsScreen = () => {
         // alert(JSON.stringify(result?.data?.message))
         setTotalComments(totalcomments+1)
         allComments.push({
-          "id": 3,
-          "createdBy": 27,
+          "id": record.id,
+          "createdBy": record.id,
           "comment": e,
-          "postId": 7,
+          "postId": post.id,
           "isDeleted": false,
-          "imageUrl": null,
-          "updatedBy": null,
-          "createdAt": "2022-09-22T16:37:36.258Z",
-          "updatedAt": "2022-09-22T16:37:36.258Z"
+          "imageUrl": record?.imageUrl,
+          "updatedBy": record?.name,
+          "createdAt": record?.createdAt,
+          "updatedAt": moment(new Date())
       })
       }
     });
@@ -91,11 +103,11 @@ const renderCommentItem = ({item}) => <GroupPostCommentListItem allComments={ite
 const styles = StyleSheet.create({
   list: {
     flex: 1,
-    padding: 20,
+    // padding: 20,
   },
   listContent: {
     borderRadius: 10,
-    paddingBottom: 20,
+    padding: 16,
     backgroundColor: Colors.background,
     shadowColor: Colors.border,
     shadowOffset: {
