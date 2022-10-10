@@ -18,7 +18,7 @@ import keys from '../../../../store/keys';
 /* =============================================================================
 <ClubListItem />
 ============================================================================= */
-const ClubListItem = ({data}) => {
+const ClubListItem = ({data,reload}) => {
   const navigation = useNavigation();
   const [joinClub, setJoinClub] = useState(false);
   const previousData = data
@@ -39,7 +39,7 @@ const ClubListItem = ({data}) => {
         }
       }).then((e)=>{
         setJoinClub(true)
-            alert('Join Club Successfully')
+        reload()
       });
     } catch (error) {
     }
@@ -57,7 +57,7 @@ const ClubListItem = ({data}) => {
         }
       }).then((e)=>{
         setJoinClub(false)
-            alert('Leave Club Successfully')
+        reload()
       });
     } catch (error) {
     }
@@ -99,8 +99,8 @@ const ClubListItem = ({data}) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
-    marginBottom: 16,
+    padding: 20,
+    marginBottom: 10,
     backgroundColor: Colors.background,
     borderRadius: 8,
     shadowColor: Colors.border,

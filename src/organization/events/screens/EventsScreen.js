@@ -6,6 +6,7 @@ import {
   RefreshControl,
   TouchableOpacity
 } from 'react-native'
+import {useDispatch, useSelector} from 'react-redux'
 import {
   Button,
   Container,
@@ -34,21 +35,27 @@ import CampusContext from '../../../CampusContext'
 import ModalFilter from '../../../auth/components/Modal/modalfilter'
 import reactotron from 'reactotron-react-native'
 import ModalConfirm from '../../../auth/components/Modal/modalconfirm'
+import {setKey} from '../../../store/actions';
 
 /* =============================================================================
 <EventsScreen />
 ============================================================================= */
 const EventsScreen = () => {
+  const dispatch = useDispatch()
   const navigation = useNavigation()
   const isFocused = useIsFocused()
   const {loginAsClub} = useContext(CampusContext)
   const [records, setRecords] = useState([])
   const [refreshing, setRefreshing] = useState(false)
-  const [keyword, setKeyword] = useState('')
+  // const [keyword, setKeyword] = useState('')
   const [sortBy, setSortBy] = useState('Newest')
   const [filters, setFilters] = useState(null)
   const [record, setRecord] = useState(null)
   const [viewFilter, setViewFilter] = useState(false)
+
+  const appSession = useSelector(state => state.session)
+  const keyword = appSession[keys.eventsSearchKeyword]
+  const viewFilterFlag = appSession[keys.eventsShowModalFilter]
 
   const _moveToCreatePost = () => {
     navigation.navigate('EventCreate')
@@ -64,6 +71,10 @@ const EventsScreen = () => {
       }
     })
   }, [])
+
+  useEffect(() => {
+    setViewFilter(viewFilterFlag)
+  }, [viewFilterFlag]);
 
   useEffect(() => {
     if (isFocused) {
@@ -89,7 +100,7 @@ const EventsScreen = () => {
         let f = filters?.keyword || keyword
         arr = arr.filter(k => k.title.toLowerCase().includes(f.toLowerCase()))
       }
-
+      
       if (sortBy === 'Most Popular') {
         arr = arr.sort((a, b) => b.membersinfo.length - a.membersinfo.length)
       } else if (sortBy === 'Oldest First') {
@@ -134,6 +145,11 @@ const EventsScreen = () => {
   const onRefresh = () => {
     reload()
   }
+
+  const _onPressCloseFilter = () => {
+    setViewFilter(false);
+    dispatch(setKey(keys.eventsShowModalFilter, false))
+  };
 
   const renderItem = ({item}) => (
     <EventListItem
@@ -211,8 +227,8 @@ const EventsScreen = () => {
         sortBy={sortBy}
         setSortBy={e => setSortBy(e)}
         isVisible={viewFilter}
-        onCloseModal={() => setViewFilter(false)}
-        onYes={() => setViewFilter(false)}
+        onCloseModal={() => _onPressCloseFilter()}
+        onYes={() => _onPressCloseFilter()}
       />
     </Container>
   )

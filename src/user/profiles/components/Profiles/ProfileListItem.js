@@ -37,7 +37,7 @@ const ProfileListItem = ({data}) => {
       </View>
 
       <Text size="small" family="semi" customStyle={styles.tagTitle}>
-        Down for:
+        Tags:
       </Text>
 
       <View style={styles.tagContainer}>
@@ -56,18 +56,18 @@ const ProfileListItem = ({data}) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 16,
+    marginBottom: 10,
     padding: 16,
     backgroundColor: '#FFFFFF',
     borderRadius: 8,
-    shadowColor: Colors.border,
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-    elevation: 8,
+    // shadowColor: Colors.border,
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 4,
+    // },
+    // shadowOpacity: 0.3,
+    // shadowRadius: 4.65,
+    // elevation: 8,
   },
   name: {
     marginTop: 8,

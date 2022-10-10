@@ -71,7 +71,11 @@ const ChatListItem = props => {
         }
       }).then((e)=>{
         if (e.data && e.data.success === true) {
-          setTotalLikes(totalLikes+1)
+          if(e.data?.code === "REACTION_DELETED"){
+            setTotalLikes(totalLikes-1)
+          }else{
+            setTotalLikes(totalLikes+1)
+          }
           props.reload();
         }});
     } catch (error) {

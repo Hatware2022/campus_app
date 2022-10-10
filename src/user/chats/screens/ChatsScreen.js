@@ -6,6 +6,7 @@ import {
   RefreshControl,
   TouchableOpacity
 } from 'react-native'
+import {useDispatch, useSelector} from 'react-redux'
 import {Container, TextInput, Title, View, TextArea} from '../../../common'
 import Text from '../../../common/TextV2'
 
@@ -17,6 +18,7 @@ import FilterIcon from '../../../assets/icons/icon-filter.svg'
 import PlusIcon from '../../../assets/icons/icon-plus-circle-big.svg'
 import session from '../../../store/session'
 import keys from '../../../store/keys'
+import {setKey} from '../../../store/actions'
 import ArrowDownIcon from '../../../assets/icons/app-arrow-down.svg'
 import * as Colors from '../../../config/colors'
 import CHATS from '../../../constants/chats'
@@ -30,11 +32,12 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 <ChatsScreen />
 ============================================================================= */
 const ChatsScreen = () => {
+  const dispatch = useDispatch()
   const isFocused = useIsFocused()
   const [records, setRecords] = useState([])
   const [displayRecords, setDisplayRecords] = useState([])
   const [refreshing, setRefreshing] = useState(false)
-  const [keyword, setKeyword] = useState('')
+  // const [keyword, setKeyword] = useState('')
   const [sortBy, setSortBy] = useState('Newest')
   const [filters, setFilters] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
@@ -42,6 +45,10 @@ const ChatsScreen = () => {
   const navigation = useNavigation()
   const route = useRoute()
   const [viewFilter, setViewFilter] = useState(false)
+
+  const appSession = useSelector(state => state.session)
+  const keyword = appSession[keys.postsSearchKeyword]
+  const viewFilterFlag = appSession[keys.postsShowModalFilter]
 
   const _moveToCreatePost = () => {
     navigation.navigate('PostCreate')
@@ -57,6 +64,10 @@ const ChatsScreen = () => {
       isMounted = false
     }
   }, [isFocused, sortBy, filters])
+
+  useEffect(() => {
+    setViewFilter(viewFilterFlag)
+  }, [viewFilterFlag]);
 
   useEffect(()=>{
     reload()
@@ -97,8 +108,8 @@ const ChatsScreen = () => {
 
       let arr = result.data.data
 
-      if (keyword.length > 0 || (filters && filters.keyword.length > 0)) {
-        let f = filters.keyword || keyword
+      if (keyword.length > 0 || (filters && filters?.keyword.length > 0)) {
+        let f = filters?.keyword || keyword
         arr = arr.filter(k => k.detail.toLowerCase().includes(f.toLowerCase()))
       }
 
@@ -123,6 +134,11 @@ const ChatsScreen = () => {
     reload()
     setRefreshing(false)
   }
+
+  const _onPressCloseFilter = () => {
+    setViewFilter(false);
+    dispatch(setKey(keys.postsShowModalFilter, false))
+  };
 
   const renderItem = ({item}) => <ChatListItem data={item} reload={reload} />
 
@@ -195,8 +211,8 @@ const ChatsScreen = () => {
         sortBy={sortBy}
         setSortBy={e => setSortBy(e)}
         isVisible={viewFilter}
-        onCloseModal={() => console.log('ji') || setViewFilter(false)}
-        onYes={() => setViewFilter(false)}
+        onCloseModal={() => console.log('ji') || _onPressCloseFilter()}
+        onYes={() => _onPressCloseFilter()}
       />
     </Container>
   )

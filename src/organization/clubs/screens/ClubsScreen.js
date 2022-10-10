@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {FlatList, StatusBar, StyleSheet, TouchableOpacity, RefreshControl} from 'react-native';
 import {Container, TextInput, View} from '../../../common';
 import Text from '../../../common/TextV2';
+import {useDispatch, useSelector} from 'react-redux'
 
 import ClubsFilter from '../components/Clubs/ClubsFilter';
 import ClubListItem from '../components/Clubs/ClubListItem';
@@ -17,23 +18,27 @@ import ModalFilter from '../../../auth/components/Modal/modalfilter';
 import utils from '../../../utils/utils';
 import session from '../../../store/session';
 import keys from '../../../store/keys';
+import {setKey} from '../../../store/actions';
 import clubAPI from '../../../services/club';
 import userService from '../../../services/user';
 import moment from 'moment';
-
-import SyncStorage from 'sync-storage';
 
 /* =============================================================================
 <ClubsScreen />
 ============================================================================= */
 const ClubsScreen = () => {
+  const dispatch = useDispatch()
   const isFocused = useIsFocused();
   const [sortBy, setSortBy] = useState('Newest');
   const [filters, setFilters] = useState(null);
-  const [keyword, setKeyword] = useState('');
+  // const [keyword, setKeyword] = useState('');
   const [viewFilter, setViewFilter] = useState(false);
   const [records, setRecords] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+
+  const appSession = useSelector(state => state.session)
+  const keyword = appSession[keys.clubsSearchKeyword]
+  const viewFilterFlag = appSession[keys.clubsShowModalFilter]
 
   useEffect(() => {
     let isMounted = true
@@ -49,15 +54,18 @@ const ClubsScreen = () => {
     };
   }, [isFocused, keyword, sortBy, filters]);
 
-  
+  useEffect(() => {
+    setViewFilter(viewFilterFlag)
+  }, [viewFilterFlag]);
+
   const reload = async () => {
     clubAPI.getClub(session.get(keys.token)).then(result => {
       let arr = result.data.data;
       if (
         keyword.length > 0 ||
-        (filters && filters.keyword && filters.keyword.length > 0)
+        (filters && filters?.keyword && filters?.keyword.length > 0)
       ) {
-        let f = (filters && filters.keyword) || keyword
+        let f = (filters && filters?.keyword) || keyword
         arr = arr.filter(k => k.title.toLowerCase().includes(f.toLowerCase()))
       }
 
@@ -88,9 +96,16 @@ const ClubsScreen = () => {
     reload();
     setRefreshing(false);
   };
+
+  const _onPressCloseFilter = () => {
+    setViewFilter(false);
+    dispatch(setKey(keys.clubsShowModalFilter, false))
+  };
+
+  const renderItem = ({item}) => <ClubListItem data={item} reload={reload} />;
   
   return (
-    <Container backgroundColor={Colors.white200} style={{padding: 16}}>
+    <Container backgroundColor={Colors.white200} style={{}}>
       <StatusBar backgroundColor={Colors.primary} barStyle="light-content" />
 
       <View style={styles.container}>
@@ -118,9 +133,11 @@ const ClubsScreen = () => {
                   <FilterIcon />
                 </TouchableOpacity>
               </View> */}
+              <View style={{backgroundColor:Colors.white100,flex:1,paddingLeft: 16, paddingTop: 16}}>
               <Text size="big" family="semi" customStyle={styles.title}>
                 Clubs
               </Text>
+              </View>
             </>
           }
           refreshControl={
@@ -137,14 +154,13 @@ const ClubsScreen = () => {
         sortBy={sortBy}
         setSortBy={e => setSortBy(e)}
         isVisible={viewFilter}
-        onCloseModal={() => setViewFilter(false)}
-        onYes={() => setViewFilter(false)}
+        onCloseModal={() => _onPressCloseFilter()}
+        onYes={() => _onPressCloseFilter()}
       />
     </Container>
   );
 };
 
-const renderItem = ({item}) => <ClubListItem data={item} />;
 
 const styles = StyleSheet.create({
   headerContainer: {

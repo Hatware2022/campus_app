@@ -11,7 +11,7 @@ import Text from '../../common/TextV2'
 import InboxListItem from '../components/Inbox/InboxListItem'
 import SearchIcon from '../../assets/icons/icon-search.svg'
 import FilterIcon from '../../assets/icons/icon-filter.svg'
-import PlusIcon from '../../assets/icons/icon-plus.svg'
+import PlusIcon from '../../assets/icons/icon-plus-circle-big.svg'
 import Chapman from '../../assets/icons/chapman.svg'
 import * as Colors from '../../config/colors'
 import {useIsFocused} from '@react-navigation/native'
@@ -112,10 +112,10 @@ const InboxScreen = ({navigation}) => {
             left={<SearchIcon />}
             value={keyword}
             containerStyle={{
-              borderRadius: 30,
+              borderRadius: 30
             }}
             contentContainerStyle={{
-              borderRadius: 30,
+              borderRadius: 30
             }}
             onChange={text => {
               setKeyword(text)
@@ -148,18 +148,16 @@ const InboxScreen = ({navigation}) => {
           alignItems="center"
           padding={20}
         >
-          <Text size="big" family="medium" color={Colors.primary}>
+          <Text size="semi" family="medium" color={Colors.primary}>
             Chats
           </Text>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('NewChat')}
-            style={{
-              backgroundColor: Colors.primary,
-              padding: 2,
-              borderRadius: 10
-            }}
-          >
-            <PlusIcon />
+          <TouchableOpacity onPress={() => navigation.navigate('NewChat')}>
+            <View horizontal alignItems={'center'}>
+              <Text size="medium" family="medium" color={Colors.primary}>
+                {'Create New  '}
+              </Text>
+              <PlusIcon />
+            </View>
           </TouchableOpacity>
         </View>
       </View>

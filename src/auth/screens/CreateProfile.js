@@ -184,7 +184,7 @@ export default function CreateProfile(props) {
       }
 
       if (result.data  && result.data.success === true) {
-      alert('Profile create ')
+      alert('Profile created successfully')
       props.navigation.navigate('Login')
       }
     });

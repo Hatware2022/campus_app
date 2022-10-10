@@ -48,8 +48,26 @@ const HomeScreen = () => {
 
   const getTabProps = (props, ndx) => {
     const tabProps = [
-      {...props, searchBarPlaceholder: 'Search Profiles here'},
-      {...props, searchBarPlaceholder: 'Search Posts here'},
+      {...props, 
+        searchBarPlaceholder: 'Search Profiles here',
+        searchBarKeyword: appState[keys.profilesSearchKeyword],
+        searchBarChangeHandler: keyword => {
+          dispatch(setKey(keys.profilesSearchKeyword, keyword))
+        },
+        filterPressHandler: () => {
+          dispatch(setKey(keys.profilesShowModalFilter, true))
+        }
+      },
+      {...props, 
+        searchBarPlaceholder: 'Search Posts here',
+        searchBarKeyword: appState[keys.postsSearchKeyword],
+        searchBarChangeHandler: keyword => {
+          dispatch(setKey(keys.postsSearchKeyword, keyword))
+        },
+        filterPressHandler: () => {
+          dispatch(setKey(keys.postsShowModalFilter, true))
+        }
+      },
       {
         ...props,
         searchBarPlaceholder: 'Search Groups here',

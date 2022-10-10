@@ -1,7 +1,7 @@
-import * as React from 'react';
-import {Text} from 'react-native';
-import * as Colors from '../config/colors';
-import Fonts from '../config/fonts';
+import * as React from 'react'
+import {Text} from 'react-native'
+import * as Colors from '../config/colors'
+import Fonts from '../config/fonts'
 
 const TextV2 = ({
   color = Colors.black600,
@@ -14,31 +14,41 @@ const TextV2 = ({
   onPressLink,
   testID,
   cutLength,
-  align = 'auto',
+  align = 'auto'
 }) => {
-  if (link) color = 'blue';
+  if (link) color = 'blue'
   const fontColor = React.useMemo(() => {
     const colorList = {
       // black: Colors.text,
-      black:'#000',
-        // gray: Colors.GRAY_TEXT_NEW,
-        red: Colors.PRIMARY,
+      black: '#000',
+      // gray: Colors.GRAY_TEXT_NEW,
+      red: Colors.PRIMARY
       //   blue: Colors.LINK,
       //   dark: Colors.DARKER,
-    };
-    return colorList[color] || color;
-  }, [color]);
+    }
+    return colorList[color] || color
+  }, [color])
 
   const fontFamily = React.useMemo(() => {
-    const fontList = {
-      regular: Fonts.fontFamily.rubikRegular,
-      bold: Fonts.fontFamily.rubikBold,
-      semi: Fonts.fontFamily.rubikSemiBold,
-      medium: Fonts.fontFamily.rubikMedium,
-    };
+    let fontList
+    if (Platform.OS === 'ios') {
+      fontList = {
+        regular: Fonts.fontFamily.sFProDisplayRegular,
+        bold: Fonts.fontFamily.sFProDisplayBold,
+        semi: Fonts.fontFamily.sFProDisplaySemibold,
+        medium: Fonts.fontFamily.sFProDisplayMedium
+      }
+    } else {
+      fontList = {
+        regular: Fonts.fontFamily.robotoRegular,
+        bold: Fonts.fontFamily.robotoBold,
+        semi: Fonts.fontFamily.robotMedium,
+        medium: Fonts.fontFamily.robotMedium
+      }
+    }
 
-    return fontList[family];
-  }, [family]);
+    return fontList[family]
+  }, [family])
 
   const textAlign = React.useMemo(() => {
     const alignList = {
@@ -46,11 +56,11 @@ const TextV2 = ({
       center: 'center',
       left: 'left',
       right: 'right',
-      justify: 'justify',
-    };
+      justify: 'justify'
+    }
 
-    return alignList[align];
-  }, [align]);
+    return alignList[align]
+  }, [align])
 
   const fontSize = React.useMemo(() => {
     const sizeList = {
@@ -62,10 +72,10 @@ const TextV2 = ({
       mediumLarge: Fonts.size.mediumLarge,
       large: Fonts.size.large,
       giant: Fonts.size.xlarge,
-      huge: Fonts.size.xxlarge,
-    };
-    return sizeList[size];
-  }, [size]);
+      huge: Fonts.size.xxlarge
+    }
+    return sizeList[size]
+  }, [size])
 
   return (
     <Text
@@ -73,10 +83,11 @@ const TextV2 = ({
       style={[{fontFamily, color: fontColor, fontSize, textAlign}, customStyle]}
       testID={testID}
       onPress={link ? onPressLink : undefined}
-      accessibilityLabel={testID}>
+      accessibilityLabel={testID}
+    >
       {children}
     </Text>
-  );
-};
+  )
+}
 
-export default TextV2;
+export default TextV2

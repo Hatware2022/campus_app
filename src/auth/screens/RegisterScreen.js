@@ -155,8 +155,7 @@ const RegisterScreen = () => {
       }
 
       if (result.data && result.data.data && result.data.data.success === true) {
-        // alert('Check your mail for vefication of your account')
-        alert('we texted it ')
+        alert('OTP sent. Please check you email to verify.')
         navigation.navigate('otpScreen',{data:data, userId:result.data.data.data.id,email,password})
 // navigation.goBack()
         // session.set(keys.token, result.data.token);

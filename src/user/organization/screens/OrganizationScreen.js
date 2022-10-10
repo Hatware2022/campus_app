@@ -1,6 +1,7 @@
 import React from 'react'
 import {TabView, SceneMap} from 'react-native-tab-view'
 import {StyleSheet, Dimensions, View} from 'react-native'
+import {useDispatch, useSelector} from 'react-redux'
 
 import ChatsScreen from '../../chats/screens/ChatsScreen'
 import GroupsScreen from '../../groups/screens/GroupsScreen'
@@ -10,9 +11,9 @@ import ClubsScreen from '../../../organization/clubs/screens/ClubsScreen'
 import PostsScreen from '../../../organization/posts/screens/PostsScreen'
 
 import {Container, TabBar} from '../../../common'
-import Text from '../../../common/TextV2'
-import FastImage from 'react-native-fast-image'
-import campusLogo from '../../../assets/images/campuslogo.png'
+
+import {setKey} from '../../../store/actions'
+import keys from '../../../store/keys'
 
 const renderScene = SceneMap({
   events: EventsScreen,
@@ -42,6 +43,45 @@ const OrganizationScreen = () => {
     {key: 'posts', title: 'Posts'},
     {key: 'clubs', title: 'Clubs'}
   ])
+  const dispatch = useDispatch()
+  const appState = useSelector(state => state.session)
+
+  const getTabProps = (props, ndx) => {
+    const tabProps = [
+      {...props, 
+        searchBarPlaceholder: 'Search Events here',
+        searchBarKeyword: appState[keys.eventsSearchKeyword],
+        searchBarChangeHandler: keyword => {
+          dispatch(setKey(keys.eventsSearchKeyword, keyword))
+        },
+        filterPressHandler: () => {
+          dispatch(setKey(keys.eventsShowModalFilter, true))
+        }
+      },
+      {...props, 
+        searchBarPlaceholder: 'Search Posts here',
+        searchBarKeyword: appState[keys.postsSearchKeyword],
+        searchBarChangeHandler: keyword => {
+          dispatch(setKey(keys.postsSearchKeyword, keyword))
+        },
+        filterPressHandler: () => {
+          dispatch(setKey(keys.postsShowModalFilter, true))
+        }
+      },
+      {
+        ...props,
+        searchBarPlaceholder: 'Search Clubs here',
+        searchBarKeyword: appState[keys.clubsSearchKeyword],
+        searchBarChangeHandler: keyword => {
+          dispatch(setKey(keys.clubsSearchKeyword, keyword))
+        },
+        filterPressHandler: () => {
+          dispatch(setKey(keys.clubsShowModalFilter, true))
+        }
+      }
+    ]
+    return tabProps[ndx]
+  }
 
   return (
     <Container backgroundColor="#fff">
@@ -56,7 +96,7 @@ const OrganizationScreen = () => {
 
       <TabView
         renderScene={renderScene}
-        renderTabBar={renderTabBar}
+        renderTabBar={props => renderTabBar(getTabProps(props, index))}
         onIndexChange={setIndex}
         // initialLayout={initialLayout}
         navigationState={{index, routes}}

@@ -6,6 +6,7 @@ import {
   RefreshControl,
   TouchableOpacity,
 } from 'react-native';
+import {useDispatch, useSelector} from 'react-redux'
 import {Container, View, Title, TextInput} from '../../../common';
 import Text from '../../../common/TextV2';
 import ProfileListItem from '../components/Profiles/ProfileListItem';
@@ -18,20 +19,26 @@ import session from '../../../store/session';
 import keys from '../../../store/keys';
 import moment from 'moment';
 import ModalFilter from '../../../auth/components/Modal/modalfilter';
+import {setKey} from '../../../store/actions'
 
 /* =============================================================================
 <ProfilesScreen />
 ============================================================================= */
 const ProfilesScreen = () => {
+  const dispatch = useDispatch()
   const route = useRoute();
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const [records, setRecords] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
-  const [keyword, setKeyword] = useState('');
+  // const [keyword, setKeyword] = useState('');
   const [sortBy, setSortBy] = useState('A-Z');
   const [filters, setFilters] = useState([]);
   const [viewFilter, setViewFilter] = useState(false);
+
+  const appSession = useSelector(state => state.session)
+  const keyword = appSession[keys.profilesSearchKeyword]
+  const viewFilterFlag = appSession[keys.profilesShowModalFilter]
 
   useEffect(() => {
     let isMounted = true;
@@ -43,6 +50,10 @@ const ProfilesScreen = () => {
       isMounted = false;
     };
   }, [isFocused, keyword, sortBy, filters]);
+
+  useEffect(() => {
+    setViewFilter(viewFilterFlag)
+  }, [viewFilterFlag]);
 
   useEffect(() => {
     const keywordFromOtherScreen = route.params ? route.params.keyword : null;
@@ -64,9 +75,9 @@ const ProfilesScreen = () => {
       setRecords(arr);
       if (
         keyword.length > 0 ||
-        (filters && filters.keyword && filters.keyword.length > 0)
+        (filters && filters?.keyword && filters?.keyword.length > 0)
       ) {
-        let f = (filters && filters.keyword) || keyword;
+        let f = (filters && filters?.keyword) || keyword;
         arr = arr.filter(k => k?.bio?.toLowerCase().includes(f.toLowerCase()) ||
         k?.name?.toLowerCase().includes(f.toLowerCase()));
       }
@@ -132,8 +143,13 @@ const ProfilesScreen = () => {
     navigation.navigate('InterestScreen');
   };
 
+  const _onPressCloseFilter = () => {
+    setViewFilter(false);
+    dispatch(setKey(keys.profilesShowModalFilter, false))
+  };
+
   return (
-    <Container backgroundColor={Colors.white250} style={{padding: 16}}>
+    <Container backgroundColor={Colors.white250} style={{}}>
       <StatusBar backgroundColor={Colors.primary} barStyle="light-content" />
 
       <View style={styles.container}>
@@ -145,8 +161,11 @@ const ProfilesScreen = () => {
           contentContainerStyle={styles.listContent}
           ListHeaderComponent={
             <>
-              {/* <View horizontal>
-                <TextInput
+              <View style={{backgroundColor:Colors.white100,flex:1,paddingLeft: 16, paddingTop: 16}}>
+              <Text customStyle={styles.title} family="semi" size="big">
+                Profiles
+              </Text>
+                {/* <TextInput
                   left={<SearchIcon />}
                   value={keyword}
                   onChange={setKeyword}
@@ -159,11 +178,8 @@ const ProfilesScreen = () => {
                     alignSelf: 'center',
                   }}>
                   <FilterIcon />
-                </TouchableOpacity>
-              </View> */}
-              <Text customStyle={styles.title} family="semi" size="big">
-                Profiles
-              </Text>
+                </TouchableOpacity> */}
+              </View> 
             </>
           }
           ListEmptyComponent={
@@ -189,8 +205,8 @@ const ProfilesScreen = () => {
         setFilters={value => setFilters(value)}
         filterFlag={true}
         setSortBy={e => setSortBy(e)}
-        onCloseModal={() => setViewFilter(false)}
-        onYes={() => setViewFilter(false)}
+        onCloseModal={() => _onPressCloseFilter()}
+        onYes={() => _onPressCloseFilter()}
       />
     </Container>
   );

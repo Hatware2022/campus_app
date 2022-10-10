@@ -20,6 +20,7 @@ import PostListItem from '../components/Posts/PostListItem';
 import SearchIcon from '../../../assets/icons/icon-search.svg';
 import ArrowDownIcon from '../../../assets/icons/app-arrow-down.svg';
 import FilterIcon from '../../../assets/icons/icon-filter.svg';
+import PlusIcon from '../../../assets/icons/icon-plus-circle-big.svg'
 import * as Colors from '../../../config/colors';
 import {useNavigation, useIsFocused, useRoute} from '@react-navigation/native';
 import postService from '../../../services/post';
@@ -110,10 +111,10 @@ const PostsScreen = () => {
   const renderItem = ({item}) => <PostListItem data={item} reload={reload} />;
 
   return (
-    <Container backgroundColor={Colors.white250} style={{padding: 16}}>
+    <Container style={{}}>
       <StatusBar backgroundColor={Colors.primary} barStyle="light-content" />
 
-      <View horizontal>
+      {/* <View horizontal>
         <TextInput
           left={<SearchIcon />}
           value={keyword}
@@ -128,7 +129,7 @@ const PostsScreen = () => {
           }}>
           <FilterIcon />
         </TouchableOpacity>
-      </View>
+      </View> */}
 
       <FlatList
         data={records}
@@ -137,20 +138,23 @@ const PostsScreen = () => {
         keyExtractor={item => item._id}
         contentContainerStyle={styles.listContent}
         ListHeaderComponent={
-          <View
-            marginVertical={16}
-            horizontal
-            alignItems="center"
-            justifyContent="space-between">
-            <Text size="big" family="semi">
-              Posts
+          <View style={styles.headerText}>
+          <Text family="semi" size="big" customStyle={styles.textGroup}>
+          Posts
             </Text>
+          <View horizontal>
             <TouchableOpacity
-              style={styles.buttonPost}
-              onPress={_moveToCreatePost}>
-              <Text size="small">Create Post +</Text>
+              style={styles.iconPlus}
+              onPress={_moveToCreatePost}
+            >
+              <Text size="medium" family="medium" color={Colors.primary}>
+                {'Create New  '}
+              </Text>
+              <PlusIcon />
             </TouchableOpacity>
           </View>
+          {/* <ChatForm reload={reload} /> */}
+        </View>
         }
         ListEmptyComponent={
           <Title type="h6" marginHorizontal={20} marginVertical={20}>
@@ -205,6 +209,21 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     borderColor: Colors.white300,
+  },
+  headerText: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 14,
+    padding: 16
+  },
+  textGroup: {
+    lineHeight: 22,
+    flex: 1
+  },
+  iconPlus: {
+    marginLeft: 6,
+    flexDirection: 'row',
+    alignItems: 'center'
   },
 });
 

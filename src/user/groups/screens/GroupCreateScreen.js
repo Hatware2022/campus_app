@@ -38,14 +38,15 @@ const GroupCreateScreen = () => {
           session.get(keys.token),
           JSON.stringify({
             content: valuePost,
-            groupId: groupId,
+            groupId: groupDetails.id,
             tags: []
           })
         )
         .then(_res => {
           navigation.pop()
         })
-    } catch (error) {}
+    } catch (error) {
+    }
   }
 
   return (

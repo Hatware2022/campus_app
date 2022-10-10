@@ -18,11 +18,11 @@ const ClubMember = ({onPress, onPressGroup, joinClub, data}) => {
     <View style={styles.container}>
       <Touchable style={styles.memberContainer} onPress={onPressGroup}>
         <View style={styles.memberAvatarContainer}>
-          {USERS.map((item, index) => (
+          { data?.members && data?.members.length > 0 && data?.members.map((item, index) => (
             <Avatar
               size={36}
               key={item.id}
-              source={item.image}
+              source={item.imageUrl}
               style={getAvatarStyle(index)}
             />
           ))}
@@ -31,7 +31,7 @@ const ClubMember = ({onPress, onPressGroup, joinClub, data}) => {
           size="small"
           color={Colors.black500}
           customStyle={{marginHorizontal: 8}}>
-          {data?.members ? data?.members.length : 0} people has joined
+          {data?.members ? data?.members.length : 0} members
         </Text>
       </Touchable>
       {joinClub ? (

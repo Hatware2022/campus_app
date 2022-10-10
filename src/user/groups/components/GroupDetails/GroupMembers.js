@@ -53,7 +53,7 @@ const GroupMembers = ({onPress, onPressGroup, isUserAGroupMember, members}) => {
               right: interpolation[groupAvatars?.length]
             }}
           >
-            {`${members?.length} people has joined`}
+            {`${members?.length} members`}
           </Text>
         ) : null}
       </Touchable>

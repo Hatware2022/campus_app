@@ -13,11 +13,11 @@ import moment from 'moment'
 const GroupPostCommentListItem = ({data,allComments}) => {
   return (
     <View style={styles.container}>
-      <Avatar source={data?.user?.avatar} size={34} />
+      <Avatar source={data?.commenterImageUrl} size={34} />
       <View marginLeft={12} flex={1}>
         <View horizontal justifyContent={'space-between'}>
           <Text size="small" family="semi">
-            {data?.updatedBy || 'Hardcode Name'}
+            {data?.commenterName || 'Hardcode Name'}
           </Text>
           <Text size="small" color={Colors.black400}>
             {data.time}

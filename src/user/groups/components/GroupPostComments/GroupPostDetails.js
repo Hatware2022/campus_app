@@ -84,7 +84,7 @@ const GroupPostDetails = ({data,reload,totalcomments}) => {
           </View>
       <View style={styles.topContainer}>
 
-      <Text customStyle={{marginTop:10,color:'black',marginLeft:10, fontSize:15}} >
+      <Text customStyle={{color:'black',marginLeft:10, fontSize:15,}} >
       {data?.content}
       </Text>
         
@@ -123,14 +123,15 @@ const GroupPostDetails = ({data,reload,totalcomments}) => {
 
 const styles = StyleSheet.create({
   topContainer: {
-    flexDirection: 'row',
+    // flexDirection: 'row',
     alignItems: 'flex-start',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   userContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginTop: 16
   },
   name: {
     marginLeft: 16,

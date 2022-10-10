@@ -11,19 +11,27 @@ const size = {
   medium: 14,
   small: 12,
   xsmall: 10,
-  xxsmall: 8,
-};
+  xxsmall: 8
+}
 
 const fontFamily = {
   rubikRegular: 'Rubik-Regular',
   rubikSemiBold: 'Rubik-SemiBold',
   rubikMedium: 'Rubik-Medium',
   rubikBold: 'Rubik-Bold',
-};
+  sFProDisplayBlack: 'SFProDisplay-Black',
+  sFProDisplayBold: 'SFProDisplay-Bold',
+  sFProDisplayRegular: 'SFProDisplay-Regular',
+  sFProDisplaySemibold: 'SFProDisplay-Semibold',
+  sFProDisplayMedium: 'SFProDisplay-Medium',
+  robotoBold: 'Roboto-Bold',
+  robotMedium: 'Roboto-Medium',
+  robotoRegular: 'Roboto-Regular'
+}
 
 const Fonts = {
   fontFamily,
-  size,
-};
+  size
+}
 
-export default Fonts;
+export default Fonts

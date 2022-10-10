@@ -53,14 +53,14 @@ const EditOrganizationProfileScreen = () => {
 	const reload = () => {
 		const tokenData = utils.decodeJwt(session.get(keys.token));
 		if (!tokenData) return;
-		userService.getById(session.get(keys.token), tokenData._id)
+		userService.getById(session.get(keys.token), tokenData.id)
 			.then(result => {
 				if (result.data && result.data.success === true) {
 					let r = result.data.data;
 					setRecord(r);
 
-					setFirstName(r.firstName);
-					setLastName(r.lastName);
+					setFirstName(r.name);
+					// setLastName(r.lastName);
 					setImageUrl(r.imageUrl);
 					setBio(r.bio);
 					setInsta(r.insta);
@@ -141,7 +141,7 @@ const EditOrganizationProfileScreen = () => {
 	}
 
 
-	if (!record) return <></>
+	// if (!record) return <></>
 
 	return (
 		<Container>
@@ -151,7 +151,7 @@ const EditOrganizationProfileScreen = () => {
 				<View center>
 					<Avatar source={{uri: imageUrl}} size={84} onPress={_handleChooseFile} />
 					<Text fontSize={14} marginVertical={10}>
-						{record.firstName} {record.lastName}
+						{record?.name}
 					</Text>
 
 					<SocialButtons data={record} />
@@ -159,8 +159,8 @@ const EditOrganizationProfileScreen = () => {
 
 				<View style={styles.underline} />
 
-				<TextInput placeholder="First Name" value={firstName} onChange={setFirstName} />				
-				<TextInput placeholder="Last Name" value={lastName} onChange={setLastName} />
+				<TextInput placeholder="Name" value={firstName} onChange={setFirstName} />				
+				{/* <TextInput placeholder="Last Name" value={lastName} onChange={setLastName} /> */}
 
 				<View style={styles.underline} />
 
@@ -174,16 +174,18 @@ const EditOrganizationProfileScreen = () => {
 				<TextArea
 					label="Bio"
 					height={'auto'}
-					editable={false}
-					placeholder="Include details about who you are and what you seek to get out of your college experience. "
+					editable={true}
+					value={bio}
+					onChange={setBio}
+					placeholder="Write you bio here..."
 				/>
 
-				<TextArea
+				{/* <TextArea
 					placeholder="Write here..."
 					value={bio}
 					onChange={setBio}
 					height={'auto'}
-				/>
+				/> */}
 
 				<View style={styles.underline} />
 				{/* <TextInput label="Contact" placeholder="Club Email here..." />

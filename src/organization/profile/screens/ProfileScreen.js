@@ -72,13 +72,13 @@ const ProfileScreen = () => {
 				<Touchable
 					style={styles.userTextContainer}
 					onPress={_moveToViewProfile}>
-					<Text style={styles.name}>{record.firstName} {record.lastName}</Text>
+					<Text style={styles.name}>{record?.name ? record?.name : 'dummy'}</Text>
 					<Text style={styles.vieProfile}>View profile</Text>
 				</Touchable>
 			</View>
 
 			<Content>
-				{/* <SettingListItem name="Your Events" onPress={() => null} />
+			 <SettingListItem name="Your Events" onPress={() => null} />
         <SettingListItem name="Your Announcements" onPress={() => null} />
         <SettingListItem name="Saved Organizations" onPress={() => null} />
         <SettingListItem
@@ -87,17 +87,17 @@ const ProfileScreen = () => {
             navigation.navigate('OrganizationNotificationSettings')
           }
           border={false}
-        /> */}
+        /> 
 
-				{/* <View paddingVertical={15} />
+				<View paddingVertical={15} />
 
-        <SettingListItem
-          border={false}
-          name="Career Center"
-          onPress={() => null}
-        /> */}
+				<SettingListItem
+				border={false}
+				name="Career Center"
+				onPress={() => null}
+				/>
 
-				{/* <View paddingVertical={15} /> */}
+				<View paddingVertical={15} />
 
 				<SettingListItem
 					border={false}

@@ -29,7 +29,7 @@ const GroupListItem = ({data}) => {
         </Text>
       </View>
       <View horizontal alignItems="center">
-        <Text customStyle={{color: '#A8ACAD'}}>{data.members.length}</Text>
+        <Text customStyle={{color: '#A8ACAD', marginRight: 5}}>{data.members.length}</Text>
         <PeopleIcon />
       </View>
     </Touchable>

@@ -71,8 +71,8 @@ const GroupPostCommentsScreen = () => {
           "comment": e,
           "postId": post.id,
           "isDeleted": false,
-          "imageUrl": record?.imageUrl,
-          "updatedBy": record?.name,
+          "commenterImageUrl": record?.imageUrl,
+          "commenterName": record?.name,
           "createdAt": record?.createdAt,
           "updatedAt": moment(new Date())
       })
@@ -109,14 +109,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 16,
     backgroundColor: Colors.background,
-    shadowColor: Colors.border,
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-    elevation: 8,
+    // shadowColor: Colors.border,
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 4,
+    // },
+    // shadowOpacity: 0.3,
+    // shadowRadius: 4.65,
+    // elevation: 8,
   },
 });
 

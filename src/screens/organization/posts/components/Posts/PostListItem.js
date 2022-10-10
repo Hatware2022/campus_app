@@ -89,7 +89,7 @@ const PostListItem = props => {
 
 				<View style={styles.tagContainer}>
 					{
-						props.data.tags.map(k => {
+						props.data && props.data?.tags.map(k => {
 							return (
 								<View style={styles.tag} key={k}>
 									<Text style={styles.tagText}>{k}</Text>
