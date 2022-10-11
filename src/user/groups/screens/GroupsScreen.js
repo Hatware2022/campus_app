@@ -8,22 +8,16 @@ import {
   TouchableOpacity
 } from 'react-native'
 import {useSelector} from 'react-redux'
-import {Container, TextInput, View, Title} from '../../../common'
+import {Container, View, Title} from '../../../common'
 import Text from '../../../common/TextV2'
-import GroupsFilter from '../components/Groups/GroupsFilter'
 import GroupListItem from '../components/Groups/GroupListItem'
-import SearchIcon from '../../../assets/icons/icon-search.svg'
-import FilterIcon from '../../../assets/icons/icon-filter.svg'
 import PlusIcon from '../../../assets/icons/icon-plus-circle-big.svg'
-import ArrowDownIcon from '../../../assets/icons/app-arrow-down.svg'
 import * as Colors from '../../../config/colors'
-import GROUPS from '../../../constants/groups'
 import {useIsFocused, useNavigation} from '@react-navigation/native'
 import groupService from '../../../services/group'
-import utils from '../../../utils/utils'
 import session from '../../../store/session'
 import keys from '../../../store/keys'
-import ModalFilter from '../../../auth/components/Modal/modalfilter'
+import ModalFilter from '../../../auth/components/Modal/groupsmodalfilter'
 import {setKey} from '../../../store/actions'
 
 /* =============================================================================
@@ -32,14 +26,15 @@ import {setKey} from '../../../store/actions'
 const GroupsScreen = () => {
   const isFocused = useIsFocused()
   const [records, setRecords] = useState([])
-  const [displayRecords, setDisplayRecords] = useState([])
+  const [filteredRecords, setFilteredRecords] = useState([])
+  const [forDisplay, setForDisplay] = useState([])
   const [refreshing, setRefreshing] = useState(false)
-  // const [keyword, setKeyword] = useState('')
-  const [sortBy, setSortBy] = useState('Newest')
+  const sortValues = ['Most Popular', 'Most Recent']
+  const [sortBy, setSortBy] = useState(sortValues[1])
   const [errorMessage, setErrorMessage] = useState(null)
-  const [successMessage, setSuccessMessage] = useState(null)
+  const [filterTags, setFilterTags] = useState([])
+
   const navigation = useNavigation()
-  const [viewFilter, setViewFilter] = useState(false)
   const dispatch = useDispatch()
 
   const appSession = useSelector(state => state.session)
@@ -56,19 +51,46 @@ const GroupsScreen = () => {
     }
   }, [isFocused])
 
+  const _sortRecords = (records) => {
+    return records.sort((a,b) => {
+      if(sortBy === 'Most Popular') {
+        return a.members.length < b.members.length
+      } else {
+        return new Date(a.createdAt).valueOf() < new Date(b.createdAt).valueOf()
+      }
+    })
+  }
+
+  useEffect(() => {
+    if(!filterTags.length) {
+      setFilteredRecords(_sortRecords(records))
+    } else {
+      const newFilteredRecords = records.filter(record => {
+        let returnValue
+        (record.tags || []).forEach(tag => {
+          if (filterTags.includes(tag)) {
+            returnValue = true
+          }
+        })
+        return returnValue
+      })
+      setFilteredRecords(_sortRecords(newFilteredRecords))
+    }
+  }, [records, filterTags, sortBy])
+
   useEffect(() => {
     if (!keyword) {
-      setDisplayRecords(records)
+      setForDisplay(filteredRecords)
     } else {
-      setDisplayRecords(
-        records.filter(
+      setForDisplay(
+        filteredRecords.filter(
           record =>
             record.title?.toLowerCase().includes(keyword.toLowerCase()) ||
             record.description?.toLowerCase().includes(keyword.toLowerCase())
         )
       )
     }
-  }, [keyword, records])
+  }, [keyword, filteredRecords])
 
   const reload = () => {
     groupService.getAll(session.get(keys.token)).then(result => {
@@ -76,28 +98,11 @@ const GroupsScreen = () => {
         setErrorMessage(result.error)
         return
       }
-
       if (result.data && result.data.success === false) {
         setErrorMessage(result.data.message)
         return
       }
-
-      let arr = result.data.data
-
-      if (keyword.length > 0) {
-        let f = filters.keyword || keyword
-        arr = arr.filter(k => k.detail.toLowerCase().includes(f.toLowerCase()))
-      }
-
-      if (sortBy === 'Most Popular') {
-        arr = arr.sort((a, b) => b.likes.length - a.likes.length)
-      } else if (sortBy === 'Oldest First') {
-        arr = arr.sort((a, b) => moment(a.created_at) - moment(b.created_at))
-      } else if (sortBy === 'Newest First') {
-        arr = arr.sort((a, b) => moment(b.created_at) - moment(a.created_at))
-      }
-
-      setRecords(arr)
+      setRecords(result.data.data)
     })
   }
 
@@ -109,6 +114,11 @@ const GroupsScreen = () => {
 
   const _moveToCreateGroup = () => {
     navigation.navigate('GroupNew')
+  }
+
+  const handleSubmit = filterValues => {
+    setFilterTags(filterValues.tags)
+    setSortBy(filterValues.sortBy)
   }
 
   const handleCloseFilterModal = () => {
@@ -123,29 +133,10 @@ const GroupsScreen = () => {
         translucent
       />
 
-      {/* <View horizontal>
-        <TextInput
-          left={<SearchIcon />}
-          value={keyword}
-          onChange={setKeyword}
-          placeholder="Search Groups here"
-        />
-        <TouchableOpacity
-          onPress={() => setViewFilter(true)}
-          style={{
-            marginLeft: 16,
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
-          <FilterIcon />
-        </TouchableOpacity>
-      </View> */}
-
       <View style={styles.container}>
         {/* <GroupsFilter /> */}
         <FlatList
-          data={displayRecords}
+          data={forDisplay}
           style={styles.list}
           renderItem={renderItem}
           keyExtractor={item => item.id}
@@ -187,7 +178,15 @@ const GroupsScreen = () => {
         setSortBy={e => setSortBy(e)}
         isVisible={appSession[keys.groupsShowModalFilter]}
         onCloseModal={handleCloseFilterModal}
-        onYes={handleCloseFilterModal}
+        onYes={handleSubmit}
+        sortValues={sortValues}
+        tags={records.reduce((prev, curr) => {
+          const tagsToInclude = curr.tags.filter(
+            tag => prev.indexOf(tag) === -1
+          )
+          return [...prev, ...tagsToInclude]
+        }, [])}
+        tagValues={filterTags}
       />
     </Container>
   )

@@ -38,7 +38,7 @@ const GroupMemberScreen = () => {
 
   const renderItem = ({item}) => (
     <View style={styles.containerMember}>
-      <Avatar source={item.imageUrl} size={38} />
+      <Avatar source={item?.imageUrl} size={38} />
       <View style={styles.contentTextMember}>
         <Text family="bold">{item?.name}</Text>
         <Gap height={4} />
