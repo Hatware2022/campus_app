@@ -76,18 +76,21 @@ const BottomTab = ({mode, state, navigation}) => {
           }
         };
 
+        const accessibilityLabel = `Menu ${index + 1} of 4. ${route.name}`
+
         return (
           <TouchableOpacity
             key={route.key}
             activeOpacity={1}
             onPress={onPress}
-            style={styles.item}>
+            style={styles.item}
+            accessibilityLabel={accessibilityLabel}>
             <View style={styles.iconContainer}>{icon}</View>
             <View
               style={[styles.underline, isFocused && styles.activeUnderline]}
             />
           </TouchableOpacity>
-        );
+        )
       })}
     </View>
   );
