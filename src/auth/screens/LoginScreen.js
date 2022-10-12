@@ -161,6 +161,7 @@ const LoginScreen = () => {
             label="Login as a Club"
             selected={rememberMe}
             onChange={() => setRememberMe(!rememberMe)}
+            login={true}
           />
           {errorMessage && (
             <Text style={globalStyles.errorHelper}>{errorMessage}</Text>

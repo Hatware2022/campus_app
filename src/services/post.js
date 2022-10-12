@@ -126,7 +126,6 @@ export default class {
             { headers: { 'Authorization': token }})
             .then(resp => {
                 if (resp.status === 201) {
-                    alert(JSON.stringify(resp.data))
                     result.data = resp.data;
                 }
             })

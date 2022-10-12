@@ -32,8 +32,8 @@ const LandingScreenTwo = () => {
 
       <View style={styles.bottomContainer}>
        
-        <TouchableOpacity style={styles.btnOne}>
-          <Text style={styles.btnTxt}>Login with google</Text>
+        <TouchableOpacity style={styles.btnOne} onPress={()=>navigation.navigate('Login')}>
+          <Text style={styles.btnTxt}>Login with email</Text>
         </TouchableOpacity>
         
         <TouchableOpacity style={{flexDirection:'row',marginTop:20,marginLeft:'10%'}} onPress={()=>setCheckbox(!checkbox)}>

@@ -29,7 +29,7 @@ const LandingScreen = (props) => {
       <TouchableOpacity style={styles.btnOne} onPress={()=>props.navigation.navigate('LandingScreenOne')}>
         <Text style={styles.btnTxt}>Join your university</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.btnTwo}>
+      <TouchableOpacity style={styles.btnTwo} onPress={()=>props.navigation.navigate('LandingScreenOne')}>
         <Text style={styles.btnTxt}>Join your organization</Text>
       </TouchableOpacity>
       <Text style={styles.term}>
