@@ -75,7 +75,13 @@ const EventListItem = props => {
                     : null
                 }
               />
-              <Text style={styles.name}>{data?.userinfo?.name}</Text>
+              <Text
+                style={styles.name}
+                accessible={true}
+                accessibilityLabel={'event created by ' + data?.userinfo?.name}
+              >
+                {data?.userinfo?.name}
+              </Text>
             </>
           </View>
           <Text style={styles.time}> {moment(data?.createdAt).fromNow()}</Text>
@@ -94,7 +100,11 @@ const EventListItem = props => {
 
         {/* <View style={styles.bottomContainer}> */}
         <Gap height={16} />
-        <View style={styles.tagContainer}>
+        <View
+          style={styles.tagContainer}
+          accessible={true}
+          accessibilityLabel="list of event tags"
+        >
           {data?.tags?.map(k => {
             return <Tag text={k} key={k} redBorder />
           })}

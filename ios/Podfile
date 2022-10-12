@@ -3,7 +3,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 platform :ios, '13.0'
 
-target 'bondo' do
+target 'secretdev' do
   config = use_native_modules!
 
   use_react_native!(
@@ -14,7 +14,7 @@ target 'bondo' do
 
   pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
 
-  target 'bondoTests' do
+  target 'secretdevTests' do
     inherit! :complete
     # Pods for testing
   end

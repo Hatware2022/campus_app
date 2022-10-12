@@ -143,7 +143,7 @@ const ChatsScreen = () => {
   const renderItem = ({item}) => <ChatListItem data={item} reload={reload} />
 
   return (
-    <Container  style={{}}>
+    <Container style={{}}>
       <StatusBar backgroundColor={Colors.primary} barStyle="light-content" />
 
       {/* <View horizontal>
@@ -175,15 +175,18 @@ const ChatsScreen = () => {
         ListHeaderComponent={
           <View style={styles.headerText}>
             <Text family="semi" size="big" customStyle={styles.textGroup}>
-            Posts
-              </Text>
+              Posts
+            </Text>
             <View horizontal>
               <TouchableOpacity
                 style={styles.iconPlus}
                 onPress={_moveToCreatePost}
+                accessible={true}
+                accessibilityLabel="create new post button"
+                accessibilityHint="double tap here to create a new post"
               >
                 <Text size="medium" family="medium" color={Colors.primary}>
-                  {'Create New  '}
+                  {'Create New '}
                 </Text>
                 <PlusIcon />
               </TouchableOpacity>

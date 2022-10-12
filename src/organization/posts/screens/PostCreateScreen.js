@@ -229,15 +229,20 @@ const PostCreateScreen = () => {
                     // setTag(tag);
                   }}
                   style={
-                    item.checked ? styles.containerTagActive : styles.containerTag
+                    item.checked
+                      ? styles.containerTagActive
+                      : styles.containerTag
                   }
-                  key={index}>
+                  key={index}
+                  accessible={true}
+                  accessibilityHint="Double tap to choose tag"
+                >
                   <Text color={item.checked ? Colors.primary : Colors.black600}>
                     {item.tag}
                   </Text>
                 </Pressable>
               </>
-            );
+            )
           })}
         </View>
       </Content>

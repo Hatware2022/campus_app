@@ -61,7 +61,7 @@ const TabBar = ({
             searchBarChangeHandler(text)
           }}
           placeholder={searchBarPlaceholder}
-          accessibilityLabel={searchBarPlaceholder + " text input."}
+          accessibilityLabel={searchBarPlaceholder + ' text input.'}
         />
         <TouchableOpacity
           onPress={filterPressHandler}
@@ -88,6 +88,9 @@ const TabBar = ({
                 !active ? styles.active : styles.inactive,
                 itemStyle
               ]}
+              accessible={true}
+              accessibilityLabel={item.title + ' tab'}
+              accessibilityHint={'double tap here to list all ' + item.title}
             >
               <View>
                 <Text

@@ -159,19 +159,27 @@ const GroupNewScreen = () => {
               <>
                 <Pressable
                   onPress={() => {
-                    setGroupTags(tagIncluded ? 
-                      groupTags.filter(tag => tag !== item.tag) : [...groupTags, item.tag]);
+                    setGroupTags(
+                      tagIncluded
+                        ? groupTags.filter(tag => tag !== item.tag)
+                        : [...groupTags, item.tag]
+                    )
                   }}
                   style={
-                    tagIncluded ? styles.containerTagActive : styles.containerTag
+                    tagIncluded
+                      ? styles.containerTagActive
+                      : styles.containerTag
                   }
-                  key={index}>
+                  key={index}
+                  accessible={true}
+                  accessibilityHint="Double tap to choose tag"
+                >
                   <Text color={tagIncluded ? Colors.primary : Colors.black600}>
                     {item.tag}
                   </Text>
                 </Pressable>
               </>
-            );
+            )
           })}
         </View>
       </Content>

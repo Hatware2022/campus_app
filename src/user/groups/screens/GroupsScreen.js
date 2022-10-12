@@ -149,6 +149,9 @@ const GroupsScreen = () => {
               <TouchableOpacity
                 onPress={_moveToCreateGroup}
                 style={styles.iconPlus}
+                accessible={true}
+                accessibilityLabel="create new group button"
+                accessibilityHint="double tap here to create a new group"
               >
                 <Text size="medium" family="medium" color={Colors.primary}>
                   {'Create New  '}

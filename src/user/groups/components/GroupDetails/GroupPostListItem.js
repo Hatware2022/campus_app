@@ -83,7 +83,9 @@ const GroupPostListItem = ({data}) => {
           </Touchable>
           <Touchable style={styles.commentButton} onPress={_moveToComments}>
             <CommentIcon />
-            <Text customStyle={styles.commentButtonText}>{data.comments}</Text>
+            <Text customStyle={styles.commentButtonText}>
+              {data.comments.length}
+            </Text>
           </Touchable>
         </View>
       </View>
