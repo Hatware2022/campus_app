@@ -37,7 +37,7 @@ const SplashScreen = () => {
       } else {
         navigation.reset({
           index: 0,
-          routes: [{name: 'AppIntro'}]
+          routes: [{name: 'LandingScreen'}]
         })
       }
     }, 1500)

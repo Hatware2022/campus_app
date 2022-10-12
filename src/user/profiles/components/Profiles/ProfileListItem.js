@@ -37,7 +37,7 @@ const ProfileListItem = ({data}) => {
       </View>
 
       <Text size="small" family="semi" customStyle={styles.tagTitle}>
-        Tags:
+        Up For:
       </Text>
 
       <View style={styles.tagContainer}>

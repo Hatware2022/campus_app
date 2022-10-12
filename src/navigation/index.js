@@ -51,6 +51,9 @@ import GroupNewScreen from '../user/groups/screens/GroupNewScreen'
 import UpdateProfileScreen from '../user/profile/screens/UpdateProfileScreen'
 import GroupMemberScreen from '../user/groups/screens/GroupMemberScreen'
 import EventHostScreen from '../organization/events/screens/EventHostScreen'
+import LandingScreen from '../../src/auth/screens/LandingScreen'
+import LandingScreenOne from '../../src/auth/screens/LandingScreenOne'
+import LandingScreenTwo from '../../src/auth/screens/LandingScreenTwo'
 
 const Stack = createStackNavigator()
 
@@ -68,6 +71,9 @@ const AppNavigation = () => {
           screenOptions={{headerShown: false}}
         >
           <Stack.Screen name="Splash" component={SplashScreen} />
+          <Stack.Screen name="LandingScreen" component={LandingScreen} />
+          <Stack.Screen name="LandingScreenOne" component={LandingScreenOne} />
+          <Stack.Screen name="LandingScreenTwo" component={LandingScreenTwo} />
           <Stack.Screen name="AppIntro" component={AppIntroScreen} />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="SignUp" component={SignUpScreen} />

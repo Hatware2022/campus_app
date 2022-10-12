@@ -77,7 +77,7 @@ const ClubListItem = ({data,reload}) => {
       </View>
 
       <Text customStyle={styles.tagTitle} size="small" family="semi">
-        Down for
+        Tags
       </Text>
 
       <View style={styles.tagContainer}>

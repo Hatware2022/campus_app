@@ -51,14 +51,17 @@ const TabBar = ({
           containerStyle={{
             borderRadius: 30,
           }}
+          inputStyle={{height:35,marginTop:7}}
           contentContainerStyle={{
             borderRadius: 30,
+            height:44
           }}
           headerSearch={true}
           onChange={text => {
             searchBarChangeHandler(text)
           }}
           placeholder={searchBarPlaceholder}
+          accessibilityLabel={searchBarPlaceholder + " text input."}
         />
         <TouchableOpacity
           onPress={filterPressHandler}
@@ -108,7 +111,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary
   },
   mainFilterContainer: {
-    marginHorizontal: 15
+    marginHorizontal: 15,
+    // height:40
   },
   filterIconContainer: {
     marginLeft: 16,
