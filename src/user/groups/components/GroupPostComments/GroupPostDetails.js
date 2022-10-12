@@ -10,9 +10,6 @@ import CommentIcon from '../../../../assets/icons/app-comments.svg'
 import FastImage from 'react-native-fast-image'
 
 import userService from '../../../../services/user'
-
-import UserImage from '../../../../assets/images/user.png'
-import Underline from '../../../../user/component/Underline'
 import moment from 'moment'
 import session from '../../../../store/session'
 import keys from '../../../../store/keys'
@@ -26,6 +23,30 @@ import Gap from '../../../../common/Gap';
 <GroupPostDetails />
 ============================================================================= */
 const GroupPostDetails = ({data,reload,totalcomments}) => {
+  const [userDetail, setUserDetail] = useState(null)
+  const [errorMessage, setErrorMessage] = useState('')
+
+  useEffect(() => {
+    try {
+      userService
+        .getById(session.get(keys.token), data.createdBy)
+        .then(result => {
+          if (result.error) {
+            setErrorMessage(result.error)
+            return
+          }
+
+          if (result.data && result.data.success === false) {
+            setErrorMessage(result.data.message)
+            return
+          }
+          setUserDetail(result.data.data)
+        })
+    } catch (error) {
+      setErrorMessage('No posts')
+    }
+  }, [data.createdBy])
+
   const [totalLikes, setTotalLikes] = useState()
   // const [totalcomments, setTotalComments] = useState();
 
@@ -73,10 +94,10 @@ const GroupPostDetails = ({data,reload,totalcomments}) => {
        <Avatar
             size={48}
             style={{marginBottom:10}}
-            source={{uri: data?.user?.imageUrl ? data?.user?.imageUrl : null}}
+            source={{uri: userDetail?.imageUrl ? userDetail?.imageUrl : null}}
           />
           <Text customStyle={styles.name} family="semi" size="big">
-            {data?.user?.name ? data?.user?.name : 'dummy'}
+            {userDetail?.name}
           </Text>
           <Text size="small" customStyle={styles.time}>
           {moment(new Date()).fromNow()}
@@ -94,13 +115,6 @@ const GroupPostDetails = ({data,reload,totalcomments}) => {
         </View>:null}
       
       </View>
-      {/* create condition if image exist */}
-      {/* <FastImage
-        resizeMode={FastImage.resizeMode.contain}
-        style={styles.image}
-        source={MockImage}
-      /> */}
-
       <Text customStyle={styles.textDetail}>{data?.description}</Text>
 
       <View style={styles.bottomContainer}>
@@ -115,7 +129,6 @@ const GroupPostDetails = ({data,reload,totalcomments}) => {
           </Touchable>
         </View>
       </View>
-      {/* <Underline /> */}
       <Gap height={36} />
     </View>
   )

@@ -1,7 +1,11 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {View, Avatar, Touchable} from '../../../../common';
 import Text from '../../../../common/TextV2';
+
+import userService from '../../../../services/user'
+import session from '../../../../store/session'
+import keys from '../../../../store/keys'
 
 import * as Colors from '../../../../config/colors';
 import DotIcon from '../../../../assets/icons/icon-dot.svg';
@@ -10,14 +14,38 @@ import moment from 'moment'
 /* =============================================================================
 <GroupPostCommentListItem />
 ============================================================================= */
-const GroupPostCommentListItem = ({data,allComments}) => {
+const GroupPostCommentListItem = ({data}) => {
+  const [userDetail, setUserDetail] = useState(null)
+  const [errorMessage, setErrorMessage] = useState('')
+
+  useEffect(() => {
+    try {
+      userService
+        .getById(session.get(keys.token), data.createdBy)
+        .then(result => {
+          if (result.error) {
+            setErrorMessage(result.error)
+            return
+          }
+
+          if (result.data && result.data.success === false) {
+            setErrorMessage(result.data.message)
+            return
+          }
+          setUserDetail(result.data.data)
+        })
+    } catch (error) {
+      setErrorMessage('No posts')
+    }
+  }, [data.createdBy])
+
   return (
     <View style={styles.container}>
-      <Avatar source={data?.commenterImageUrl} size={34} />
+      <Avatar source={userDetail?.imageUrl} size={34} />
       <View marginLeft={12} flex={1}>
         <View horizontal justifyContent={'space-between'}>
           <Text size="small" family="semi">
-            {data?.commenterName || 'Hardcode Name'}
+            {userDetail?.name}
           </Text>
           <Text size="small" color={Colors.black400}>
             {data.time}

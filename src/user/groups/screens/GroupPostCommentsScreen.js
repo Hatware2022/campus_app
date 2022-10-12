@@ -9,11 +9,11 @@ import GroupPostCommentListItem from '../components/GroupPostComments/GroupPostC
 import {useIsFocused} from '@react-navigation/native';
 
 import GROUP_POST_COMMENTS from '../../../constants/groupPostComments';
- 
+
 import * as Colors from '../../../config/colors';
 import utils from '../../../utils/utils';
 import {useRoute} from '@react-navigation/native';
-import postService from '../../../services/post';
+import commentService from '../../../services/comment';
 import session from '../../../store/session';
 import keys from '../../../store/keys';
 import userService from '../../../services/user';
@@ -27,10 +27,10 @@ const GroupPostCommentsScreen = () => {
   const route = useRoute();
   const post = route.params?.post || {};
   const [record, setRecord] = useState(null);
+  const apiPath = route.params?.apiPath || 'post/comment'
   const [allComments,setAllComments]= useState(route.params?.post?.comments || [])
   const [totalcomments, setTotalComments] = useState(route.params?.post?.comments.length);
   const tokenData = utils.decodeJwt(session.get(keys.token)) || null;
-
 
   useEffect(() => {
     let isMounted = true;
@@ -45,7 +45,7 @@ const GroupPostCommentsScreen = () => {
 
   const reload = () => {
     if (!tokenData) return;
-    userService.getById(session.get(keys.token), tokenData.id).then(result => {     
+    userService.getById(session.get(keys.token), tokenData.id).then(result => {
       if (result.data && result.data.success === true) {
         let r = result.data.data;
         setRecord(r);
@@ -59,13 +59,13 @@ const GroupPostCommentsScreen = () => {
       "comment" :e,
       "postId": post.id
     }
-    postService
-    .addComment(session.get(keys.token), data)
-    .then(result => {
-      if (result.data && result.data.success === true) {
-        // alert(JSON.stringify(result?.data?.message))
+    commentService
+    .addComment(session.get(keys.token), data, apiPath)
+      .then(result => {
+        if (result.data && result.data.success === true) {
+          // alert(JSON.stringify(result?.data?.message))
         setTotalComments(totalcomments+1)
-        allComments.push({
+          allComments.push({
           "id": record.id,
           "createdBy": record.id,
           "comment": e,
@@ -75,8 +75,8 @@ const GroupPostCommentsScreen = () => {
           "commenterName": record?.name,
           "createdAt": record?.createdAt,
           "updatedAt": moment(new Date())
-      })
-      }
+          })
+        }
     });
   }
 
@@ -85,7 +85,6 @@ const GroupPostCommentsScreen = () => {
       <Header title={'Comments'} />
       <FlatList
         style={styles.list}
-        // data={GROUP_POST_COMMENTS}
         data={allComments}
         renderItem={renderCommentItem}
         keyExtractor={item => item._id}
@@ -99,7 +98,7 @@ const GroupPostCommentsScreen = () => {
 };
 
 const renderCommentItem = ({item}) => <GroupPostCommentListItem allComments={item?.comments || []}  data={item} />;
- 
+
 const styles = StyleSheet.create({
   list: {
     flex: 1,

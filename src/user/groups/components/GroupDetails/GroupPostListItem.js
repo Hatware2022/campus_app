@@ -50,7 +50,11 @@ const GroupPostListItem = ({data}) => {
   const navigation = useNavigation()
 
   const _moveToComments = () => {
-    navigation.navigate('GroupPostComments', {post: data})
+    navigation.navigate('GroupPostComments', {
+      post: data,
+      allComments: data.comments,
+      apiPath: 'grouppost/addcomment'
+    })
   }
 
   return (
