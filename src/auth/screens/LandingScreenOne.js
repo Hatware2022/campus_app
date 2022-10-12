@@ -103,11 +103,11 @@ const styles = StyleSheet.create({
   searchContainer: {
     flexDirection: 'row',
     backgroundColor: '#FAFAFA',
-    width: '90%',
+    width: '80%',
     height: 40,
     alignSelf: 'center',
     borderRadius: 8,
-    marginTop: '10%'
+    marginTop: '20%'
   },
   searchIcon: {
     marginTop: 10,
@@ -116,7 +116,8 @@ const styles = StyleSheet.create({
   bottomContainer: {
     position: 'absolute',
     bottom: 20,
-    width: '100%'
+    width: '80%',
+    alignSelf:'center'
   },
   divider: {
     width: 100,
@@ -135,7 +136,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     textAlign: 'center',
     width: '80%',
-    marginTop: 10,
+    lineHeight:12.1,
+    marginTop: 30,
     fontSize: 12
   },
   flatlist: {

@@ -164,7 +164,7 @@ const EventsScreen = () => {
   }
 
   return (
-    <Container backgroundColor={Colors.white250} style={{padding: 0}}>
+    <Container backgroundColor={Colors.white250} style={{padding: 0,backgroundColor:'#fff'}}>
       <StatusBar backgroundColor={Colors.primary} barStyle="light-content" />
       {/* <View horizontal>
         <TextInput
@@ -183,6 +183,24 @@ const EventsScreen = () => {
           <FilterIcon />
         </TouchableOpacity>
       </View> */}
+       <View style={styles.headerText}>
+          <Text family="semi" size="big" customStyle={styles.textGroup}>
+          Events
+            </Text>
+          <View horizontal>
+            <TouchableOpacity
+              style={styles.iconPlus}
+              // onPress={_moveToCreatePost}
+            >
+              <Text size="medium" family="medium" color={Colors.primary}>
+                {'Host Event  '}
+              </Text>
+              <PlusIcon />
+            </TouchableOpacity>
+          </View>
+          {/* <ChatForm reload={reload} /> */}
+        </View>
+
       <FlatList
         data={records}
         style={styles.list}
@@ -268,7 +286,22 @@ const styles = StyleSheet.create({
   textEvent: {
     lineHeight: 22,
     flex: 1
-  }
+  },
+  headerText: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 14,
+    paddingHorizontal: 16
+  },
+  textGroup: {
+    lineHeight: 22,
+    flex: 1
+  },
+  iconPlus: {
+    marginLeft: 6,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
 })
 
 export default EventsScreen

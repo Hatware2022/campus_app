@@ -16,6 +16,7 @@ const LandingScreen = (props) => {
 
   return (
     <View style={styles.container}>
+      <StatusBar hidden />
       <Image
         source={require('../../assets/images/Bondo-text.png')}
         style={styles.logoTxt}
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     alignSelf: 'center',
-    marginTop: '10%'
+    marginTop: '20%'
   },
   title: {
     color: '#5AB7D2',
@@ -65,12 +66,12 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   btnOne: {
-    width: '80%',
+    width: '65%',
     height: 44,
     backgroundColor: '#5AB7D2',
     borderRadius: 20,
     alignSelf: 'center',
-    marginTop: '30%'
+    marginTop: '24%'
   },
   btnTxt: {
     alignSelf: 'center',
@@ -79,7 +80,7 @@ const styles = StyleSheet.create({
     fontWeight: '600'
   },
   btnTwo: {
-    width: '80%',
+    width: '65%',
     height: 44,
     backgroundColor: '#5AB7D2',
     borderRadius: 20,
@@ -89,8 +90,9 @@ const styles = StyleSheet.create({
   term: {
     alignSelf: 'center',
     textAlign: 'center',
-    width: '80%',
-    marginTop: 10,
+    width: '60%',
+    lineHeight:12.1,
+    marginTop: 30,
     fontSize: 12
   }
 })

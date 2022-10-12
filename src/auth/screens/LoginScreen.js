@@ -122,7 +122,7 @@ const LoginScreen = () => {
 
   return (
     <Container>
-      <StatusBar backgroundColor={Colors.primary} barStyle="light-content" />
+      <StatusBar hidden={false} backgroundColor={Colors.primary} barStyle="light-content" />
       <Header title={'Login'} />
       <Content>
         <View

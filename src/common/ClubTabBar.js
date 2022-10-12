@@ -15,7 +15,7 @@ import SearchIcon from '../assets/icons/icon-search.svg'
 /* =============================================================================
 <TabBar />
 ============================================================================= */
-const TabBar = ({
+const ClubTabBar = ({
   jumpTo,
   textStyle,
   itemStyle,
@@ -35,44 +35,15 @@ const TabBar = ({
 
   return (
     <View style={[styles.container, _safeArea, containerStyle]}>
-      <View
+      {/* <View
         horizontal
         marginVertical={16}
         marginHorizontal={16}
         justifyContent="space-between"
       >
         <Chapman />
-      </View>
-
-      <View horizontal style={styles.mainFilterContainer}>
-        <TextInput
-          left={<SearchIcon />}
-          value={searchBarKeyword}
-          containerStyle={{
-            borderRadius: 30,
-          }}
-          inputStyle={{height:35,marginTop:7}}
-          contentContainerStyle={{
-            borderRadius: 30,
-            height:44
-          }}
-          headerSearch={true}
-          onChange={text => {
-            searchBarChangeHandler(text)
-          }}
-          placeholder={searchBarPlaceholder}
-          accessibilityLabel={searchBarPlaceholder + ' text input.'}
-        />
-        <TouchableOpacity
-          onPress={filterPressHandler}
-          style={styles.filterIconContainer}
-        >
-          <Image source={require('../assets/images/Filter.png')} style={{width:30,height:30}}/>
-          {/* <FilterIcon /> */}
-        </TouchableOpacity>
-      </View>
-
-      <View horizontal>
+      </View> */}
+          <View horizontal>
         {navigationState.routes.map((item, index) => {
           const active = index !== navigationState.index
           const activeStyle = {
@@ -106,6 +77,36 @@ const TabBar = ({
           )
         })}
       </View>
+
+      <View horizontal style={styles.mainFilterContainer}>
+        <TextInput
+          left={<SearchIcon />}
+          value={searchBarKeyword}
+          containerStyle={{
+            borderRadius: 30,
+          }}
+          inputStyle={{height:35,marginTop:7}}
+          contentContainerStyle={{
+            borderRadius: 30,
+            height:44
+          }}
+          headerSearch={true}
+          onChange={text => {
+            searchBarChangeHandler(text)
+          }}
+          placeholder={searchBarPlaceholder}
+          accessibilityLabel={searchBarPlaceholder + ' text input.'}
+        />
+        <TouchableOpacity
+          onPress={filterPressHandler}
+          style={styles.filterIconContainer}
+        >
+          <Image source={require('../assets/images/Filter.png')} style={{width:30,height:30}}/>
+          {/* <FilterIcon /> */}
+        </TouchableOpacity>
+      </View>
+
+  
     </View>
   )
 }
@@ -116,7 +117,8 @@ const styles = StyleSheet.create({
   },
   mainFilterContainer: {
     marginHorizontal: 15,
-    width:'95%'
+    width:'95%',
+    marginTop:20
     // height:40
   },
   filterIconContainer: {
@@ -163,4 +165,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default TabBar
+export default ClubTabBar

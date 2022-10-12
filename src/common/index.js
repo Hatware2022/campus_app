@@ -7,6 +7,7 @@ export {default as Avatar} from './Avatar';
 export {default as Button} from './Button';
 export {default as Header} from './Header';
 export {default as TabBar} from './TabBar';
+export {default as ClubTabBar} from './ClubTabBar';
 export {default as TabBarNoHeader} from './TabBarNoHeader';
 export {default as Select} from './Select';
 export {default as Content} from './Content';

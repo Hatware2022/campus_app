@@ -9,6 +9,7 @@ import ProfileScreen from '../organization/profile/screens/ProfileScreen';
 import SearchScreen from '../organization/search/screens/SearchScreen';
 import EventsScreen from '../organization/events/screens/EventsScreen';
 import PostsScreen from '../organization/posts/screens/PostsScreen';
+import ClubOrganizationScreen from '../user/ClubOrganizationScreen/ClubOrganizationScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -21,7 +22,8 @@ const OrganizationTab = () => (
     screenOptions={{headerShown: false}}>
     {/* <Tab.Screen name="Home" component={PostsScreen} /> */}
     <Tab.Screen name="Home" component={HomeScreen} />
-    <Tab.Screen name="Post" component={EventsScreen} />
+    <Tab.Screen name="Organization" component={ClubOrganizationScreen} />
+    {/* <Tab.Screen name="Post" component={EventsScreen} />  */}
     <Tab.Screen name="Search" component={SearchScreen} />
     {/* <Tab.Screen name="Inbox" component={InboxScreen} /> */}
     <Tab.Screen name="Profile" component={ProfileScreen} />

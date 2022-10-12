@@ -4,17 +4,17 @@ import {StyleSheet, Dimensions, View} from 'react-native'
 import {useDispatch, useSelector} from 'react-redux'
 
 // import ChatsScreen from '../../chats/screens/ChatsScreen'
-import ChatsScreen from '../../clubsPost/screens/ClubPostScreen'
-import GroupsScreen from '../../groups/screens/GroupsScreen'
-import EventsScreen from '../../../organization/events/screens/EventsScreen'
-// import EventsScreen from '../../events/screens/EventsScreen';
-import ClubsScreen from '../../../organization/clubs/screens/ClubsScreen'
-import PostsScreen from '../../../organization/posts/screens/PostsScreen'
+import ChatsScreen from '../clubsPost/screens/ClubPostScreen'
+import GroupsScreen from '../groups/screens/GroupsScreen'
+import EventsScreen from '../../organization/events/screens/EventsScreen'
+// import EventsScreen from '../events/screens/EventsScreen';
+import ClubsScreen from '../../organization/clubs/screens/ClubsScreen'
+import PostsScreen from '../../organization/posts/screens/PostsScreen'
 
-import {Container, TabBar} from '../../../common'
+import {Container, ClubTabBar} from '../../common'
 
-import {setKey} from '../../../store/actions'
-import keys from '../../../store/keys'
+import {setKey} from '../../store/actions'
+import keys from '../../store/keys'
 
 const renderScene = SceneMap({
   events: EventsScreen,
@@ -24,7 +24,7 @@ const renderScene = SceneMap({
 
 const renderTabBar = props => (
   <>
-    <TabBar
+    <ClubTabBar
       {...props}
       // containerStyle={styles.tabBar}
       // styles={{backgroundColor: 'blue'}}
@@ -37,7 +37,7 @@ const renderTabBar = props => (
 /* =============================================================================
 <HomeScreen />
 ============================================================================= */
-const OrganizationScreen = () => {
+const ClubOrganizationScreen = () => {
   const [index, setIndex] = React.useState(0)
   const [routes] = React.useState([
     {key: 'events', title: 'Events'},
@@ -117,4 +117,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default OrganizationScreen
+export default ClubOrganizationScreen

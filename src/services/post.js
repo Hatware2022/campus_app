@@ -26,6 +26,27 @@ export default class {
         return result;
     }
 
+    static getAllClub = async token => {
+        let result = {
+            data: null,
+            error: null
+        };
+
+        await axios.get(`${constants.API_URL}/club/posts/all`, 
+            { headers: { 'Authorization': token }})
+            .then(resp => {
+                if (resp.status === 200) {
+                    result.data = resp.data;
+                }
+            })
+            .catch(err => {
+                alert(err)
+                result.error = err.response.data;
+            });
+
+        return result;
+    }
+
     static getById = async (token, postId) => {
         let result = {
             data: null,
