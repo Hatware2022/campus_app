@@ -35,7 +35,8 @@ const Composer = ({loading, text, onChange, onSend, imageUrl}) => {
       >
         <Avatar size={40} source={imageUrl ? {uri: imageUrl} : null} />
         <TextInput
-          multiline={3}
+          multiline
+          numberOfLines={3}
           value={text}
           style={styles.input}
           placeholderTextColor={Colors.secondaryText}
@@ -75,7 +76,7 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    fontFamily: 'Rubik-Regular',
+    fontFamily: 'SFProDisplay-Regular',
     marginHorizontal: 12,
     paddingHorizontal: 12,
     borderRadius: 30,

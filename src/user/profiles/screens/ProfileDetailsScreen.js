@@ -65,8 +65,8 @@ const ProfileDetailsScreen = ({navigation}) => {
       })
     } else {
       const payload = {
-        user1: tokenData.id,
-        user2: record.id
+        user1: tokenData?.id,
+        user2: record?.id
       }
       conversationService.create(session.get(keys.token), payload).then(res => {
         if (res?.data?.success) {
@@ -105,7 +105,7 @@ const ProfileDetailsScreen = ({navigation}) => {
         />
 
         <View>
-          <Text family="semi" size="big">
+          <Text family="semi" size="mediumLarge">
             Bio
           </Text>
           <Gap height={12} />
@@ -145,7 +145,7 @@ const ProfileDetailsScreen = ({navigation}) => {
           />
         </View>
 
-        <Text family="semi" size="big">
+        <Text family="semi" size="mediumLarge">
           Interest
         </Text>
         {record?.interest && record?.interest.length > 0 ? (
@@ -159,8 +159,8 @@ const ProfileDetailsScreen = ({navigation}) => {
           marginVertical={24}
         />
 
-        <Text family="semi" size="big">
-          Down For
+        <Text family="semi" size="mediumLarge">
+          Up For
         </Text>
         {record?.downFor && record?.downFor.length > 0 ? (
           <TagInput label="Interests" tags={record?.downFor} />

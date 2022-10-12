@@ -81,9 +81,8 @@ const EditOrganizationProfileScreen = () => {
 		setSuccessMessage(null);
 		const tokenData = utils.decodeJwt(session.get(keys.token));
 		if (!tokenData) return;
-		userService.update(session.get(keys.token), tokenData._id, {
-			firstName,
-			lastName,
+		userService.update(session.get(keys.token), tokenData.id, {
+			name : firstName,
 			bio,
 			insta,
 			tiktok,
@@ -91,8 +90,9 @@ const EditOrganizationProfileScreen = () => {
 			downFor: interests
 		})
 			.then(result => {
-				if (result.error) {
-					setErrorMessage(result.error);
+				console.log('userService : update : ',result)
+				if (result?.error && result?.error?.code) {
+					setErrorMessage(result?.error?.code);
 					return;
 				}
 

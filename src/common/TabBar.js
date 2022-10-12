@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import {StyleSheet, TouchableOpacity,Image} from 'react-native'
 
 import View from './View'
@@ -11,6 +11,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import Chapman from '../assets/icons/chapman.svg'
 import FilterIcon from '../assets/icons/icon-filter.svg'
 import SearchIcon from '../assets/icons/icon-search.svg'
+import CampusContext from '../CampusContext'
 
 /* =============================================================================
 <TabBar />
@@ -27,6 +28,7 @@ const TabBar = ({
   filterPressHandler = () => {}
 }) => {
   const insets = useSafeAreaInsets()
+  const {loginAsClub} = useContext(CampusContext)
 
   const _safeArea = {
     paddingTop: insets.top,
@@ -67,8 +69,9 @@ const TabBar = ({
           onPress={filterPressHandler}
           style={styles.filterIconContainer}
         >
+          {loginAsClub ?
           <Image source={require('../assets/images/Filter.png')} style={{width:30,height:30}}/>
-          {/* <FilterIcon /> */}
+        : <FilterIcon />}
         </TouchableOpacity>
       </View>
 

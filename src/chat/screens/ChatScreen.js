@@ -48,9 +48,11 @@ const renderBubble = props => {
       }}
       textStyle={{
         right: {
+          fontFamily: 'SFProDisplay-Regular',
           color: '#373C3E'
         },
         left: {
+          fontFamily: 'SFProDisplay-Regular',
           color: '#373C3E'
         }
       }}
@@ -84,7 +86,7 @@ const ChatScreen = ({}) => {
   }
 
   const _handleSend = values => {
-    setMessages(previousMessages => GiftedChat.append(values, previousMessages))
+    setMessages(previousMessages => GiftedChat.append(previousMessages, values))
     setText('')
     const data = {
       conversationId: chat?.id,
@@ -95,7 +97,6 @@ const ChatScreen = ({}) => {
     socket.current.emit('sendMessage', data)
     messageService.create(session.get(keys.token), data)
     chatRef.current.scrollToBottom()
-    reload()
   }
 
   useEffect(() => {
@@ -211,7 +212,7 @@ const ChatScreen = ({}) => {
             />
             <Text
               size="medium"
-              family="regular"
+              family="SFProDisplay-Regular"
               color={Colors.black600}
               customStyle={{paddingTop: 2}}
             >
@@ -223,59 +224,53 @@ const ChatScreen = ({}) => {
           </TouchableOpacity>
         </View>
       </View>
-      <ScrollView
-        contentContainerStyle={{flex: 1, height: '100%'}}
-        refreshControl={
-          <RefreshControl refreshing={state.isRefreshing} onRefresh={reload} />
-        }
-        scrollEnabled={false}
-      >
-        <GiftedChat
-          ref={chatRef}
-          renderUsernameOnMessage
-          alwaysShowSend={false}
-          messages={messages}
-          user={{
-            _id: 1,
-            name: record?.name,
-            avatar: record?.imageUrl
-          }}
-          renderLoading={() => (
-            <ActivityIndicator size="large" color="#F1F3F4" />
-          )}
-          textInputProps={{
-            color: '#373C3E'
-          }}
-          listViewProps={{
-            scrollEventThrottle: 400,
-            onScroll: ({nativeEvent}) => {
-              if (isCloseToTop(nativeEvent)) {
-                reload()
-              }
+
+      <GiftedChat
+        ref={chatRef}
+        renderUsernameOnMessage
+        alwaysShowSend={false}
+        messages={messages}
+        user={{
+          _id: 1,
+          name: record?.name,
+          avatar: record?.imageUrl
+        }}
+        renderLoading={() => <ActivityIndicator size="large" color="#F1F3F4" />}
+        textInputProps={{
+          color: '#373C3E'
+        }}
+        listViewProps={{
+          scrollEventThrottle: 400,
+          onScroll: ({nativeEvent}) => {
+            if (isCloseToTop(nativeEvent)) {
+              reload()
             }
-          }}
-          renderTime={() => <></>}
-          keyboardShouldPersistTaps="never"
-          renderDay={renderDay}
-          renderAvatar={renderAvatar}
-          renderMessage={renderMessage}
-          renderBubble={renderBubble}
-          minComposerHeight={60}
-          renderInputToolbar={props => (
-            <View style={{bottom: 0}}>
-              <Composer
-                {...props}
-                text={text}
-                onChange={setText}
-                imageUrl={record?.imageUrl}
-              />
-            </View>
-          )}
-          minInputToolbarHeight={60}
-          onSend={_handleSend}
-          inverted
-        />
-      </ScrollView>
+          }
+        }}
+        loadEarlier={state.isRefreshing}
+        onLoadEarlier={reload}
+        isLoadingEarlier={state.isRefreshing}
+        renderTime={() => <></>}
+        keyboardShouldPersistTaps="never"
+        renderDay={renderDay}
+        renderAvatar={renderAvatar}
+        renderMessage={renderMessage}
+        renderBubble={renderBubble}
+        minComposerHeight={60}
+        renderInputToolbar={props => (
+          <View style={{bottom: 0}}>
+            <Composer
+              {...props}
+              text={text}
+              onChange={setText}
+              imageUrl={record?.imageUrl}
+            />
+          </View>
+        )}
+        minInputToolbarHeight={60}
+        onSend={_handleSend}
+        inverted
+      />
     </Container>
   )
 }

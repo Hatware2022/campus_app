@@ -56,6 +56,7 @@ const EditUserProfileScreen = () => {
   const [linkedin, setLinkedin] = useState('');
   const [interests, setInterests] = useState([]);
   const [activities, setActivities] = useState([]);
+  const [address, setAddress] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
   const [file, setFile] = useState(null);
@@ -98,6 +99,7 @@ const EditUserProfileScreen = () => {
 
         setFirstName(r.firstName);
         setLastName(r.lastName);
+        setAddress(r.address)
         setImageUrl(r.imageUrl);
         setMajor(r.major);
         setGradeYear(r.gradYear);
@@ -202,7 +204,7 @@ const EditUserProfileScreen = () => {
         .catch(err => {});
     } catch (err) {}
   };
-
+  console.log('your profile  : ',record)
   // if (!record) return <></>;
   return (
     <Container>
@@ -242,7 +244,7 @@ const EditUserProfileScreen = () => {
           <Card
             subCard
             leftTitle={'From'}
-            subContent="Burlington, Vermont, USA"
+            subContent={address}
           />
 
           <View
