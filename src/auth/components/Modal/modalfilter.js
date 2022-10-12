@@ -481,7 +481,7 @@ const ModalFilter = ({onYes, onCloseModal, isVisible, setSortBy, sortBy, postFil
               </>:null}
 
 
-              <Text family="semi">Down For</Text>
+              <Text family="semi">Tags</Text>
               <Gap height={8} />
               <Touchable
                 style={styles.containerChooseBox}

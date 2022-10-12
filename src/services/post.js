@@ -1,5 +1,7 @@
+import session from '../store/session';
 import axios from 'axios';
 import constants from '../utils/constants';
+import keys from '../store/keys';
 
 export default class {
 
@@ -8,8 +10,8 @@ export default class {
             data: null,
             error: null
         };
-
-        await axios.get(`${constants.API_URL}/post/`, 
+        let loginType = session.get(keys.loginType) || null; 
+        await axios.get(loginType === 'organization' ? `${constants.API_URL}/club/posts/all` : `${constants.API_URL}/post/`, 
             { headers: { 'Authorization': token }})
             .then(resp => {
                 if (resp.status === 200) {
@@ -17,6 +19,7 @@ export default class {
                 }
             })
             .catch(err => {
+                alert(err)
                 result.error = err.response.data;
             });
 
@@ -118,14 +121,17 @@ export default class {
             error: null
         };
 
-        await axios.post(`${constants.API_URL}/post/comment`,data,
+        let loginType = session.get(keys.loginType) || null; 
+        await axios.post( loginType === 'organization' ? `${constants.API_URL}/club/posts/comment/add` : `${constants.API_URL}/post/comment`,data,
             { headers: { 'Authorization': token }})
             .then(resp => {
                 if (resp.status === 201) {
+                    alert(JSON.stringify(resp.data))
                     result.data = resp.data;
                 }
             })
             .catch(err => {
+                alert(err)
                 result.error = err.response.data;
             });
 

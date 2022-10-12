@@ -67,14 +67,14 @@ const OtpScreen = (props) => {
       <Header title={'Otp'} />
       <Content>
       <Text style={styles.otpTitle}>
-We have sent you a one time password to your email address, please insert them here.
+        We have sent you a one time password to your email address, please insert them here.
       </Text>
       <View style={styles.otpDirection}>
       <OtpInputs
           handleChange={(code) => setCode(code)}
           numberOfInputs={4}
           keyboardType="default"
-          inputStyles={styles.codeInputContainer}
+          inputStyles={[styles.codeInputContainer,{alignSelf:'center',textAlign:'center'}]}
         />
         </View>
 

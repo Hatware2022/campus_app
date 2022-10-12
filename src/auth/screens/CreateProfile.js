@@ -26,6 +26,8 @@ import userService from '../../services/user';
 import session from '../../store/session';
 import keys, {token} from '../../store/keys';
 import {launchImageLibrary} from 'react-native-image-picker';
+import FastImage from 'react-native-fast-image'
+import TrashIcon from '../../assets/icons/icon-trash-red.svg'
 
 
 export default function CreateProfile(props) {
@@ -49,28 +51,29 @@ export default function CreateProfile(props) {
   const [majorSelected, setMajorSelected] = useState()
   const [interetsSelected, setInteretsSelected] = useState()
   const [downForSelected, setDownForSelected] = useState()
+  const [galleryImage, setGalleryImage] = useState(null)
   
   const gradYearList = [2022, 2023, 2024, 2025]
 
   const genderList = ['Male', 'Female', 'Non-binary']
 
-  // const chooseImage = async () => {
-  //   // setSelectFileModal(false)
+  const chooseImage = async () => {
+    // setSelectFileModal(false)
 
-  //   ImagePicker.openPicker({
-  //       width: 300,
-  //       height: 400,
-  //       cropping: true
-  //   }).then(image => {
-  //     console.log('image====>>>',image)
+    ImagePicker.openPicker({
+        width: 300,
+        height: 400,
+        cropping: true
+    }).then(image => {
+      console.log('image====>>>',image)
       
-  //     let ext = image.path.split('.').pop()
-  //     setImageName(`image.${ext}`)
-  //     setImagePath(image.path)
+      let ext = image.path.split('.').pop()
+      setImageName(`image.${ext}`)
+      setImagePath(image.path)
       
-  //   })
+    })
        
-  // }
+  }
 
   const takephotofromLibrary = () => {
     const options = {
@@ -89,6 +92,7 @@ export default function CreateProfile(props) {
           uri: response.assets?.[0].uri,
         };
         setImagePath(source.uri);
+        setGalleryImage(source)
       }
     });
   };
@@ -215,7 +219,24 @@ export default function CreateProfile(props) {
                
           <Text style={[styles.heading,{marginTop:RFValue(0)}]}>Add Profile Image</Text>
           
-          <TouchableOpacity style={styles.addImage} onPress={()=>{takephotofromLibrary()}}>
+
+          {galleryImage ? (
+          <View style={styles.containerImage}>
+            <FastImage
+              resizeMode={FastImage.resizeMode.contain}
+              style={styles.image}
+              source={galleryImage}
+            >
+              <Touchable
+                onPress={() => setGalleryImage(null)}
+                style={styles.containerTrash}
+              >
+                <TrashIcon />
+              </Touchable>
+            </FastImage>
+          </View>
+        ) : (
+          <TouchableOpacity style={styles.addImage} onPress={()=>{takephotofromLibrary()}}> 
 
             <View style={{flexDirection:'row'}}>
 
@@ -228,6 +249,7 @@ export default function CreateProfile(props) {
             <AntDesign name='plus' size={RFValue(20)} color='#A70032' />
 
           </TouchableOpacity>
+          )}
 
         <View style={styles.groupHead}/>
 
@@ -368,8 +390,14 @@ export default function CreateProfile(props) {
         <View style={styles.groupHead}/>
 
         <View style={styles.intrestContainer}>
-
+        <View style={{flexDirection:'row'}}>
           <Text style={styles.heading}>Interests</Text>
+          <TextInput
+          placeholder='Write here'
+          style={{marginTop:1,marginLeft:20}}
+          onChangeText={(e)=>setInteretsSelected(e)} />
+          </View>
+          {/* <Text style={styles.heading}>Interests</Text> */}
 
           <TouchableOpacity onPress={()=>{
               setIsVisibal(true)
@@ -385,15 +413,20 @@ export default function CreateProfile(props) {
         <View style={styles.groupHead}/>
 
         <View style={styles.intrestContainer}>
-
-          <Text style={styles.heading}>Down For</Text>
+        <View style={{flexDirection:'row'}}>
+          <Text style={styles.heading}>Up For</Text>
+          <TextInput
+          placeholder='Write here'
+          style={{marginTop:1,marginLeft:20}}
+          onChangeText={(e)=>setDownForSelected(e)} />
+          </View>
 
           <TouchableOpacity onPress={()=>{
               setIsVisibal(true)
               setTypeModal('down for')
           }}>
 
-            <Text style={styles.intrest}>Choose Down For</Text>
+            <Text style={styles.intrest}>Choose Up For</Text>
 
           </TouchableOpacity>
 
@@ -600,5 +633,26 @@ const styles = StyleSheet.create({
     marginTop:RFValue(8),
     backgroundColor:'#FAFAFA'
     
-  }
+  },
+  image: {
+    width: '100%',
+    height: 220,
+    alignItems: 'flex-end'
+  },
+  containerImage: {
+    padding: 12,
+    borderRadius: 8,
+    marginTop: 8,
+    borderWidth: 1,
+    borderColor: Colors.black400
+  },
+  containerTrash: {
+    height: 32,
+    width: 32,
+    margin: 16,
+    borderRadius: 32,
+    backgroundColor: Colors.white100,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
 })

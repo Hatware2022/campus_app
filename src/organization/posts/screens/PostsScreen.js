@@ -72,7 +72,7 @@ const PostsScreen = () => {
         return;
       }
 
-      let arr = result.data.data;
+      let arr = result?.data?.data;
 
       if (keyword.length > 0 || (filters && filters.keyword.length > 0)) {
         let f = (filters && filters.keyword) || keyword;
@@ -109,11 +109,11 @@ const PostsScreen = () => {
   };
 
   const renderItem = ({item}) => <PostListItem data={item} reload={reload} />;
-
+  let loginType = session.get(keys.loginType) || null;
   return (
     <Container style={{}}>
       <StatusBar backgroundColor={Colors.primary} barStyle="light-content" />
-
+{/* {alert(loginType)} */}
       {/* <View horizontal>
         <TextInput
           left={<SearchIcon />}

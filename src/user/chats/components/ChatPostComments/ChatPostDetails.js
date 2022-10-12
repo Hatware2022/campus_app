@@ -43,9 +43,13 @@ const ChatPostDetails = props => {
     if (!tokenData) return;
 
     let token = session.get(keys.token)
+    let loginType = session.get(keys.loginType) || null; 
     try {
       let response =  axios({
-        url: `${constants.API_URL}/post/like/${props.data.id}`,
+        // url: `${constants.API_URL}/post/like/${props.data.id}`,
+        url: loginType === 'organization' ? 
+        `${constants.API_URL}/club/posts/${props.data.id}/like` :
+        `${constants.API_URL}/post/like/${props.data.id}` ,
         method: 'POST',
         headers:{
           'Authorization': token,

@@ -60,10 +60,14 @@ const PostListItem = props => {
       ...props.data,
       likes: arr,
     };
+    let loginType = session.get(keys.loginType) || null; 
     let token = session.get(keys.token)
-    try {
+    try { 
       let response =  axios({
-        url: `${constants.API_URL}/post/like/${props.data.id}`,
+        url: loginType === 'organization' ? 
+        `${constants.API_URL}/club/posts/${props.data.id}/like` :
+        `${constants.API_URL}/post/like/${props.data.id}` 
+        ,
         method: 'POST',
         headers:{
           'Authorization': token,
@@ -96,7 +100,7 @@ return (
             </Text>
           </View>
         )}
-     <Touchable style={{flexDirection:'row',}}>
+     <Touchable style={{flexDirection:'row',paddingHorizontal:2}}>
        <View style={styles.dot}/>
        <View style={styles.dot}/>
        <View style={styles.dot}/>
@@ -111,7 +115,7 @@ return (
       style={{height:300,width:'98%',marginBottom:10,
       borderRadius:10,alignSelf:'center'}}
       resizeMode={'cover'}
-      source={props?.data?.imageUrl != null ? {uri: props?.data?.imageUrl} : {}} />
+      source={props?.data?.imageUrl != null || props?.data?.imageUrl != "" ? {uri: props?.data?.imageUrl} : {}} />
       :null}
       
       

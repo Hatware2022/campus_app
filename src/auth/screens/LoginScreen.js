@@ -89,7 +89,7 @@ const LoginScreen = () => {
         setErrorMessage(result?.data?.message || '')
         return
       }
-      if (result.data && result.data.success === true) {
+      if (result?.data && result?.data?.success === true) {
         // alert(JSON.stringify(result.data?.userData))
         if (result.data?.userData.clubDetails === false) {
           session.set(keys.token, result.data.userData.token)
