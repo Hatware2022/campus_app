@@ -22,7 +22,7 @@ import Gap from '../../../../common/Gap';
 /* =============================================================================
 <GroupPostDetails />
 ============================================================================= */
-const GroupPostDetails = ({data,reload,totalcomments}) => {
+const GroupPostDetails = ({data,reload,totalcomments,apiPath}) => {
   const [userDetail, setUserDetail] = useState(null)
   const [errorMessage, setErrorMessage] = useState('')
 
@@ -69,7 +69,7 @@ const GroupPostDetails = ({data,reload,totalcomments}) => {
     let token = session.get(keys.token)
     try {
       let response =  axios({
-        url: `${constants.API_URL}/post/like/${data.id}`,
+        url: `${constants.API_URL}/${apiPath}/like/${data.id}`,
         method: 'POST',
         headers:{
           'Authorization': token,
@@ -119,7 +119,7 @@ const GroupPostDetails = ({data,reload,totalcomments}) => {
 
       <View style={styles.bottomContainer}>
         <View style={styles.actionButtonContainer}>
-          <Touchable style={styles.likeButton} onPress={()=>_handleLike()}>
+          <Touchable style={styles.likeButton} onPress={_handleLike}>
             <LikeIcon />
             <Text customStyle={styles.likeButtonText}>{totalLikes}</Text>
           </Touchable>

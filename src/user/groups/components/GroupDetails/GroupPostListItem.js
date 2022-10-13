@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {StyleSheet} from 'react-native'
+import {useIsFocused} from '@react-navigation/native';
 import {Touchable, View, Avatar} from '../../../../common'
 import Text from '../../../../common/TextV2'
 
@@ -7,6 +8,7 @@ import session from '../../../../store/session'
 import keys from '../../../../store/keys'
 
 import userService from '../../../../services/user'
+import groupPostService from '../../../../services/grouppost'
 
 import * as Colors from '../../../../config/colors'
 
@@ -24,6 +26,9 @@ import Gap from '../../../../common/Gap'
 const GroupPostListItem = ({data}) => {
   const [userDetail, setUserDetail] = useState(null)
   const [errorMessage, setErrorMessage] = useState('')
+  const [likeTimeStamp, setLikeTimeStamp] = useState(null)
+  const [postDetail, setPostDetail] = useState(data)
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     try {
@@ -51,11 +56,30 @@ const GroupPostListItem = ({data}) => {
 
   const _moveToComments = () => {
     navigation.navigate('GroupPostComments', {
-      post: data,
-      allComments: data.comments,
+      post: postDetail,
+      allComments: postDetail.comments,
       apiPath: 'grouppost/addcomment'
     })
   }
+
+  const handleLikePress = () => {
+    try {
+      groupPostService.like(session.get(keys.token), data.id).then(_res => {
+        setLikeTimeStamp(Date.now())
+      })
+    } catch (_error) {}
+  }
+
+  useEffect(() => {
+    if (likeTimeStamp || isFocused) {
+      try {
+        groupPostService.getById(session.get(keys.token), data.id).then(res => {
+          setPostDetail(res?.data?.data)
+        })
+      } catch (_error) {}
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [likeTimeStamp, isFocused])
 
   return (
     <Touchable onPress={_moveToComments} style={styles.container}>
@@ -81,14 +105,14 @@ const GroupPostListItem = ({data}) => {
 
       <View style={styles.bottomContainer}>
         <View style={styles.actionButtonContainer}>
-          <Touchable style={styles.likeButton}>
+          <Touchable style={styles.likeButton} onPress={handleLikePress}>
             <LikeIcon />
-            <Text customStyle={styles.likeButtonText}>{data.likes}</Text>
+            <Text customStyle={styles.likeButtonText}>{postDetail.likes}</Text>
           </Touchable>
           <Touchable style={styles.commentButton} onPress={_moveToComments}>
             <CommentIcon />
             <Text customStyle={styles.commentButtonText}>
-              {data.comments.length}
+              {postDetail.comments.length}
             </Text>
           </Touchable>
         </View>
@@ -127,7 +151,8 @@ const styles = StyleSheet.create({
   },
   actionButtonContainer: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginLeft: 6
   },
   likeButton: {
     flexDirection: 'row',
@@ -151,7 +176,7 @@ const styles = StyleSheet.create({
   containerDesc: {
     padding: 8,
     bordeRadius: 8,
-    backgroundColor: Colors.white200
+    backgroundColor: Colors.white100
   }
 })
 

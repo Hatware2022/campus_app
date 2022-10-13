@@ -113,7 +113,7 @@ const GroupDetailsScreen = () => {
   }
 
   return (
-    <Container backgroundColor={Colors.white200}>
+    <Container backgroundColor={Colors.white100}>
       <StatusBar
         backgroundColor={'transparent'}
         barStyle="light-content"
