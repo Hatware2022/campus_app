@@ -100,7 +100,7 @@ const GroupPostDetails = ({data,reload,totalcomments}) => {
             {userDetail?.name}
           </Text>
           <Text size="small" customStyle={styles.time}>
-          {moment(new Date()).fromNow()}
+          {moment(data?.createdAt).fromNow()}
         </Text>
           </View>
       <View style={styles.topContainer}>

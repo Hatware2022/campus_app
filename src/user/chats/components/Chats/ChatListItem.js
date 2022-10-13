@@ -104,7 +104,7 @@ const ChatListItem = props => {
               }}
             />
             <Text size="big" family="semi" customStyle={styles.name}>
-              {props?.data?.user?.name ? props?.data?.user?.name : 'dummy'}
+              {props?.data?.user?.name ? props?.data?.user?.name : 'Name not found'}
             </Text>
           </View>
         )}

@@ -47,7 +47,7 @@ const Card = ({
         backgroundColor={Colors.white200}
         marginTop={12}
         padding={8}>
-        <Text customStyle={{width: 60}} family="semi">
+        <Text customStyle={{width: 100}} family="semi">
           {leftTitle}
         </Text>
         <Text>{subContent}</Text>

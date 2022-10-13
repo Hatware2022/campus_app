@@ -22,6 +22,8 @@ const MemberList = props => {
         return 70
     }
   }
+
+  const maxFontSizeMultiplier = 1.5;
   return (
     <View style={styles.memberContainer}>
       <View style={[styles.memberAvatarContainer, {width: _widthAva()}]}>
@@ -34,10 +36,14 @@ const MemberList = props => {
           />
         ))}
       </View>
-      <Text customStyle={styles.textUser} size="small" color={Colors.black500}>
+      <Text
+        maxFontSizeMultiplier={maxFontSizeMultiplier}
+        customStyle={styles.textUser}
+        color={Colors.black500}
+      >
         {`${
           props?.data?.length
-            ? `${props?.data?.length} people join this event`
+            ? `${props?.data?.length} people joined this event`
             : `Be the first to join`
         }`}
       </Text>
@@ -62,7 +68,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   textUser: {
-    marginLeft: 8
+    marginLeft: 8,
+    fontSize: 10
   }
 })
 

@@ -61,6 +61,8 @@ const EventListItem = props => {
     const result = data?.membersinfo.find(item => item?.id === tokenData?.id)
     return result
   }
+
+ const maxFontSizeMultiplier = 1.5
   return (
     <>
       <Touchable onPress={() => props.onPress(data)} style={styles.container}>
@@ -84,7 +86,8 @@ const EventListItem = props => {
               </Text>
             </>
           </View>
-          <Text style={styles.time}> {moment(data?.createdAt).fromNow()}</Text>
+          <Text style={styles.time} maxFontSizeMultiplier={maxFontSizeMultiplier}
+          > {moment(data?.createdAt).fromNow()}</Text>
         </View>
 
         <View marginTop={16} marginBottom={8}>

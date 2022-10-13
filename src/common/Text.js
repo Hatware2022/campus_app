@@ -36,11 +36,18 @@ const CustomText = ({
     textAlign: align,
   };
 
+    const maxFontSizeMultiplier = 2
+
   return (
-    <Text numberOfLines={numberOfLines} style={[_style, style]} {...props}>
+    <Text
+      numberOfLines={numberOfLines}
+      style={[_style, style]}
+      maxFontSizeMultiplier={maxFontSizeMultiplier}
+      {...props}
+    >
       {children}
     </Text>
-  );
+  )
 };
 
 /* Default Props

@@ -77,6 +77,8 @@ const TextV2 = ({
     return sizeList[size]
   }, [size])
 
+  const maxFontSizeMultiplier = 2;
+
   return (
     <Text
       numberOfLines={numberOfLines}
@@ -84,6 +86,7 @@ const TextV2 = ({
       testID={testID}
       onPress={link ? onPressLink : undefined}
       accessibilityLabel={testID}
+      maxFontSizeMultiplier={maxFontSizeMultiplier}
     >
       {children}
     </Text>
