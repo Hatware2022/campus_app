@@ -163,6 +163,8 @@ const LoginScreen = () => {
             onChange={() => setRememberMe(!rememberMe)}
             login={true}
           />
+
+          <Text style={{alignSelf:'center',marginTop:20,fontSize:12,color:'black'}} onPress={()=>navigation.navigate('Register')}>Didn't have an account? Register now</Text>
           {errorMessage && (
             <Text style={globalStyles.errorHelper}>{errorMessage}</Text>
           )}

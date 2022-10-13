@@ -1,13 +1,10 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {
   StyleSheet,
-  StatusBar,
   Text,
   View,
   Image,
   TouchableOpacity,
-  TextInput,
-  FlatList
 } from 'react-native'
 import {useNavigation} from '@react-navigation/native'
 import AntDesign from 'react-native-vector-icons/AntDesign'

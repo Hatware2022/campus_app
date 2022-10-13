@@ -35,6 +35,7 @@ import ModalFilter from '../../../auth/components/Modal/modalfilter';
 const PostsScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
+  const loginType = session.get(keys.loginType)
 
   const _moveToCreatePost = () => {
     navigation.navigate('PostCreate');
@@ -143,6 +144,7 @@ const PostsScreen = () => {
           Posts
             </Text>
           <View horizontal>
+{loginType != 'organization' &&
             <TouchableOpacity
               style={styles.iconPlus}
               onPress={_moveToCreatePost}
@@ -150,8 +152,9 @@ const PostsScreen = () => {
               <Text size="medium" family="medium" color={Colors.primary}>
                 {'Create New  '}
               </Text>
-              <PlusIcon />
+              <PlusIcon width={24} />
             </TouchableOpacity>
+        }
           </View>
           {/* <ChatForm reload={reload} /> */}
         </View>

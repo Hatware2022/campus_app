@@ -394,8 +394,9 @@ export default function CreateProfile(props) {
           <Text style={styles.heading}>Interests</Text>
           <TextInput
           placeholder='Write here'
+          value={interetsSelected?.[0]?.name}
           style={{marginTop:1,marginLeft:20}}
-          onChangeText={(e)=>setInteretsSelected(e)} />
+          onChangeText={(e)=>setInteretsSelected([{"description":"","name":e}])} />
           </View>
           {/* <Text style={styles.heading}>Interests</Text> */}
 
@@ -417,8 +418,9 @@ export default function CreateProfile(props) {
           <Text style={styles.heading}>Up For</Text>
           <TextInput
           placeholder='Write here'
+          value={interetsSelected?.[0]?.name}
           style={{marginTop:1,marginLeft:20}}
-          onChangeText={(e)=>setDownForSelected(e)} />
+          onChangeText={(e)=>setDownForSelected([{"description":"","name":e}])} />
           </View>
 
           <TouchableOpacity onPress={()=>{

@@ -187,7 +187,7 @@ const ClubPostScreen = () => {
                 <Text size="medium" family="medium" color={Colors.primary}>
                   {'Create New  '}
                 </Text>
-                <PlusIcon />
+                <PlusIcon width={24}/>
               </TouchableOpacity>
             </View>
             {/* <ChatForm reload={reload} /> */}

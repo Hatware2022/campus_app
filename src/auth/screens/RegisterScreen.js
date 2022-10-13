@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {StatusBar, TextInput,TouchableOpacity} from 'react-native';
+import {StatusBar, TextInput,TouchableOpacity,Linking} from 'react-native';
 import {
   Container,
   Card,
@@ -277,7 +277,10 @@ const RegisterScreen = () => {
             label="Agree to"
             selected={term}
             onChange={() => setTerm(!term)}
-            onPressItem={()=>setWebUrl('https://docs.google.com/document/d/13X5oJhvqFUNbCbIu5jtHE4kEKAEk3tAGb4yaQ6OVckQ/edit?usp=sharing')|| setDisplayTerms(true)}
+            onPressItem={()=>
+              Linking.openURL('https://staging-api.bondo.app/terms')
+              // setWebUrl('https://docs.google.com/document/d/13X5oJhvqFUNbCbIu5jtHE4kEKAEk3tAGb4yaQ6OVckQ/edit?usp=sharing')|| setDisplayTerms(true)
+            }
             children={
               <Text
                 family="medium"
@@ -291,7 +294,10 @@ const RegisterScreen = () => {
             label="Agree to"
             selected={policy}
             onChange={() => setPolicy(!policy)}
-            onPressItem={()=>setWebUrl('https://docs.google.com/document/d/1RX-SShcYeLDplmfTImCthYiq1RyPltzpOekBtZ_IWn8/edit?usp=sharing')|| setDisplayTerms(true)}
+            onPressItem={()=>
+              Linking.openURL('https://staging-api.bondo.app/privacy-policy')
+              // setWebUrl('https://docs.google.com/document/d/1RX-SShcYeLDplmfTImCthYiq1RyPltzpOekBtZ_IWn8/edit?usp=sharing')|| setDisplayTerms(true)
+            }
             children={
               <Text
                 family="medium"

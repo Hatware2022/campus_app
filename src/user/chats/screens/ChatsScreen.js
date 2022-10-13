@@ -188,7 +188,7 @@ const ChatsScreen = () => {
                 <Text size="medium" family="medium" color={Colors.primary}>
                   {'Create New '}
                 </Text>
-                <PlusIcon />
+                <PlusIcon width={24}/>
               </TouchableOpacity>
             </View>
             {/* <ChatForm reload={reload} /> */}
@@ -214,7 +214,7 @@ const ChatsScreen = () => {
         sortBy={sortBy}
         setSortBy={e => setSortBy(e)}
         isVisible={viewFilter}
-        onCloseModal={() => console.log('ji') || _onPressCloseFilter()}
+        onCloseModal={() => _onPressCloseFilter()}
         onYes={() => _onPressCloseFilter()}
       />
     </Container>
