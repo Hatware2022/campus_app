@@ -311,4 +311,27 @@ export default class {
 
     return result
   }
+
+  
+  static reportPost = async (token, data) => {
+    let result = {
+      data: null,
+      error: null
+    }
+
+    await axios
+      .post(`${constants.API_URL}/report/admin/bulkReport`, data, {
+        headers: {Authorization: token}
+      })
+      .then(resp => {
+        if (resp.status === 201) {
+          result.data = resp.data
+        }
+      })
+      .catch(err => {
+        result.error = err.response.data
+      })
+
+    return result
+  }
 }

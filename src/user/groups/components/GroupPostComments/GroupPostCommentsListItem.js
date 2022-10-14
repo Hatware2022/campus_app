@@ -57,7 +57,7 @@ const GroupPostCommentListItem = ({data}) => {
 
         <Text customStyle={styles.comment}>{data?.comment}</Text>
 
-        <View horizontal marginBottom={20}>
+        {/* <View horizontal marginBottom={20}>
           <Touchable
             flex={1}
             onPress={() => {}}>
@@ -66,7 +66,7 @@ const GroupPostCommentListItem = ({data}) => {
             </Text>
           </Touchable>
           <DotIcon />
-        </View>
+        </View> */}
       </View>
     </View>
   );

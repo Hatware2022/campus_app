@@ -177,4 +177,44 @@ export default class {
 
         return result;
     }
+
+    static delete = async (token, id) => {
+        let result = {
+            data: null,
+            error: null
+        };
+
+        await axios.put(`${constants.API_URL}/post/delete/${id}`, {},
+            { headers: { 'Authorization': token }})
+            .then(resp => {
+                if (resp.status === 200) {
+                    result.data = resp.data;
+                }
+            })
+            .catch(err => {
+                result.error = err.response.data;
+            });
+
+        return result;
+    }
+        
+    static hide = async (token, id) => {
+        let result = {
+            data: null,
+            error: null
+        };
+
+        await axios.put(`${constants.API_URL}/post/hide/${id}`, {},
+            { headers: { 'Authorization': token }})
+            .then(resp => {
+                if (resp.status === 200) {
+                    result.data = resp.data;
+                }
+            })
+            .catch(err => {
+                result.error = err.response.data;
+            });
+
+        return result;
+    }
 }

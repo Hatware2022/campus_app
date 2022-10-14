@@ -6,6 +6,7 @@ import Text from '../../../../common/TextV2'
 
 import session from '../../../../store/session'
 import keys from '../../../../store/keys'
+import moment from 'moment'
 
 import userService from '../../../../services/user'
 import groupPostService from '../../../../services/grouppost'
@@ -92,7 +93,7 @@ const GroupPostListItem = ({data}) => {
           </Text>
         </View>
         <Text size="small" customStyle={styles.time}>
-          {new Date(data.createdAt).toLocaleString()}
+            {moment(data.createdAt).fromNow()}
         </Text>
       </View>
       <Gap height={12} />
@@ -142,7 +143,7 @@ const styles = StyleSheet.create({
   },
   time: {
     color: Colors.black400,
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   bottomContainer: {
     flexDirection: 'row',
