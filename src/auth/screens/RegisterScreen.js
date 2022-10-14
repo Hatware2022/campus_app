@@ -112,19 +112,19 @@ const RegisterScreen = () => {
       alert('userName should be 5(five) digits long')
     }
 
-    if(birthDate === null){
-      alert('Date of birth should not be empty')
-    }
+    // if(birthDate === null){
+    //   alert('Date of birth should not be empty')
+    // }
 
-    if(phoneNo === "" || phoneNo.length < 10){
-      alert('Phone Number should not be empty and greater should 10 digits long')
-    }
+    // if(phoneNo === "" || phoneNo.length < 10){
+    //   alert('Phone Number should not be empty and greater should 10 digits long')
+    // }
 
     let data ={
       "name":userName, 
       "email":email,
-      "dateOfBirth":birthDate,
-      "mobileNumber":phoneNo,
+      "dateOfBirth":'2022-09-25T11:23:19.639Z',
+      "mobileNumber":'03333333333',
     }
 
     // let response = await axios({
@@ -211,7 +211,7 @@ const RegisterScreen = () => {
             />
           </View>
 
-          <Text customStyle={styles.registerTxt} style={styles.lableuser}>Phone Number</Text>
+          {/* <Text customStyle={styles.registerTxt} style={styles.lableuser}>Phone Number</Text>
           <View>
             <TextInput
             style={styles.lableinput}
@@ -222,9 +222,9 @@ const RegisterScreen = () => {
                 setPhoneNo(value);
               }}
             />
-          </View>
+          </View> */}
 
-          <Text customStyle={styles.registerTxt} style={styles.lableuser}>Day of birth</Text>
+          {/* <Text customStyle={styles.registerTxt} style={styles.lableuser}>Day of birth</Text>
           <Touchable
           style={styles.lableinput}
           placeholderTextColor={'#6B7476'}
@@ -235,7 +235,7 @@ const RegisterScreen = () => {
                 : 'Click to enter day of birth'}
             </Text>
             <CalendarIcon style={[styles.eyeicon,{marginTop:12,marginRight:-10}]} />
-          </Touchable>
+          </Touchable> */}
 
           <Text customStyle={styles.registerTxt} style={styles.lableuser}>Password</Text>
           <View>

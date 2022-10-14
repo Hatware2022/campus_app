@@ -109,6 +109,11 @@ const PostsScreen = () => {
     setRefreshing(false);
   };
 
+  const _onPressCloseFilter = () => {
+    setViewFilter(false);
+    dispatch(setKey(keys.postsShowModalFilter, false))
+  };
+
   const renderItem = ({item}) => <PostListItem data={item} reload={reload} />;
 
   return (
@@ -173,13 +178,21 @@ const PostsScreen = () => {
           />
         }
       />
-      <ModalFilter
+       <ModalFilter
+        postFilter={true}
+        sortBy={sortBy}
+        setSortBy={e => setSortBy(e)}
+        isVisible={viewFilter}
+        onCloseModal={() => _onPressCloseFilter()}
+        onYes={() => _onPressCloseFilter()}
+      />
+      {/* <ModalFilter
         sortBy={sortBy}
         setSortBy={e => setSortBy(e)}
         isVisible={viewFilter}
         onCloseModal={() => setViewFilter(false)}
         onYes={() => setViewFilter(false)}
-      />
+      /> */}
     </Container>
   );
 };

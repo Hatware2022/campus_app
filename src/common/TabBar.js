@@ -5,6 +5,7 @@ import View from './View'
 import Text from './TextV2'
 import Touchable from './Touchable'
 import {TextInput} from '../common'
+// import {useDispatch, useSelector} from 'react-redux'
 
 import * as Colors from '../config/colors'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
@@ -16,6 +17,7 @@ import CampusContext from '../CampusContext'
 /* =============================================================================
 <TabBar />
 ============================================================================= */
+// const dispatch = useDispatch()
 const TabBar = ({
   jumpTo,
   textStyle,
@@ -24,8 +26,14 @@ const TabBar = ({
   navigationState,
   searchBarPlaceholder = 'Search here',
   searchBarKeyword = '',
-  searchBarChangeHandler = keyword => {},
-  filterPressHandler = () => {}
+  // searchBarChangeHandler: keyword => {
+  //   dispatch(setKey(keys.postsSearchKeyword, keyword))
+  // },
+  // filterPressHandler: () => {
+  //   dispatch(setKey(keys.postsShowModalFilter, true))
+  // } 
+  searchBarChangeHandler = keyword => {dispatch(setKey(keys.postsSearchKeyword, keyword))},
+  filterPressHandler = () => {dispatch(setKey(keys.postsShowModalFilter, true))}
 }) => {
   const insets = useSafeAreaInsets()
   const {loginAsClub} = useContext(CampusContext)
@@ -56,7 +64,7 @@ const TabBar = ({
           inputStyle={{height:35,marginTop:7}}
           contentContainerStyle={{
             borderRadius: 30,
-            height:44
+            height: 44
           }}
           headerSearch={true}
           onChange={text => {

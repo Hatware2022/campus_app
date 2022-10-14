@@ -111,11 +111,14 @@ const InboxScreen = ({navigation}) => {
           <TextInput
             left={<SearchIcon />}
             value={keyword}
+            inputStyle={{height:40,marginTop:2}}
             containerStyle={{
-              borderRadius: 30
+              borderRadius: 30,
+              // height:40
             }}
             contentContainerStyle={{
-              borderRadius: 30
+              borderRadius: 30,
+              height:40
             }}
             onChange={text => {
               setKeyword(text)
@@ -193,7 +196,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white100
   },
   mainFilterContainer: {
-    marginHorizontal: 15
+    marginHorizontal: 15,
+    marginTop:4
   },
   filterIconContainer: {
     marginLeft: 16,

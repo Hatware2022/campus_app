@@ -127,7 +127,7 @@ const EventDetailsScreen = props => {
             refreshing={refreshing}
             onRefresh={reload}
             tintColor={Colors.primary}
-            colors={Colors.primary}
+            colors={[Colors.primary]}
           />
         }
       >
