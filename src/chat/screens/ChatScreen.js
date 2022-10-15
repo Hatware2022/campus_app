@@ -134,25 +134,27 @@ const ChatScreen = ({}) => {
           perPage: params.perPage + 10
         }
       }
-      setParams({page: params.page, perPage: params.perPage + 10})
-      messageService
-        .getAll(session.get(keys.token), chat.id, temp)
-        .then(result => {
-          if (result.data && result.data.success === true) {
-            let arr = result.data.data
-            const finalArr = arr.map(item => {
-              return {
-                ...item,
-                _id: item.id,
-                user: {
-                  _id: item.senderId === tokenData?.id ? 1 : item.senderId
+      setParams({ page: params.page, perPage: params.perPage + 10 })
+      if (chat.id) {
+        messageService
+          .getAll(session.get(keys.token), chat.id, temp)
+          .then(result => {
+            if (result.data && result.data.success === true) {
+              let arr = result.data.data
+              const finalArr = arr.map(item => {
+                return {
+                  ...item,
+                  _id: item.id,
+                  user: {
+                    _id: item.senderId === tokenData?.id ? 1 : item.senderId
+                  }
                 }
-              }
-            })
+              })
 
-            setMessages(finalArr)
-          }
-        })
+              setMessages(finalArr)
+            }
+          })
+      }
     } catch (err) {
     } finally {
       setTimeout(() => {

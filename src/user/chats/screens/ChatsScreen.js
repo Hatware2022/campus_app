@@ -37,11 +37,14 @@ const ChatsScreen = () => {
   const [records, setRecords] = useState([])
   const [displayRecords, setDisplayRecords] = useState([])
   const [refreshing, setRefreshing] = useState(false)
+  const [filteredRecords, setFilteredRecords] = useState([])
+  const [forDisplay, setForDisplay] = useState([])
   // const [keyword, setKeyword] = useState('')
   const [sortBy, setSortBy] = useState('Newest')
   const [filters, setFilters] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [successMessage, setSuccessMessage] = useState(null)
+  const [filterTags, setFilterTags] = useState([])
   const navigation = useNavigation()
   const route = useRoute()
   const [viewFilter, setViewFilter] = useState(false)
@@ -73,26 +76,48 @@ const ChatsScreen = () => {
     reload()
   },[isFocused,navigation])
 
+
+  const _sortRecords = (records) => {
+    return records.sort((a,b) => {
+      if(sortBy === 'Most Popular') {
+        return b.likes - a.likes
+      } else {
+        return new Date(a.createdAt).valueOf() < new Date(b.createdAt).valueOf()
+      }
+    })
+  }
+
+  useEffect(() => {
+    if(!filterTags) {
+      setFilteredRecords(_sortRecords(records))
+    } else {
+      const newFilteredRecords = records.filter(record => {
+        let returnValue
+        (record.tags || []).forEach(tag => {
+          if (filterTags.includes(tag)) {
+            returnValue = true
+          }
+        })
+        return returnValue
+      })
+      setFilteredRecords(_sortRecords(newFilteredRecords))
+    }
+  }, [records, filterTags, sortBy])
+
   useEffect(() => {
     if (!keyword) {
-      setDisplayRecords(records)
+      setForDisplay(filteredRecords)
     } else {
-      setDisplayRecords(
-        records.filter(
+      setForDisplay(
+        filteredRecords.filter(
           record =>
-            record?.user?.name?.toLowerCase().includes(keyword.toLowerCase()) ||
-            record.content?.toLowerCase().includes(keyword.toLowerCase())
+            record.title?.toLowerCase().includes(keyword.toLowerCase()) ||
+            record.description?.toLowerCase().includes(keyword.toLowerCase())
         )
       )
     }
-  }, [keyword, records,isFocused])
+  }, [keyword, filteredRecords])
 
-  useEffect(() => {
-    // const focus = navigation.addListener('focus', () => {
-      onRefresh()
-    // });
-    // return focus;
-  }, [navigation,isFocused]);
 
   const reload = () => {
     postService.getAll(session.get(keys.token)).then(result => {
@@ -100,32 +125,11 @@ const ChatsScreen = () => {
         setErrorMessage(result.error)
         return
       }
-
       if (result.data && result.data.success === false) {
         setErrorMessage(result.data.message)
         return
       }
-
-      let arr = result.data.data
-
-      if (keyword.length > 0 || (filters && filters?.keyword.length > 0)) {
-        let f = filters?.keyword || keyword
-        arr = arr.filter(k => k.detail.toLowerCase().includes(f.toLowerCase()))
-      }
-
-      if (sortBy === 'Most Popular') {
-        arr = arr.sort((a, b) => b.likes - a.likes)
-      } else if (sortBy === 'Newest') {
-        arr = arr.sort((a, b) => moment(b.createdAt) - moment(a.createdAt))
-      }
-
-      // if (filters) {
-      //   if (filters.interests.length > 0) {
-      //     arr = arr.filter(k => k.tags.includes(filters.interests))
-      //   }
-      // }
-
-      setRecords(arr)
+      setRecords(result.data.data)
     })
   }
 
@@ -139,6 +143,11 @@ const ChatsScreen = () => {
     setViewFilter(false);
     dispatch(setKey(keys.postsShowModalFilter, false))
   };
+
+  const handleSubmit = filterValues => {
+    _onPressCloseFilter()
+    setFilterTags(filterValues.tags)
+  }
 
   const renderItem = ({item}) => <ChatListItem data={item} reload={reload} />
 
@@ -167,7 +176,7 @@ const ChatsScreen = () => {
       </View> */}
 
       <FlatList
-        data={displayRecords}
+        data={forDisplay}
         style={styles.list}
         renderItem={renderItem}
         keyExtractor={item => item._id}
@@ -211,11 +220,13 @@ const ChatsScreen = () => {
 
       <ModalFilter
         postFilter={true}
+        filterFlag={true}
         sortBy={sortBy}
+        setFilters={e => setFilters(e)}
         setSortBy={e => setSortBy(e)}
         isVisible={viewFilter}
         onCloseModal={() => _onPressCloseFilter()}
-        onYes={() => _onPressCloseFilter()}
+        onYes={handleSubmit}
       />
     </Container>
   )

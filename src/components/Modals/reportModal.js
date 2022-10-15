@@ -29,19 +29,20 @@ const ReportModal = ({
       hideModalContentWhileAnimating
     >
       {!isReport && (
-        <View style={styles.defaultContentContainerStyle}>
+        <View style={styles.defaultContentContainerStyle} accessible={true}>
           <Gap height={10} />
           <Text
             size="big"
             family="semi"
             customStyle={{maxWidth: 187, textAlign: 'center'}}
+            accessible={true}
           >
             {titlemessage}
           </Text>
           <Gap height={10} />
           <View borderWidth={1} borderColor={Colors.white300} width={'125%'} />
           <Gap height={10} />
-          <View horizontal>
+          <View horizontal accessible={true}>
             {isHidden ? (
               <Button
                 title="Unhide"
@@ -87,7 +88,7 @@ const ReportModal = ({
         </View>
       )}
       {isReport && (
-        <View style={styles.defaultContentContainerStyle}>
+        <View style={styles.defaultContentContainerStyle} accessible={true}>
           <Gap height={10} />
           <Text
             size="big"

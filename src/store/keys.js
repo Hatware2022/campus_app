@@ -12,6 +12,7 @@ module.exports = {
   groupsShowModalFilter: `${app}groupsShowModalFilter`,
   postsSearchKeyword: `${app}postsSearchKeyword`,
   postsShowModalFilter: `${app}postsShowModalFilter`,
+  postsFilterHandler:`${app}postsFilterHandler`,
   profilesSearchKeyword: `${app}profilesSearchKeyword`,
   profilesShowModalFilter: `${app}profilesShowModalFilter`,
   isFirstLaunch: `${app}isFirstLaunch`,

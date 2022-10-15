@@ -147,7 +147,12 @@ const ModalFilter = ({onYes, onCloseModal, isVisible, setSortBy, sortBy, postFil
     gender: gender,
     major: valuemajor
     })
-    onYes()
+    onYes({downfor: valuedownfor,
+      from: location,
+      gradeYear: gradYear,
+      gender: gender,
+      major: valuemajor
+      })
   }
 
   const renderMajor = () => {

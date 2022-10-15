@@ -95,31 +95,31 @@ const UpdateProfileScreen = (props) => {
   }, [imageUrl]);
 
   const validateFields =()=>{
-    if(bio === ""){
+    if(!bio){
       alert('Bio is required')
     }
-    else if(major === ""){
+    else if(!major){
       alert('Major is required')
     }
-    else if(gradYear === ""){
+    else if(!gradYear){
       alert('Grand is required')
     }
-    else if(gender === ""){
+    else if(!gender){
       alert('Gender is required')
     }
-    else if(location === ""){
+    else if(!location){
       alert('From is required')
     }
-    else if(insta === ""){
+    else if(!insta){
       alert('Instragram is required')
     }
-    else if(tiktok === ""){
+    else if(!tiktok){
       alert('TikTok is required')
     }
-    else if(interetsSelected === ""){
+    else if(!interetsSelected){
       alert('Interest is required')
     }
-    else if(downForSelected === ""){
+    else if(!downForSelected){
       alert('Down For is required')
     }
     else{

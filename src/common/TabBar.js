@@ -33,7 +33,7 @@ const TabBar = ({
   //   dispatch(setKey(keys.postsShowModalFilter, true))
   // } 
   searchBarChangeHandler = keyword => {dispatch(setKey(keys.postsSearchKeyword, keyword))},
-  filterPressHandler = () => {dispatch(setKey(keys.postsShowModalFilter, true))}
+  filterPressHandler = () => {dispatch(setKey(keys.postsShowModalFilter, true))},
 }) => {
   const insets = useSafeAreaInsets()
   const {loginAsClub} = useContext(CampusContext)

@@ -166,8 +166,8 @@ const ChatListItem = props => {
       {(props?.data?.createdBy === currentUser?.id ||
         (props?.data?.createdBy !== currentUser?.id &&
           !props?.data?.isHidden)) && (
-        <Touchable onPress={_moveToChatComments} style={styles.container}>
-          <View style={styles.topContainer}>
+        <View style={styles.container}>
+          <Touchable onPress={_moveToChatComments} style={styles.topContainer}>
             {props?.data && props?.data?.user && (
               <View
                 style={styles.userContainer}
@@ -198,10 +198,11 @@ const ChatListItem = props => {
             <Touchable
               style={{flexDirection: 'row', paddingHorizontal: 2}}
               onPress={() => setViewModal(true)}
+              accessibilityLabel="double tap for post options"
             >
               <DotIcon />
             </Touchable>
-          </View>
+          </Touchable>
           <Gap height={16} />
 
           <Text customStyle={{marginLeft: 7}}>{props.data?.content}</Text>
@@ -266,7 +267,7 @@ const ChatListItem = props => {
           <Text size="medium" customStyle={styles.time}>
             {moment(props.data.createdAt).fromNow()}
           </Text>
-        </Touchable>
+        </View>
       )}
       <ReportModal
         titlemessage={'Post Options'}
