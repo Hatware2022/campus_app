@@ -111,7 +111,10 @@ const ReportModal = ({
           <View horizontal>
             <Button
               title="Submit"
-              onPress={e => onReport(comment)}
+              onPress={e => {
+                onReport(comment)
+                setIsReport(false)
+              }}
               containerStyle={{flex: 1}}
             />
           </View>

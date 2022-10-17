@@ -1,65 +1,64 @@
-import React, {useState} from 'react';
-import {StyleSheet} from 'react-native';
-import {Touchable, View, Avatar, Tag} from '../../../../common';
-import Text from '../../../../common/TextV2';
+import React, {useState} from 'react'
+import {StyleSheet} from 'react-native'
+import {Touchable, View, Avatar, Tag} from '../../../../common'
+import Text from '../../../../common/TextV2'
 
-import * as Colors from '../../../../config/colors';
+import * as Colors from '../../../../config/colors'
 
-import DemoImage from '../../../../assets/images/empty-image.png';
-
-import {useNavigation} from '@react-navigation/native';
-import ClubMember from './ClubMember';
-import Gap from '../../../../common/Gap';
-import axios from 'axios';
-import constants from '../../../../utils/constants';
-import session from '../../../../store/session';
-import keys from '../../../../store/keys';
+import {useNavigation} from '@react-navigation/native'
+import ClubMember from './ClubMember'
+import Gap from '../../../../common/Gap'
+import clubService from '../../../../services/club'
+import session from '../../../../store/session'
+import keys from '../../../../store/keys'
 
 /* =============================================================================
 <ClubListItem />
 ============================================================================= */
-const ClubListItem = ({data,reload}) => {
-  const navigation = useNavigation();
-  const [joinClub, setJoinClub] = useState(false);
+const ClubListItem = ({data, reload}) => {
+  const navigation = useNavigation()
+  const [joinClub, setJoinClub] = useState(false)
   const previousData = data
 
   const _moveToDetails = () => {
-    navigation.navigate('ClubDetails', {item: previousData});
-  };
+    navigation.navigate('ClubDetails', {item: previousData})
+  }
 
-  const handleJoinClub =(id)=>{
-    let aa = session.get(keys.token)
+  const handleJoinClub = id => {
     try {
-      let response =  axios({
-        url: `${constants.API_URL}/club/join/${id}`,
-        method: 'POST',
-        headers:{
-          'Authorization': aa,
-          // 'Content-Type': 'application/json'
-        }
-      }).then((e)=>{
-        setJoinClub(true)
-        reload()
-      });
-    } catch (error) {
+      clubService
+        .join(session.get(keys.token), data.id)
+        .then(res => {
+          if (res?.data?.success) {
+            setJoinClub(true)
+            alert('You are now a member the club.')
+            reload()
+          }
+        })
+        .catch(_err => {
+          console.log(_err)
+        })
+    } catch (_err) {
+      console.log(_err)
     }
   }
 
-  const handleLeaveClub =(id)=>{
-    let aa = session.get(keys.token)
+  const handleLeaveClub = id => {
     try {
-      let response =  axios({
-        url: `${constants.API_URL}/club/leave/${id}`,
-        method: 'DELETE',
-        headers:{
-          'Authorization': aa,
-          // 'Content-Type': 'application/json'
-        }
-      }).then((e)=>{
-        setJoinClub(false)
-        reload()
-      });
-    } catch (error) {
+      clubService
+        .leave(session.get(keys.token), data.id)
+        .then(res => {
+          if (res?.data?.success) {
+            setJoinClub(false)
+            alert('You have left the club.')
+            reload()
+          }
+        })
+        .catch(_err => {
+          console.log(_err)
+        })
+    } catch (_err) {
+      console.log(_err)
     }
   }
 
@@ -83,20 +82,21 @@ const ClubListItem = ({data,reload}) => {
 
       <View style={styles.tagContainer}>
         {data?.tags.map((item, index) => (
-          <Tag key={index} text={item} redBorder />
+          <Tag key={item.id} text={item.tag} redBorder />
         ))}
       </View>
       <Gap height={16} />
       <ClubMember
         data={data}
         joinClub={joinClub}
-        // onPress={() => setJoinClub(!joinClub)}
-        onPress={()=> joinClub ? handleLeaveClub(data.id) : handleJoinClub(data.id)}
+        onPress={() =>
+          joinClub ? handleLeaveClub(data.id) : handleJoinClub(data.id)
+        }
         onPressGroup={() => {}}
       />
     </Touchable>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -107,32 +107,32 @@ const styles = StyleSheet.create({
     shadowColor: Colors.border,
     shadowOffset: {
       width: 0,
-      height: 4,
+      height: 4
     },
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
-    elevation: 8,
+    elevation: 8
   },
   name: {
     marginTop: 10,
     textAlign: 'center',
-    fontSize:16,
-    fontWeight:'bold'
+    fontSize: 16,
+    fontWeight: 'bold'
   },
   descriptionContainer: {
     padding: 8,
     borderRadius: 8,
     backgroundColor: Colors.white200,
-    marginVertical: 16,
+    marginVertical: 16
   },
   tagTitle: {
-    fontSize:14,
+    fontSize: 14,
     marginBottom: 8,
-    fontWeight:'bold'
+    fontWeight: 'bold'
   },
   tagContainer: {
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'flex-start'
   },
   tag: {
     height: 31,
@@ -142,8 +142,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     alignItems: 'center',
     justifyContent: 'center',
-    borderColor: Colors.primary,
-  },
-});
+    borderColor: Colors.primary
+  }
+})
 
-export default ClubListItem;
+export default ClubListItem

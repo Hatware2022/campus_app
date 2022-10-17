@@ -312,7 +312,6 @@ export default class {
     return result
   }
 
-  
   static reportPost = async (token, data) => {
     let result = {
       data: null,
@@ -329,7 +328,11 @@ export default class {
         }
       })
       .catch(err => {
-        result.error = err.response.data
+        if (err.response.data.code === 'VALIDATION_ERROR') {
+          result.error = err.response.data.message
+        } else {
+          result.error = err.response.data
+        }
       })
 
     return result
