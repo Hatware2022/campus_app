@@ -19,8 +19,20 @@ const ProfileListItem = ({data}) => {
     navigation.navigate('ProfileDetails', {_id: data.id});
   };
 
+  function myDebounce(call,t){
+    let timmer;
+    return function (...arg){
+      if(timmer) clearTimeout(timmer)
+      timmer =  setTimeout(()=>{
+        call();
+      },t)
+    }
+  }
+
+  const BetterFunction=myDebounce(_moveToDetails,1000);
+
   return (
-    <Touchable onPress={_moveToDetails} style={styles.container}>
+    <Touchable onPress={BetterFunction} style={styles.container}>
       <View center>
         <Avatar
           size={80}

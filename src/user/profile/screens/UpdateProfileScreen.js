@@ -276,6 +276,18 @@ const UpdateProfileScreen = (props) => {
     setDownForSelected(array)
   }
 
+  function myDebounce(call,t){
+    let timmer;
+    return function (...arg){
+      if(timmer) clearTimeout(timmer)
+      timmer =  setTimeout(()=>{
+        call();
+      },t)
+    }
+  }
+
+  const BetterFunction=myDebounce(validateFields,1000);
+
   return (
     <Container>
       <Header title={'Edit Profile'} />
@@ -519,7 +531,7 @@ const UpdateProfileScreen = (props) => {
         <Button
           style={[styles.button, _safeArea]}
           title="Confirm Change"
-          onPress={() => validateFields()}
+          onPress={BetterFunction}
         />
       </View>
 

@@ -161,13 +161,25 @@ const ChatListItem = props => {
     }
   }
 
+  function myDebounce(call,t){
+    let timmer;
+    return function (...arg){
+      if(timmer) clearTimeout(timmer)
+      timmer = setTimeout(()=>{
+        call()
+      },t)
+    }
+  }
+
+  const BetterFunction=myDebounce(_moveToChatComments,1000);
+
   return (
     <>
       {(props?.data?.createdBy === currentUser?.id ||
         (props?.data?.createdBy !== currentUser?.id &&
           !props?.data?.isHidden)) && (
         <View style={styles.container}>
-          <Touchable onPress={_moveToChatComments} style={styles.topContainer}>
+          <Touchable onPress={BetterFunction} style={styles.topContainer}>
             {props?.data && props?.data?.user && (
               <View
                 style={styles.userContainer}

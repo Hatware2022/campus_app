@@ -18,9 +18,21 @@ const GroupListItem = ({data}) => {
     navigation.navigate('GroupDetails', {data})
   }
 
+  function myDebounce(call,t){
+    let timmer;
+    return function (...arg){
+      if(timmer) clearTimeout(timmer)
+      timmer =  setTimeout(()=>{
+        call();
+      },t)
+    }
+  }
+
+  const BetterFunction=myDebounce(_moveToDetails,1000);
+
   return (
     <Touchable
-      onPress={_moveToDetails}
+      onPress={BetterFunction}
       style={styles.container}
       accessibilityHint="double tap to list group posts"
     >

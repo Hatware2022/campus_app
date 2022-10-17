@@ -86,8 +86,20 @@ const PostListItem = props => {
     }
   };
 
+  function myDebounce(call,t){
+    let timmer;
+    return function (...arg){
+      if(timmer) clearTimeout(timmer)
+      timmer = setTimeout(()=>{
+        call()
+      },t)
+    }
+  }
+
+  const BetterFunction=myDebounce(_moveToChatComments,1000);
+
 return (
-    <Touchable onPress={_moveToChatComments} style={styles.container}>
+    <Touchable onPress={BetterFunction} style={styles.container}>
       <View style={styles.topContainer}>
         {props?.data && props?.data?.user && (
           <View style={styles.userContainer}>
@@ -121,10 +133,10 @@ return (
       
 
       <View style={styles.tagContainer}>
-        {props?.data && props?.data?.tags?.length > 0 && props?.data?.tags.map(k => {
+        {props?.data && props?.data?.tags?.length > 0 && props?.data?.tags.map((k,i )=> {
           return (
-            <View style={styles.tag} key={k}>
-              <Text customStyle={styles.tagText}>{k}</Text>
+            <View style={styles.tag} key={i}>
+              <Text customStyle={styles.tagText}>{k.tag}</Text>
             </View>
           );
         })}

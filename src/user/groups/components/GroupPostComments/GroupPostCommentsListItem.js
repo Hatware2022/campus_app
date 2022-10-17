@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import {View, Avatar, Touchable} from '../../../../common';
 import Text from '../../../../common/TextV2';
 
@@ -50,9 +50,17 @@ const GroupPostCommentListItem = ({data}) => {
           <Text size="small" color={Colors.black400}>
             {data.time}
           </Text>
+          <View style={{flexDirection:'row'}}>
           <Text size="small" customStyle={styles.time}>
           {moment(data.updatedAt).fromNow()}
         </Text>
+        <TouchableOpacity style={{flexDirection:'row',marginTop:7}}
+        onPress={()=>console.log('hello')}>
+          <View style={styles.dot}/>
+          <View style={styles.dot}/>
+          <View style={styles.dot}/>
+        </TouchableOpacity>
+        </View>
         </View>
 
         <Text customStyle={styles.comment}>{data?.comment}</Text>
@@ -98,6 +106,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginRight:5
   },
+  dot:  {  
+  width:3,
+  height:3,
+  backgroundColor:'grey',
+  borderRadius:20,
+  marginLeft:1.5
+},
 });
 
 export default GroupPostCommentListItem;

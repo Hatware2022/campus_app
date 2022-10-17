@@ -25,6 +25,21 @@ const GroupPostCommentForm = (props) => {
     paddingBottom: insets.bottom,
   };
 
+  const sendComment =()=>{
+    props.sendMsg(comment) || setComment('')
+  }
+  function myDebounce(call,t){
+    let timmer;
+    return function (...arg){
+      if(timmer) clearTimeout(timmer)
+      timmer =  setTimeout(()=>{
+        call();
+      },t)
+    }
+  }
+
+  const BetterFunction=myDebounce(sendComment,1000);
+
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : null}>
       <View style={[styles.container, _safeArea]}>
@@ -48,7 +63,7 @@ const GroupPostCommentForm = (props) => {
             onChangeText={setComment}
           />
         </View>
-        <Touchable style={styles.button} onPress={() => props.sendMsg(comment) || setComment('')}>
+        <Touchable style={styles.button} onPress={BetterFunction}>
           <SendButtonIcon />
         </Touchable>
       </View>
