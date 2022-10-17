@@ -110,7 +110,7 @@ const ProfileDetailsScreen = ({navigation}) => {
           </Text>
           <Gap height={12} />
           <Card>
-            <Text>{record?.bio ? record?.bio : 'This is dummy data'}</Text>
+            <Text>{record?.bio ? record?.bio : ''}</Text>
           </Card>
         </View>
 

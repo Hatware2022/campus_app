@@ -100,9 +100,17 @@ const ProfilesScreen = () => {
             k => k?.gradYear && k?.gradYear != null && k?.gradYear.toLowerCase() === filters.gradeYear.toLowerCase(),
           );
         }
-        // if (filters.downfor.length > 0) {
-        //   arr = arr.filter(k => k?.downFor && k?.downFor != null && k?.downFor.includes(filters.downfor.toLowerCase()));
-        // }
+        if (filters.downfor.length > 0) {
+          arr = arr.filter(record => {
+            let returnValue
+            (record.downFor || []).forEach(downforItem => {
+              if (filters.downfor.includes(downforItem)) {
+                returnValue = true
+              }
+            })
+            return returnValue
+          })
+        }
         if (filters?.from?.length > 0) {
           arr = arr.filter(
             k => k?.address && k?.address != null && k?.address.toLowerCase().includes(filters.from.toLowerCase())||
@@ -149,7 +157,7 @@ const ProfilesScreen = () => {
   };
 
   return (
-    <Container backgroundColor={Colors.white250} style={{}}>
+    <Container backgroundColor={records && records.length>0 ? Colors.white250 : '#fff'} style={{}}>
       <StatusBar backgroundColor={Colors.primary} barStyle="light-content" />
 
       <View style={styles.container}>
@@ -201,6 +209,7 @@ const ProfilesScreen = () => {
 
       <ModalFilter
         isVisible={viewFilter}
+        profilesFlag={true}
         sortBy={sortBy}
         setFilters={value => setFilters(value)}
         filterFlag={true}

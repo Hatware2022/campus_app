@@ -32,7 +32,7 @@ const ProfileListItem = ({data}) => {
       </View>
 
       <View style={styles.descriptionContainer}>
-        <Text>{data?.bio ? data?.bio : "Hi, this is dummy data."}
+        <Text>{data?.bio ? data?.bio : ""}
         </Text>
       </View>
 

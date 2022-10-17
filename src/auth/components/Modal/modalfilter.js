@@ -18,7 +18,7 @@ import {useNavigation} from '@react-navigation/native'
 import Fonts from '../../../config/fonts'
 import PlusIcon from '../../../assets/icons/icon-plus-circle.svg'
 
-const ModalFilter = ({onYes, onCloseModal, isVisible, setSortBy, sortBy, postFilter, setFilters, filterFlag}) => {
+const ModalFilter = ({onYes, onCloseModal, isVisible, setSortBy, sortBy, postFilter, setFilters, filterFlag, profilesFlag}) => {
   const navigation = useNavigation()
   // const [sortBy, setSortBy] = useState('Recent')
   const [location, setLocation] = useState('')
@@ -190,7 +190,7 @@ const ModalFilter = ({onYes, onCloseModal, isVisible, setSortBy, sortBy, postFil
                   marginRight: 10,
                   marginBottom: 12
                 }}
-                onPress={() => setValuemajor(item)}
+                onPress={() => valuemajor === item ? setValuemajor('') : setValuemajor(item)}
               />
             ))}
           </View>
@@ -466,7 +466,7 @@ const ModalFilter = ({onYes, onCloseModal, isVisible, setSortBy, sortBy, postFil
 
               <Gap height={15} />
 
-              {!postFilter?
+              {!postFilter ?
               <>
               <Text family="semi">Major</Text>
               <Gap height={8} />
@@ -560,25 +560,25 @@ const ModalFilter = ({onYes, onCloseModal, isVisible, setSortBy, sortBy, postFil
                 <Tag
                   text="2022"
                   selected={gradYear === '2022'}
-                  onPress={setGradYear}
+                  onPress={()=> gradYear === '2022' ? setGradYear('') : setGradYear('2022')}
                   style={{paddingHorizontal: 10, paddingVertical: 6}}
                 />
                 <Tag
                   text="2023"
                   selected={gradYear === '2023'}
-                  onPress={setGradYear}
+                  onPress={()=> gradYear === '2023' ? setGradYear('') : setGradYear('2023')}
                   style={{paddingHorizontal: 10, paddingVertical: 6}}
                 />
                 <Tag
                   text="2024"
                   selected={gradYear === '2024'}
-                  onPress={setGradYear}
+                  onPress={()=> gradYear === '2024' ? setGradYear('') : setGradYear('2024')}
                   style={{paddingHorizontal: 10, paddingVertical: 6}}
                 />
                 <Tag
                   text="2025"
                   selected={gradYear === '2025'}
-                  onPress={setGradYear}
+                  onPress={()=> gradYear === '2025' ? setGradYear('') : setGradYear('2025')}
                   style={{paddingHorizontal: 10, paddingVertical: 6}}
                 />
               </View>
@@ -594,19 +594,19 @@ const ModalFilter = ({onYes, onCloseModal, isVisible, setSortBy, sortBy, postFil
                 <Tag
                   text="Male"
                   selected={gender === 'Male'}
-                  onPress={setGender}
+                  onPress={()=> gender === 'Male' ? setGender('') : setGender('Male')}
                   style={{paddingHorizontal: 10, paddingVertical: 6}}
                 />
                 <Tag
                   text="Female"
                   selected={gender === 'Female'}
-                  onPress={setGender}
+                  onPress={()=> gender === 'Female' ? setGender('') : setGender('Female')}
                   style={{paddingHorizontal: 10, paddingVertical: 6}}
                 />
                 <Tag
                   text="Non-binary"
                   selected={gender === 'Non-binary'}
-                  onPress={setGender}
+                  onPress={()=> gender === 'Non-binary' ? setGender('') : setGender('Non-binary')}
                   style={{paddingHorizontal: 10, paddingVertical: 6}}
                 />
               </View>
