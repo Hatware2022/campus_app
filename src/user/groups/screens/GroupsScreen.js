@@ -1,23 +1,25 @@
-import React, {useState, useEffect} from 'react'
-import {useDispatch} from 'react-redux'
+import * as Colors from '../../../config/colors'
+
+import {Container, Title, View} from '../../../common'
 import {
   FlatList,
+  RefreshControl,
   StatusBar,
   StyleSheet,
-  RefreshControl,
   TouchableOpacity
 } from 'react-native'
-import {useSelector} from 'react-redux'
-import {Container, View, Title} from '../../../common'
-import Text from '../../../common/TextV2'
-import GroupListItem from '../components/Groups/GroupListItem'
-import PlusIcon from '../../../assets/icons/icon-plus-circle-big.svg'
-import * as Colors from '../../../config/colors'
+import React, {useEffect, useState} from 'react'
+import {useDispatch, useSelector} from 'react-redux'
 import {useIsFocused, useNavigation} from '@react-navigation/native'
-import groupService from '../../../services/group'
-import session from '../../../store/session'
-import keys from '../../../store/keys'
+
+import GroupListItem from '../components/Groups/GroupListItem'
 import ModalFilter from '../../../auth/components/Modal/groupsmodalfilter'
+import PlusIcon from '../../../assets/icons/icon-plus-circle-big.svg'
+import Text from '../../../common/TextV2'
+import a11y from '../../../utils/accessibility'
+import groupService from '../../../services/group'
+import keys from '../../../store/keys'
+import session from '../../../store/session'
 import {setKey} from '../../../store/actions'
 
 /* =============================================================================
@@ -51,9 +53,9 @@ const GroupsScreen = () => {
     }
   }, [isFocused])
 
-  const _sortRecords = (records) => {
-    return records.sort((a,b) => {
-      if(sortBy === 'Most Popular') {
+  const _sortRecords = records => {
+    return records.sort((a, b) => {
+      if (sortBy === 'Most Popular') {
         return a.members.length < b.members.length
       } else {
         return new Date(a.createdAt).valueOf() < new Date(b.createdAt).valueOf()
@@ -62,12 +64,13 @@ const GroupsScreen = () => {
   }
 
   useEffect(() => {
-    if(!filterTags.length) {
+    if (!filterTags.length) {
       setFilteredRecords(_sortRecords(records))
     } else {
       const newFilteredRecords = records.filter(record => {
         let returnValue
-        (record.tags || []).forEach(tag => {
+        const recordTags = record.tags || []
+        recordTags.forEach(tag => {
           if (filterTags.includes(tag)) {
             returnValue = true
           }
@@ -149,9 +152,10 @@ const GroupsScreen = () => {
               <TouchableOpacity
                 onPress={_moveToCreateGroup}
                 style={styles.iconPlus}
-                accessible={true}
-                accessibilityLabel="create new group button"
-                accessibilityHint="double tap here to create a new group"
+                {...a11y(
+                  'create new group button',
+                  'double tap here to create a new group'
+                )}
               >
                 <Text size="medium" family="medium" color={Colors.primary}>
                   {'Create New  '}

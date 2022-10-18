@@ -1,7 +1,9 @@
-import * as React from 'react'
-import {Text} from 'react-native'
 import * as Colors from '../config/colors'
+import * as React from 'react'
+
 import Fonts from '../config/fonts'
+import {Text} from 'react-native'
+import a11y from '../utils/accessibility'
 
 const TextV2 = ({
   color = Colors.black600,
@@ -16,7 +18,9 @@ const TextV2 = ({
   cutLength,
   align = 'auto'
 }) => {
-  if (link) color = 'blue'
+  if (link) {
+    color = 'blue'
+  }
   const fontColor = React.useMemo(() => {
     const colorList = {
       // black: Colors.text,
@@ -77,16 +81,15 @@ const TextV2 = ({
     return sizeList[size]
   }, [size])
 
-  const maxFontSizeMultiplier = 2;
+  const maxFontSizeMultiplier = 2
 
   return (
     <Text
       numberOfLines={numberOfLines}
       style={[{fontFamily, color: fontColor, fontSize, textAlign}, customStyle]}
-      testID={testID}
       onPress={link ? onPressLink : undefined}
-      accessibilityLabel={testID}
       maxFontSizeMultiplier={maxFontSizeMultiplier}
+      {...a11y(testID)}
     >
       {children}
     </Text>

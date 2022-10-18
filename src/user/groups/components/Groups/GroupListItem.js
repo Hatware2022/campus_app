@@ -1,12 +1,14 @@
-import {useNavigation} from '@react-navigation/native'
-import React from 'react'
-import {ImageBackground, StyleSheet} from 'react-native'
-import {Touchable, View, Avatar} from '../../../../common'
-import Gap from '../../../../common/Gap'
-import Text from '../../../../common/TextV2'
-import PeopleIcon from '../../../../assets/icons/icon-people-plus.svg'
-
 import * as Colors from '../../../../config/colors'
+
+import {Avatar, Touchable, View} from '../../../../common'
+
+import Gap from '../../../../common/Gap'
+import PeopleIcon from '../../../../assets/icons/icon-people-plus.svg'
+import React from 'react'
+import {StyleSheet} from 'react-native'
+import Text from '../../../../common/TextV2'
+import a11y from '../../../../utils/accessibility'
+import {useNavigation} from '@react-navigation/native'
 
 /* =============================================================================
 <GroupListItem />
@@ -41,9 +43,9 @@ const GroupListItem = ({data}) => {
         flex={1}
         justifyContent="center"
         marginHorizontal={12}
-        accessibilityLabel={
-          'Group name ' + data.title + ' group description ' + data.description
-        }
+        {...a11y(
+          `Group name ${data.title} group description ${data.description}`
+        )}
       >
         <Text family="semi" size="big">
           {data.title}
@@ -56,7 +58,7 @@ const GroupListItem = ({data}) => {
       <View
         horizontal
         alignItems="center"
-        accessibilityLabel={'Group members ' + data.members.length}
+        {...a11y(`Group members ${data.members.length}`)}
       >
         <Text customStyle={{color: '#A8ACAD', marginRight: 5}}>
           {data.members.length}

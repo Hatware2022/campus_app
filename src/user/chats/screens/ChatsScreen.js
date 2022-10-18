@@ -1,32 +1,29 @@
+import * as Colors from '../../../config/colors'
+
+import {useIsFocused, useNavigation, useRoute} from '@react-navigation/native'
 import React, {useEffect, useState} from 'react'
 import {
   FlatList,
+  RefreshControl,
   StatusBar,
   StyleSheet,
-  RefreshControl,
   TouchableOpacity
 } from 'react-native'
 import {useDispatch, useSelector} from 'react-redux'
-import {Container, TextInput, Title, View, TextArea} from '../../../common'
-import Text from '../../../common/TextV2'
+import {Container, TextInput, Title, View} from '../../../common'
 
-import ChatForm from '../components/Chats/ChatForm'
-import ChatsFilter from '../components/Chats/ChatsFilter'
-import ChatListItem from '../components/Chats/ChatListItem'
-import SearchIcon from '../../../assets/icons/icon-search.svg'
 import FilterIcon from '../../../assets/icons/icon-filter.svg'
 import PlusIcon from '../../../assets/icons/icon-plus-circle-big.svg'
-import session from '../../../store/session'
-import keys from '../../../store/keys'
-import {setKey} from '../../../store/actions'
-import ArrowDownIcon from '../../../assets/icons/app-arrow-down.svg'
-import * as Colors from '../../../config/colors'
-import CHATS from '../../../constants/chats'
-import postService from '../../../services/post'
-import moment from 'moment'
-import {useNavigation, useIsFocused, useRoute} from '@react-navigation/native'
+import SearchIcon from '../../../assets/icons/icon-search.svg'
 import ModalFilter from '../../../auth/components/Modal/modalfilter'
-import AntDesign from 'react-native-vector-icons/AntDesign'
+import Text from '../../../common/TextV2'
+import postService from '../../../services/post'
+import {setKey} from '../../../store/actions'
+import keys from '../../../store/keys'
+import session from '../../../store/session'
+import a11y from '../../../utils/accessibility'
+import ChatForm from '../components/Chats/ChatForm'
+import ChatListItem from '../components/Chats/ChatListItem'
 
 /* =============================================================================
 <ChatsScreen />
@@ -70,16 +67,15 @@ const ChatsScreen = () => {
 
   useEffect(() => {
     setViewFilter(viewFilterFlag)
-  }, [viewFilterFlag]);
+  }, [viewFilterFlag])
 
-  useEffect(()=>{
+  useEffect(() => {
     reload()
-  },[isFocused,navigation])
+  }, [isFocused, navigation])
 
-
-  const _sortRecords = (records) => {
-    return records.sort((a,b) => {
-      if(sortBy === 'Most Popular') {
+  const _sortRecords = records => {
+    return records.sort((a, b) => {
+      if (sortBy === 'Most Popular') {
         return b.likes - a.likes
       } else {
         return new Date(a.createdAt).valueOf() < new Date(b.createdAt).valueOf()
@@ -88,12 +84,13 @@ const ChatsScreen = () => {
   }
 
   useEffect(() => {
-    if(!filterTags) {
+    if (!filterTags || !filterTags.length) {
       setFilteredRecords(_sortRecords(records))
     } else {
       const newFilteredRecords = records.filter(record => {
         let returnValue
-        (record.tags || []).forEach(tag => {
+        const recordTags = record.tags || []
+        recordTags.forEach(tag => {
           if (filterTags.includes(tag)) {
             returnValue = true
           }
@@ -118,7 +115,6 @@ const ChatsScreen = () => {
     }
   }, [keyword, filteredRecords])
 
-
   const reload = () => {
     postService.getAll(session.get(keys.token)).then(result => {
       if (result.error) {
@@ -140,13 +136,13 @@ const ChatsScreen = () => {
   }
 
   const _onPressCloseFilter = () => {
-    setViewFilter(false);
+    setViewFilter(false)
     dispatch(setKey(keys.postsShowModalFilter, false))
-  };
+  }
 
   const handleSubmit = filterValues => {
     _onPressCloseFilter()
-    setFilterTags(filterValues.tags)
+    setFilterTags(filterValues.downfor)
   }
 
   const renderItem = ({item}) => <ChatListItem data={item} reload={reload} />
@@ -190,14 +186,15 @@ const ChatsScreen = () => {
               <TouchableOpacity
                 style={styles.iconPlus}
                 onPress={_moveToCreatePost}
-                accessible={true}
-                accessibilityLabel="create new post button"
-                accessibilityHint="double tap here to create a new post"
+                {...a11y(
+                  'create new post button',
+                  'double tap here to create a new post'
+                )}
               >
                 <Text size="medium" family="medium" color={Colors.primary}>
                   {'Create New '}
                 </Text>
-                <PlusIcon width={24}/>
+                <PlusIcon width={24} />
               </TouchableOpacity>
             </View>
             {/* <ChatForm reload={reload} /> */}
@@ -255,8 +252,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     borderColor: Colors.white300,
-    flexDirection:'row',
-    alignItems:'center'
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   buttonPostTxt: {
     color: Colors.primary
@@ -275,7 +272,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 14,
     padding: 16
-  },
+  }
 })
 
 export default ChatsScreen

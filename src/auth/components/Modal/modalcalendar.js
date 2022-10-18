@@ -1,11 +1,14 @@
-import Text from '../../../common/TextV2'
-import {Container, View, Button} from '../../../common'
-import React, {useState} from 'react'
-import {FlatList, StyleSheet, TouchableOpacity} from 'react-native'
-import Gap from '../../../common/Gap'
-import DatePicker from 'react-native-date-picker'
-import Modal from 'react-native-modal'
 import * as Colors from '../../../config/colors'
+
+import {Button, View} from '../../../common'
+
+import DatePicker from 'react-native-date-picker'
+import Gap from '../../../common/Gap'
+import Modal from 'react-native-modal'
+import React from 'react'
+import {StyleSheet} from 'react-native'
+import Text from '../../../common/TextV2'
+import a11y from '../../../utils/accessibility'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
 
 const ModalCalendar = ({
@@ -30,15 +33,11 @@ const ModalCalendar = ({
       useNativeDriver
       isVisible={visibleValue}
       style={styles.modalContainerStyle}
-      accessibilityLabel={accessibilityLabel}
       onBackdropPress={onBackdropPress}
       onBackButtonPress={onBackButtonPress}
+      {...a11y(accessibilityLabel)}
     >
-      <View
-        style={styles.wrapperBox}
-        accessibilityLabel="modal_camera"
-        testID="modal_camera"
-      >
+      <View style={styles.wrapperBox} {...a11y('modal_camera')}>
         <View
           style={{
             height: 4,

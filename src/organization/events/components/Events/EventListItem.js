@@ -1,33 +1,36 @@
-import React, {useState, useEffect} from 'react'
-import {StyleSheet, Image} from 'react-native'
-import {Touchable, Text, View, Avatar, Tag, Button} from '../../../../common'
 import * as Colors from '../../../../config/colors'
-import UserImage from '../../../../assets/images/user.png'
-import {useNavigation} from '@react-navigation/native'
-import MemberList from './MemberList'
-import session from '../../../../store/session'
-import keys from '../../../../store/keys'
-import userService from '../../../../services/user'
-import eventService from '../../../../services/event'
-import utils from '../../../../utils/utils'
-import moment from 'moment'
+
+import {Avatar, Button, Tag, Text, Touchable, View} from '../../../../common'
+import {Image, StyleSheet} from 'react-native'
+import React, {useState} from 'react'
+
 import Gap from '../../../../common/Gap'
-import reactotron from 'reactotron-react-native'
+import MemberList from './MemberList'
 import ModalConfirm from '../../../../auth/components/Modal/modalconfirm'
+import a11y from '../../../../utils/accessibility'
+import eventService from '../../../../services/event'
+import keys from '../../../../store/keys'
+import moment from 'moment'
+import reactotron from 'reactotron-react-native'
+import session from '../../../../store/session'
+import utils from '../../../../utils/utils'
 
 /* =============================================================================
 <EventListItem />
 ============================================================================= */
 const EventListItem = props => {
   const data = props?.data
-  const navigation = useNavigation()
   const [viewModal, setViewModal] = useState(false)
 
   const tokenData = utils.decodeJwt(session.get(keys.token))
 
   const _handleJoinRsvp = () => {
-    if (!data) return
-    if (!tokenData) return
+    if (!data) {
+      return
+    }
+    if (!tokenData) {
+      return
+    }
 
     let arr = data.membersinfo
     let alreadyMember = arr.find(k => k?.id === tokenData?.id)
@@ -62,7 +65,7 @@ const EventListItem = props => {
     return result
   }
 
- const maxFontSizeMultiplier = 1.5
+  const maxFontSizeMultiplier = 1.5
   return (
     <>
       <Touchable onPress={() => props.onPress(data)} style={styles.container}>
@@ -79,15 +82,18 @@ const EventListItem = props => {
               />
               <Text
                 style={styles.name}
-                accessible={true}
-                accessibilityLabel={'event created by ' + data?.userinfo?.name}
+                {...a11y(`event created by ${data?.userinfo?.name}`)}
               >
                 {data?.userinfo?.name}
               </Text>
             </>
           </View>
-          <Text style={styles.time} maxFontSizeMultiplier={maxFontSizeMultiplier}
-          > {moment(data?.createdAt).fromNow()}</Text>
+          <Text
+            style={styles.time}
+            maxFontSizeMultiplier={maxFontSizeMultiplier}
+          >
+            {moment(data?.createdAt).fromNow()}
+          </Text>
         </View>
 
         <View marginTop={16} marginBottom={8}>
@@ -103,11 +109,7 @@ const EventListItem = props => {
 
         {/* <View style={styles.bottomContainer}> */}
         <Gap height={16} />
-        <View
-          style={styles.tagContainer}
-          accessible={true}
-          accessibilityLabel="list of event tags"
-        >
+        <View style={styles.tagContainer} {...a11y('list of event tags')}>
           {data?.tags?.map(k => {
             return <Tag text={k} key={k} redBorder />
           })}
@@ -151,13 +153,13 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
+    elevation: 5
   },
   topContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: 20,
+    marginTop: 20
   },
   userContainer: {
     flexDirection: 'row',

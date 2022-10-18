@@ -1,23 +1,22 @@
-import React, {useContext} from 'react'
-import {StyleSheet, TouchableOpacity,Image} from 'react-native'
-
-import View from './View'
-import Text from './TextV2'
-import Touchable from './Touchable'
-import {TextInput} from '../common'
-// import {useDispatch, useSelector} from 'react-redux'
-
 import * as Colors from '../config/colors'
-import {useSafeAreaInsets} from 'react-native-safe-area-context'
+
+import {Image, StyleSheet, TouchableOpacity} from 'react-native'
+import React, {useContext} from 'react'
+
+import CampusContext from '../CampusContext'
 import Chapman from '../assets/icons/chapman.svg'
 import FilterIcon from '../assets/icons/icon-filter.svg'
 import SearchIcon from '../assets/icons/icon-search.svg'
-import CampusContext from '../CampusContext'
+import Text from './TextV2'
+import {TextInput} from '../common'
+import Touchable from './Touchable'
+import View from './View'
+import a11y from '../utils/accessibility'
+import {useSafeAreaInsets} from 'react-native-safe-area-context'
 
 /* =============================================================================
 <TabBar />
 ============================================================================= */
-// const dispatch = useDispatch()
 const TabBar = ({
   jumpTo,
   textStyle,
@@ -26,14 +25,12 @@ const TabBar = ({
   navigationState,
   searchBarPlaceholder = 'Search here',
   searchBarKeyword = '',
-  // searchBarChangeHandler: keyword => {
-  //   dispatch(setKey(keys.postsSearchKeyword, keyword))
-  // },
-  // filterPressHandler: () => {
-  //   dispatch(setKey(keys.postsShowModalFilter, true))
-  // } 
-  searchBarChangeHandler = keyword => {dispatch(setKey(keys.postsSearchKeyword, keyword))},
-  filterPressHandler = () => {dispatch(setKey(keys.postsShowModalFilter, true))},
+  searchBarChangeHandler = keyword => {
+    dispatch(setKey(keys.postsSearchKeyword, keyword))
+  },
+  filterPressHandler = () => {
+    dispatch(setKey(keys.postsShowModalFilter, true))
+  }
 }) => {
   const insets = useSafeAreaInsets()
   const {loginAsClub} = useContext(CampusContext)
@@ -59,9 +56,9 @@ const TabBar = ({
           left={<SearchIcon />}
           value={searchBarKeyword}
           containerStyle={{
-            borderRadius: 30,
+            borderRadius: 30
           }}
-          inputStyle={{height:35,marginTop:7}}
+          inputStyle={{height: 35, marginTop: 7}}
           contentContainerStyle={{
             borderRadius: 30,
             height: 44
@@ -71,15 +68,20 @@ const TabBar = ({
             searchBarChangeHandler(text)
           }}
           placeholder={searchBarPlaceholder}
-          accessibilityLabel={searchBarPlaceholder + ' text input.'}
+          {...a11y(`${searchBarPlaceholder} text input`)}
         />
         <TouchableOpacity
           onPress={filterPressHandler}
           style={styles.filterIconContainer}
         >
-          {loginAsClub ?
-          <Image source={require('../assets/images/Filter.png')} style={{width:30,height:30}}/>
-        : <FilterIcon />}
+          {loginAsClub ? (
+            <Image
+              source={require('../assets/images/Filter.png')}
+              style={{width: 30, height: 30}}
+            />
+          ) : (
+            <FilterIcon />
+          )}
         </TouchableOpacity>
       </View>
 
@@ -100,9 +102,10 @@ const TabBar = ({
                 !active ? styles.active : styles.inactive,
                 itemStyle
               ]}
-              accessible={true}
-              accessibilityLabel={item.title + ' tab'}
-              accessibilityHint={'double tap here to list all ' + item.title}
+              {...a11y(
+                `${item.title} tab`,
+                `double tap here to list all ${item.title}`
+              )}
             >
               <View>
                 <Text
@@ -127,7 +130,7 @@ const styles = StyleSheet.create({
   },
   mainFilterContainer: {
     marginHorizontal: 15,
-    width:'95%'
+    width: '95%'
     // height:40
   },
   filterIconContainer: {

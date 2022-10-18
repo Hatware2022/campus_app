@@ -1,16 +1,15 @@
-import React from 'react'
-import {StyleSheet, TouchableOpacity,Image} from 'react-native'
-
-import View from './View'
-import Text from './TextV2'
-import Touchable from './Touchable'
-import {TextInput} from '../common'
-
 import * as Colors from '../config/colors'
-import {useSafeAreaInsets} from 'react-native-safe-area-context'
-import Chapman from '../assets/icons/chapman.svg'
-import FilterIcon from '../assets/icons/icon-filter.svg'
+
+import {Image, StyleSheet, TouchableOpacity} from 'react-native'
+
+import React from 'react'
 import SearchIcon from '../assets/icons/icon-search.svg'
+import Text from './TextV2'
+import {TextInput} from '../common'
+import Touchable from './Touchable'
+import View from './View'
+import a11y from '../utils/accessibility'
+import {useSafeAreaInsets} from 'react-native-safe-area-context'
 
 /* =============================================================================
 <TabBar />
@@ -35,15 +34,7 @@ const ClubTabBar = ({
 
   return (
     <View style={[styles.container, _safeArea, containerStyle]}>
-      {/* <View
-        horizontal
-        marginVertical={16}
-        marginHorizontal={16}
-        justifyContent="space-between"
-      >
-        <Chapman />
-      </View> */}
-          <View horizontal>
+      <View horizontal>
         {navigationState.routes.map((item, index) => {
           const active = index !== navigationState.index
           const activeStyle = {
@@ -60,9 +51,10 @@ const ClubTabBar = ({
                 !active ? styles.active : styles.inactive,
                 itemStyle
               ]}
-              accessible={true}
-              accessibilityLabel={item.title + ' tab'}
-              accessibilityHint={'double tap here to list all ' + item.title}
+              {...a11y(
+                `${item.title} tab`,
+                `double tap here to list all ${item.title}`
+              )}
             >
               <View>
                 <Text
@@ -83,30 +75,31 @@ const ClubTabBar = ({
           left={<SearchIcon />}
           value={searchBarKeyword}
           containerStyle={{
-            borderRadius: 30,
+            borderRadius: 30
           }}
-          inputStyle={{height:35,marginTop:7}}
+          inputStyle={{height: 35, marginTop: 7}}
           contentContainerStyle={{
             borderRadius: 30,
-            height:44
+            height: 44
           }}
           headerSearch={true}
           onChange={text => {
             searchBarChangeHandler(text)
           }}
           placeholder={searchBarPlaceholder}
-          accessibilityLabel={searchBarPlaceholder + ' text input.'}
+          {...a11y(`${searchBarPlaceholder} text input`)}
         />
         <TouchableOpacity
           onPress={filterPressHandler}
           style={styles.filterIconContainer}
         >
-          <Image source={require('../assets/images/Filter.png')} style={{width:30,height:30}}/>
+          <Image
+            source={require('../assets/images/Filter.png')}
+            style={{width: 30, height: 30}}
+          />
           {/* <FilterIcon /> */}
         </TouchableOpacity>
       </View>
-
-  
     </View>
   )
 }
@@ -117,8 +110,8 @@ const styles = StyleSheet.create({
   },
   mainFilterContainer: {
     marginHorizontal: 15,
-    width:'95%',
-    marginTop:20
+    width: '95%',
+    marginTop: 20
     // height:40
   },
   filterIconContainer: {

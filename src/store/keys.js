@@ -12,7 +12,7 @@ module.exports = {
   groupsShowModalFilter: `${app}groupsShowModalFilter`,
   postsSearchKeyword: `${app}postsSearchKeyword`,
   postsShowModalFilter: `${app}postsShowModalFilter`,
-  postsFilterHandler:`${app}postsFilterHandler`,
+  postsFilterHandler: `${app}postsFilterHandler`,
   profilesSearchKeyword: `${app}profilesSearchKeyword`,
   profilesShowModalFilter: `${app}profilesShowModalFilter`,
   isFirstLaunch: `${app}isFirstLaunch`,
@@ -25,4 +25,5 @@ module.exports = {
   postsClubShowModalFilter: `${app}postsClubShowModalFilter`,
   clubsSearchKeyword: `${app}clubsSearchKeyword`,
   clubsShowModalFilter: `${app}clubsShowModalFilter`,
+  fcmToken: `${app}fcmToken`
 }

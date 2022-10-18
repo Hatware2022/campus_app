@@ -1,13 +1,10 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import {StyleSheet} from 'react-native'
-
-import userService from '../../../../services/user'
-import session from '../../../../store/session'
-import keys from '../../../../store/keys'
 
 import {View, Avatar, Button, Touchable} from '../../../../common'
 import Text from '../../../../common/TextV2'
 
+import useGetUsers from '../../../../hooks/useGetUsers'
 import * as Colors from '../../../../config/colors'
 
 const interpolation = [0, 35, 20, 5]
@@ -16,29 +13,18 @@ const interpolation = [0, 35, 20, 5]
 <GroupMembers />
 ============================================================================= */
 const GroupMembers = ({onPress, onPressGroup, isUserAGroupMember, members}) => {
-  const [groupAvatars, setGroupAvatars] = useState(null)
-
-  useEffect(() => {
-    try {
-      const last3membersData = members
-        ?.slice(-3)
-        ?.map(item => userService.getById(session.get(keys.token), item))
-      Promise.all(last3membersData).then(res => {
-        const forGroupAvatars = res.map(member => member?.data?.data?.imageUrl)
-        setGroupAvatars(forGroupAvatars)
-      })
-    } catch (error) {}
-  }, [members])
+  const [last3members] = useState(members?.slice(-3))
+  const [groupMembers] = useGetUsers(last3members)
 
   return (
     <View style={styles.container}>
       <Touchable style={styles.memberContainer} onPress={onPressGroup}>
         <View style={styles.memberAvatarContainer}>
-          {groupAvatars?.map((item, index, array) => (
+          {groupMembers?.map((item, index, array) => (
             <Avatar
               size={36}
               key={item?.id}
-              source={item}
+              source={item?.imageUrl}
               style={getAvatarStyle(index, array.length)}
             />
           ))}
@@ -47,11 +33,12 @@ const GroupMembers = ({onPress, onPressGroup, isUserAGroupMember, members}) => {
           <Text
             size="small"
             color={Colors.black500}
-            customStyle={{
-              marginHorizontal: 8,
-              position: 'relative',
-              right: interpolation[groupAvatars?.length]
-            }}
+            customStyle={[
+              styles.avatars,
+              {
+                right: interpolation[groupMembers?.length]
+              }
+            ]}
           >
             {`${members?.length} members`}
           </Text>
@@ -109,6 +96,10 @@ const styles = StyleSheet.create({
   textJoinButton: {
     color: Colors.white100,
     fontFamily: 'Rubik-Medium'
+  },
+  avatars: {
+    marginHorizontal: 8,
+    position: 'relative'
   }
 })
 

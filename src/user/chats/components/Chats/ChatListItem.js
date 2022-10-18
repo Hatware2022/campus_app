@@ -1,24 +1,25 @@
-import React, {useEffect, useState} from 'react'
-import {StyleSheet, Image, Alert} from 'react-native'
-import {Touchable, View, Avatar, Card} from '../../../../common'
-import Text from '../../../../common/TextV2'
 import * as Colors from '../../../../config/colors'
-import LikeIcon from '../../../../assets/icons/app-likes.svg'
+
+import {Avatar, Touchable, View} from '../../../../common'
+import {Image, StyleSheet} from 'react-native'
+import React, {useEffect, useState} from 'react'
+
 import CommentIcon from '../../../../assets/icons/app-comments.svg'
 import DotIcon from '../../../../assets/icons/icon-dot.svg'
-import UserImage from '../../../../assets/images/user.png'
-import {useNavigation} from '@react-navigation/native'
-import userService from '../../../../services/user'
-import postService from '../../../../services/post'
-import session from '../../../../store/session'
-import keys from '../../../../store/keys'
-import moment from 'moment'
-import utils from '../../../../utils/utils'
 import Gap from '../../../../common/Gap'
+import LikeIcon from '../../../../assets/icons/app-likes.svg'
+import ReportModal from '../../../../components/Modals/reportModal'
+import Text from '../../../../common/TextV2'
+import a11y from '../../../../utils/accessibility'
 import axios from 'axios'
 import constants from '../../../../utils/constants'
-import DemoImage from '../../../../assets/images/empty-image.png'
-import ReportModal from '../../../../components/Modals/reportModal'
+import keys from '../../../../store/keys'
+import moment from 'moment'
+import postService from '../../../../services/post'
+import session from '../../../../store/session'
+import {useNavigation} from '@react-navigation/native'
+import userService from '../../../../services/user'
+import utils from '../../../../utils/utils'
 
 /* =============================================================================
 <ChatListItem />
@@ -34,7 +35,9 @@ const ChatListItem = props => {
     setTotalLikes(props?.data?.likes)
 
     const tokenData = utils.decodeJwt(session.get(keys.token))
-    if (!tokenData) return
+    if (!tokenData) {
+      return
+    }
     setCurrentUser(tokenData)
   }, [props?.data])
 
@@ -56,10 +59,14 @@ const ChatListItem = props => {
 
   const _handleLike = () => {
     const tokenData = utils.decodeJwt(session.get(keys.token))
-    if (!tokenData) return
+    if (!tokenData) {
+      return
+    }
 
     let arr = Array.from(props.data?.likes) || []
-    if (arr.find(k => k.userId === tokenData.id)) return
+    if (arr.find(k => k.userId === tokenData.id)) {
+      return
+    }
 
     arr.push({
       userId: tokenData.id,
@@ -183,8 +190,7 @@ const ChatListItem = props => {
             {props?.data && props?.data?.user && (
               <View
                 style={styles.userContainer}
-                accessible={true}
-                accessibilityLabel={'posted by' + props?.data?.user?.name}
+                {...a11y(`text input ${props?.data?.user?.name}`)}
               >
                 <Avatar
                   size={48}
@@ -210,7 +216,7 @@ const ChatListItem = props => {
             <Touchable
               style={{flexDirection: 'row', paddingHorizontal: 2}}
               onPress={() => setViewModal(true)}
-              accessibilityLabel="double tap for post options"
+              {...a11y('double tap for post options')}
             >
               <DotIcon />
             </Touchable>
@@ -253,7 +259,7 @@ const ChatListItem = props => {
             <Touchable
               style={styles.likeButton}
               onPress={_handleLike}
-              accessibilityLabel={'Number of likes' + totalLikes}
+              {...a11y(`Number of likes ${totalLikes}`)}
             >
               <LikeIcon />
               <Text customStyle={styles.likeButtonText}>
@@ -265,10 +271,9 @@ const ChatListItem = props => {
               onPress={() =>
                 navigation.navigate('GroupPostComments', {post: props.data})
               }
-              accessibilityLabel={
-                'Number of comments' +
-                (props?.data?.comments ? props?.data?.comments?.length : '0')
-              }
+              {...a11y(
+                `Number of comments ${props?.data?.comments?.length || 0}`
+              )}
             >
               <CommentIcon />
               <Text customStyle={styles.commentButtonText}>
@@ -303,7 +308,6 @@ const styles = StyleSheet.create({
   },
   topContainer: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginRight: 10

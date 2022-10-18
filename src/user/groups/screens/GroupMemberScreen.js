@@ -1,19 +1,17 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import {StyleSheet, FlatList} from 'react-native'
 import {useRoute} from '@react-navigation/native'
-import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import moment from 'moment'
 
 import {View, Container, Avatar} from '../../../common'
 import Text from '../../../common/TextV2'
-import userService from '../../../services/user'
-import session from '../../../store/session'
-import keys from '../../../store/keys'
 
 import * as Colors from '../../../config/colors'
 import Header from '../../component/Header'
 import Underline from '../../component/Underline'
 import Gap from '../../../common/Gap'
+
+import useGetUsers from '../../../hooks/useGetUsers'
 
 /* =============================================================================
 <GroupMemberScreen />
@@ -21,20 +19,7 @@ import Gap from '../../../common/Gap'
 const GroupMemberScreen = () => {
   const route = useRoute()
   const {members, title, imageUrl} = route.params || {}
-  const [membersDetails, setMembersDetails] = useState(null)
-  const insets = useSafeAreaInsets()
-
-  useEffect(() => {
-    try {
-      const membersData = members?.map(item =>
-        userService.getById(session.get(keys.token), item)
-      )
-      Promise.all(membersData).then(res => {
-        const membersDataDetails = res.map(member => member?.data?.data)
-        setMembersDetails(membersDataDetails)
-      })
-    } catch (error) {}
-  }, [members])
+  const [membersDetails] = useGetUsers(members)
 
   const renderItem = ({item}) => (
     <View style={styles.containerMember}>
@@ -52,8 +37,6 @@ const GroupMemberScreen = () => {
   return (
     <Container>
       <Header title={'Group Member List'} />
-      <View style={{height: insets.top, backgroundColor: Colors.primary}} />
-
       <FlatList
         ListHeaderComponent={
           <>

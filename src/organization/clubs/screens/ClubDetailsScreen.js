@@ -30,7 +30,7 @@ const ClubDetailsScreen = ({ route, navigation }) => {
       <Header title={'Club Detail'} />
       <Content padding={16} bottomSafeArea>
         <View center>
-          <Avatar source={UserImage} size={80} />
+         <Avatar source={item?.imageUrl} size={80} />
           <Gap height={8} />
           <Text size="big" family="semi">
             {item?.title}
@@ -71,8 +71,8 @@ const ClubDetailsScreen = ({ route, navigation }) => {
           </Text>
           <Gap height={16} />
           <View style={styles.tagContainer}>
-            {item?.tags.map((item, index) => (
-              <Tag key={index} text={item} />
+            {item?.tags.map((data, index) => (
+              <Tag key={data.id} text={data.tag} />
             ))}
           </View>
         </View>
