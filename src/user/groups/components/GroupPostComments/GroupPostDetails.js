@@ -1,28 +1,26 @@
 import React, {useEffect, useState} from 'react'
-import {StyleSheet, Image} from 'react-native'
-import {Touchable, View, Avatar} from '../../../../common'
+import {Image, StyleSheet} from 'react-native'
+import {Avatar, Touchable, View} from '../../../../common'
 import Text from '../../../../common/TextV2'
 
 import * as Colors from '../../../../config/colors'
 
-import LikeIcon from '../../../../assets/icons/app-likes.svg'
 import CommentIcon from '../../../../assets/icons/app-comments.svg'
-import FastImage from 'react-native-fast-image'
+import LikeIcon from '../../../../assets/icons/app-likes.svg'
 
-import userService from '../../../../services/user'
-import moment from 'moment'
-import session from '../../../../store/session'
-import keys from '../../../../store/keys'
-import utils from '../../../../utils/utils'
 import axios from 'axios'
+import moment from 'moment'
+import Gap from '../../../../common/Gap'
+import userService from '../../../../services/user'
+import keys from '../../../../store/keys'
+import session from '../../../../store/session'
 import constants from '../../../../utils/constants'
-import Gap from '../../../../common/Gap';
-// import { Image } from 'react-native-svg';
+import utils from '../../../../utils/utils'
 
 /* =============================================================================
 <GroupPostDetails />
 ============================================================================= */
-const GroupPostDetails = ({data,reload,totalcomments,apiPath}) => {
+const GroupPostDetails = ({data, reload, totalcomments, apiPath}) => {
   const [userDetail, setUserDetail] = useState(null)
   const [errorMessage, setErrorMessage] = useState('')
 
@@ -47,73 +45,72 @@ const GroupPostDetails = ({data,reload,totalcomments,apiPath}) => {
     }
   }, [data.createdBy])
 
-  const [totalLikes, setTotalLikes] = useState()
-  // const [totalcomments, setTotalComments] = useState();
+  const [totalLikes, setTotalLikes] = useState(null)
 
-  useEffect(()=>{
-    setTotalLikes(data?.likes)
-    // setTotalComments(data?.comments.length)
-  },[data])
+  useEffect(() => {
+    setTotalLikes(data?.likes?.length)
+  }, [data])
 
   const _handleLike = () => {
-    const tokenData = utils.decodeJwt(session.get(keys.token));
-    if (!tokenData) return;
+    const tokenData = utils.decodeJwt(session.get(keys.token))
+    if (!tokenData) return
 
-    let arr = Array.from(data?.likes) || [];
-    if (arr.find(k => k.userId === tokenData.id)) return;
+    let arr = Array.from(data?.likes) || []
+    if (arr.find(k => k.userId === tokenData.id)) return
 
     arr.push({
       userId: tokenData.id,
-      date: moment().format(),
-    });
+      date: moment().format()
+    })
     let token = session.get(keys.token)
     try {
-      let response =  axios({
+      let response = axios({
         url: `${constants.API_URL}/${apiPath}/like/${data.id}`,
         method: 'POST',
-        headers:{
-          'Authorization': token,
+        headers: {
+          Authorization: token
           // 'Content-Type': 'application/json'
         }
-      }).then((e)=>{
+      }).then(e => {
         if (e.data && e.data.success === true) {
-          if(e.data.code === "REACTION_DELETED"){
-            setTotalLikes(totalLikes-1)
-          }else{
-            setTotalLikes(totalLikes+1)
+          if (e.data.code === 'REACTION_DELETED') {
+            setTotalLikes(totalLikes - 1)
+          } else {
+            setTotalLikes(totalLikes + 1)
           }
-          reload();
+          reload()
         }
       })
-    } catch (error) {
-    }
-  };
+    } catch (error) {}
+  }
   return (
     <View>
-      <View style={{flexDirection:'row',margin:10,}}>
-       <Avatar
-            size={48}
-            style={{marginBottom:10}}
-            source={{uri: userDetail?.imageUrl ? userDetail?.imageUrl : null}}
-          />
-          <Text customStyle={styles.name} family="semi" size="big">
-            {userDetail?.name}
-          </Text>
-          <Text size="small" customStyle={styles.time}>
+      <View style={{flexDirection: 'row', margin: 10}}>
+        <Avatar
+          size={48}
+          style={{marginBottom: 10}}
+          source={{uri: userDetail?.imageUrl ? userDetail?.imageUrl : null}}
+        />
+        <Text customStyle={styles.name} family="semi" size="big">
+          {userDetail?.name}
+        </Text>
+        <Text size="small" customStyle={styles.time}>
           {moment(data?.createdAt).fromNow()}
         </Text>
-          </View>
+      </View>
       <View style={styles.topContainer}>
+        <Text customStyle={{color: 'black', marginLeft: 10, fontSize: 15}}>
+          {data?.content}
+        </Text>
 
-      <Text customStyle={{color:'black',marginLeft:10, fontSize:15,}} >
-      {data?.content}
-      </Text>
-        
-        {data?.imageUrl?
-        <View style={styles.userContainer}>
-          <Image source={{uri: data?.imageUrl ? data?.imageUrl : null}} style={styles.images} />          
-        </View>:null}
-      
+        {data?.imageUrl ? (
+          <View style={styles.userContainer}>
+            <Image
+              source={{uri: data?.imageUrl ? data?.imageUrl : null}}
+              style={styles.images}
+            />
+          </View>
+        ) : null}
       </View>
       <Text customStyle={styles.textDetail}>{data?.description}</Text>
 
@@ -136,9 +133,8 @@ const GroupPostDetails = ({data,reload,totalcomments,apiPath}) => {
 
 const styles = StyleSheet.create({
   topContainer: {
-    // flexDirection: 'row',
     alignItems: 'flex-start',
-    justifyContent: 'space-between',
+    justifyContent: 'space-between'
   },
   userContainer: {
     flexDirection: 'row',
@@ -154,7 +150,7 @@ const styles = StyleSheet.create({
   },
   time: {
     color: Colors.black400,
-    alignItems:'center',
+    alignItems: 'center',
     marginLeft: 'auto',
     marginTop: 10
   },

@@ -1,32 +1,29 @@
-import React, {useEffect, useState} from 'react'
-import {StyleSheet, Image} from 'react-native'
-import {Touchable, View, Avatar, Card} from '../../../../common'
-import Text from '../../../../common/TextV2'
-import * as Colors from '../../../../config/colors'
-import LikeIcon from '../../../../assets/icons/app-likes.svg'
-import CommentIcon from '../../../../assets/icons/app-comments.svg'
-import UserImage from '../../../../assets/images/user.png'
 import {useNavigation} from '@react-navigation/native'
-import userService from '../../../../services/user'
-import clubService from '../../../../services/club'
-import session from '../../../../store/session'
-import keys from '../../../../store/keys'
-import moment from 'moment'
-import utils from '../../../../utils/utils'
-import Gap from '../../../../common/Gap'
 import axios from 'axios'
-import constants from '../../../../utils/constants'
-import DemoImage from '../../../../assets/images/empty-image.png'
+import moment from 'moment'
+import React, {useEffect, useState} from 'react'
+import {Image, StyleSheet} from 'react-native'
+import CommentIcon from '../../../../assets/icons/app-comments.svg'
+import LikeIcon from '../../../../assets/icons/app-likes.svg'
 import DotIcon from '../../../../assets/icons/icon-dot.svg'
+import {Avatar, Touchable, View} from '../../../../common'
+import Gap from '../../../../common/Gap'
+import Text from '../../../../common/TextV2'
 import ReportModal from '../../../../components/Modals/reportModal'
+import * as Colors from '../../../../config/colors'
+import clubService from '../../../../services/club'
+import userService from '../../../../services/user'
+import keys from '../../../../store/keys'
+import session from '../../../../store/session'
+import constants from '../../../../utils/constants'
+import utils from '../../../../utils/utils'
 
 /* =============================================================================
 <ChatListItem />
 ============================================================================= */
 const ClubListItem = props => {
   const navigation = useNavigation()
-  const [user, setUser] = useState(null)
-  const [totalLikes, setTotalLikes] = useState()
+  const [totalLikes, setTotalLikes] = useState(0)
   const [viewModal, setViewModal] = useState(false)
   const [currentUser, setCurrentUser] = useState(null)
 
@@ -43,18 +40,6 @@ const ClubListItem = props => {
   const _moveToChatComments = () => {
     navigation.navigate('GroupPostComments', {post: props.data})
   }
-
-  // useEffect(() => {
-  //   if (!props.data) return;
-  //   userService
-  //     .getById(session.get(keys.token), props.data.id)
-  //     .then(result => {
-  //       if (result.data && result.data.success === true) {
-  //         let r = result.data.data;
-  //         setUser(r);
-  //       }
-  //     });
-  // }, []);
 
   const _handleLike = () => {
     const tokenData = utils.decodeJwt(session.get(keys.token))
@@ -273,9 +258,7 @@ const ClubListItem = props => {
 
 const styles = StyleSheet.create({
   container: {
-    // marginBottom: 16,
     padding: 16,
-    // borderRadius: 8,
     backgroundColor: Colors.background
   },
   topContainer: {
@@ -297,7 +280,6 @@ const styles = StyleSheet.create({
     color: Colors.black400,
     marginTop: 12,
     marginLeft: 3
-    // alignSelf: 'center',
   },
   image: {
     width: '100%',
@@ -336,14 +318,12 @@ const styles = StyleSheet.create({
     marginLeft: 8
   },
   tagContainer: {
-    // marginTop: 1,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     marginLeft: 5
   },
   tag: {
     height: 31,
-    // minWidth: 91,
     borderWidth: 1,
     borderRadius: 8,
     marginRight: 5,
