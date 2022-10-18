@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "294086932600",
+    "project_id": "ll-api-76679",
+    "storage_bucket": "ll-api-76679.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:294086932600:android:15b0e0486eb3fad56c558d",
+        "android_client_info": {
+          "package_name": "app.bondo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "294086932600-atqft8atnojeu96vgg4dphf7lh6ojtk6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbTgKZYionz9thDnpHRSwjT6L072VJppc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "294086932600-atqft8atnojeu96vgg4dphf7lh6ojtk6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "294086932600-f0i7tg438tagmlanpnfg19njk7iab6qo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "app.bondo"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>294086932600-f0i7tg438tagmlanpnfg19njk7iab6qo.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.294086932600-f0i7tg438tagmlanpnfg19njk7iab6qo</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAc36NsiNjfwm5ilNzOCViakRUM87zISZc</string>
+	<key>GCM_SENDER_ID</key>
+	<string>294086932600</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>app.bondo</string>
+	<key>PROJECT_ID</key>
+	<string>ll-api-76679</string>
+	<key>STORAGE_BUCKET</key>
+	<string>ll-api-76679.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:294086932600:ios:712f0c1efd30d68a6c558d</string>
+</dict>
+</plist>
