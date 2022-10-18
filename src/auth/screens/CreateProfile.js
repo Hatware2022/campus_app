@@ -110,23 +110,23 @@ export default function CreateProfile(props) {
   const handleValidation = () => {
     if (description === '') {
       alert('Bio cannot be empty')
-    } else if (majorSelected === '') {
+    } else if (majorSelected === '' || majorSelected === undefined) {
       alert('Major cannot be empty')
-    } else if (from === '') {
+    } else if (from === '' || from === undefined) {
       alert('From cannot be empty')
-    } else if (gradYear === '') {
+    } else if (gradYear === '' || gradYear === undefined) {
       alert('Grand Year cannot be empty')
-    } else if (instagram === '') {
+    } else if (instagram === '' || instagram === undefined) {
       alert('Instragram cannot be empty')
-    } else if (tiktok === '') {
+    } else if (tiktok === '' || tiktok === undefined) {
       alert('TikTok cannot be empty')
-    } else if (linkedin === '') {
+    } else if (linkedin === '' || linkedin === undefined) {
       alert('Linkedin cannot be empty')
-    } else if (interetsSelected === '') {
+    } else if (interetsSelected === '' || interetsSelected === undefined) {
       alert('Intrest cannot be empty')
     } else if (imagePath === '') {
       alert('Image cannot be empty')
-    } else if (downForSelected === '') {
+    } else if (downForSelected === '' || majorSelected === downForSelected) {
       alert('DownFor cannot be empty')
     } else {
       handleCreateProfile()

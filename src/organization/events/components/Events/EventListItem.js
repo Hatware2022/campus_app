@@ -110,7 +110,7 @@ const EventListItem = props => {
         {/* <View style={styles.bottomContainer}> */}
         <Gap height={16} />
         <View style={styles.tagContainer} {...a11y('list of event tags')}>
-          {data?.tags?.map(k => {
+          {data && data?.tags.length > 0 && data?.tags?.map(k => {
             return <Tag text={k} key={k} redBorder />
           })}
         </View>

@@ -141,7 +141,7 @@ const RegisterScreen = () => {
     // console.log(response.data.error)
 
 
-    userService.register(userName, email, password,birthDate,phoneNo).then(result => {
+    userService.register(userName, email, password,'11-12-1988','03333333333').then(result => {
       // console.log("result.data",result.data.data)
       if (result.error) {
         alert(JSON.stringify(result.error.message))

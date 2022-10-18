@@ -26,7 +26,7 @@ const PostListItem = props => {
   const [totalLikes, setTotalLikes] = useState();
 
   useEffect(()=>{
-    setTotalLikes(props?.data?.likes)
+    setTotalLikes(props?.data?.likes.length || '0')
   },[props?.data])
 
   const _moveToChatComments = () => {
@@ -133,6 +133,7 @@ return (
       
 
       <View style={styles.tagContainer}>
+        {console.log('sss',props?.data)}
         {props?.data && props?.data?.tags?.length > 0 && props?.data?.tags.map((k,i )=> {
           return (
             <View style={styles.tag} key={i}>

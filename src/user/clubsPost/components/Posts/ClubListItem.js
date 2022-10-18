@@ -31,7 +31,7 @@ const ClubListItem = props => {
   const [currentUser, setCurrentUser] = useState(null)
 
   useEffect(() => {
-    setTotalLikes(props?.data?.likes)
+    setTotalLikes(props?.data?.likes.length || '0')
 
     const tokenData = utils.decodeJwt(session.get(keys.token))
     if (!tokenData) {

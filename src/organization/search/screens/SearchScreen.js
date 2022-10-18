@@ -1,95 +1,52 @@
-import React, {useState, useEffect} from 'react';
-import {StatusBar, StyleSheet} from 'react-native';
-import {
-  Container,
-  Card,
-  TextInput,
-  Content,
-  Button,
-  View,
-  Header,
-} from '../../../common';
-
-import SearchIcon from '../../../assets/icons/app-search.svg';
-import ArrowDownIcon from '../../../assets/icons/app-arrow-down.svg';
-import NotificationBellIcon from '../../../assets/icons/app-notification-bell.svg';
-
-import * as Colors from '../../../config/colors';
-import {useNavigation} from '@react-navigation/native';
+import React from 'react'
+import {StatusBar, StyleSheet, Text, View} from 'react-native'
+import * as Colors from '../../../config/colors'
+import {useNavigation} from '@react-navigation/native'
 
 /* =============================================================================
 <SearchScreen />
 ============================================================================= */
 const SearchScreen = () => {
-  const navigation = useNavigation();
-  const [keyword, setKeyword] = useState('');
-
-  const _handleSearch = () => {
-    setKeyword('');
-    navigation.navigate('OrganizationTab', {
-      screen: 'Home',
-      params: {keyword: keyword},
-    });
-  };
-
-  const _moveToNotifications = () => {
-    navigation.navigate('Notifications');
-  };
+  const navigation = useNavigation()
 
   return (
-    <Container backgroundColor={Colors.primary}>
-      <StatusBar backgroundColor={Colors.primary} barStyle="light-content" />
+    <>
+      <View style={styles.container}>
+        <StatusBar backgroundColor={'#A70032'} />
+        <View style={styles.headerContainer}>
+          <Text style={styles.title}>Chat</Text>
+        </View>
 
-      <Header
-        title="Search"
-        rightIcon={<NotificationBellIcon />}
-        onRightPress={_moveToNotifications}
-      />
-
-      <Content justifyContent="center" padding={20}>
-        <Card style={styles.card}>
-          <TextInput
-            contentContainerStyle={styles.input}
-            left={<SearchIcon />}
-            right={<ArrowDownIcon />}
-            label="Type a keyword to search"
-            labelStyle={styles.smallLabel}
-            placeholder="Posts"
-            value={keyword}
-            onChange={setKeyword}
-          />
-
-          <View center>
-            <Button
-              shadow
-              title="Search"
-              onPress={_handleSearch}
-              style={styles.button}
-            />
-          </View>
-        </Card>
-      </Content>
-    </Container>
-  );
-};
+        <Text style={styles.label}>Messages are disabled for clubs</Text>
+      </View>
+    </>
+  )
+}
 
 const styles = StyleSheet.create({
-  card: {
-    padding: 20,
-    paddingHorizontal: 15,
-    backgroundColor: Colors.background,
+  container: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    backgroundColor: Colors.whiteText
   },
-  smallLabel: {
-    fontSize: 15,
+  headerContainer: {
+    height: 80, 
+    backgroundColor: '#A70032'
   },
-  input: {
-    marginVertical: 5,
+  title: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '700',
+    marginTop: 38,
+    marginLeft: '4%'
   },
-  button: {
-    width: '85%',
-    marginTop: 5,
-    marginBottom: 10,
-  },
-});
+  label: {
+    fontWeight: '400',
+    alignSelf: 'center',
+    fontSize: 16,
+    marginTop: '60%'
+  }
+})
 
-export default SearchScreen;
+export default SearchScreen
