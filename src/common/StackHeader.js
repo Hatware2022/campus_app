@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   backArrow: {
-    width: 60,
+    marginRight:15,
     alignItems: 'center',
     justifyContent: 'center',
     height: HEADER_HEIGHT,

@@ -159,16 +159,16 @@ const EditOrganizationProfileScreen = () => {
 
 				<View style={styles.underline} />
 
-				<TextInput placeholder="Name" value={firstName} onChange={setFirstName} />				
+				<TextInput placeholder="Name" value={firstName} contentContainerStyle={{height:50}} inputStyle={{marginBottom:-10}} onChange={setFirstName} />				
 				{/* <TextInput placeholder="Last Name" value={lastName} onChange={setLastName} /> */}
 
 				<View style={styles.underline} />
 
 				<Title type="h4">Social Links</Title>
 
-				<TextInput left={<InstagramIcon />} placeholder="Paste link here" value={insta} onChange={setInsta} />
-				<TextInput left={<TiktokIcon />} placeholder="Paste link here" value={tiktok} onChange={setTiktok}  />
-				<TextInput left={<LinkedInIcon />} placeholder="Paste link here" value={linkedin} onChange={setLinkedin}  />
+				<TextInput left={<InstagramIcon />} placeholder="Paste link here" value={insta} contentContainerStyle={{height:50}} inputStyle={{marginBottom:-8}} onChange={setInsta} />
+				<TextInput left={<TiktokIcon />} placeholder="Paste link here" value={tiktok} contentContainerStyle={{height:50}} inputStyle={{marginBottom:-8}} onChange={setTiktok}  />
+				<TextInput left={<LinkedInIcon />} placeholder="Paste link here" value={linkedin} contentContainerStyle={{height:50}} inputStyle={{marginBottom:-8}} onChange={setLinkedin}  />
 
 				
 				<TextArea
@@ -176,6 +176,7 @@ const EditOrganizationProfileScreen = () => {
 					height={'auto'}
 					editable={true}
 					value={bio}
+					labelStyle={{marginTop:15}}
 					onChange={setBio}
 					placeholder="Write you bio here..."
 				/>

@@ -66,7 +66,7 @@ const ProfileScreen = () => {
     setViewModal(false)
     navigation.reset({
       index: 0,
-      routes: [{name: 'AppIntro'}]
+      routes: [{name: 'LandingScreen'}]
     })
   }
 

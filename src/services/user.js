@@ -337,4 +337,26 @@ export default class {
 
     return result
   }
+
+
+  static deleteComment = async (token, id,) => {
+    let result = {
+      data: null,
+      error: null
+    }
+    await axios
+      .put(`${constants.API_URL}/post/comments/delete/${id}`, {
+        headers: {Authorization: token}
+      })
+      .then(resp => {
+        if (resp.status === 200) {
+          result.data = resp.data
+        }
+      })
+      .catch(err => {
+        result.error = err.response.data
+      })
+
+    return result
+  }
 }

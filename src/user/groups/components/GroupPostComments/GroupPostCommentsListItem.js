@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {Alert, StyleSheet, TouchableOpacity} from 'react-native';
 import {View, Avatar, Touchable} from '../../../../common';
 import Text from '../../../../common/TextV2';
 
@@ -39,6 +39,31 @@ const GroupPostCommentListItem = ({data}) => {
     }
   }, [data.createdBy])
 
+  const handleDeleteComment =(id)=>{
+    let token = session.get(keys.token)
+    userService
+    .deleteComment(
+      token,
+      id, 
+    )
+    .then(result => {
+      if (result.error) {
+        alert(JSON.stringify(result.error))
+        return
+      }
+
+      if (result.data && result.data.success === false) {
+        alert('comment delete successfully')
+        return
+      }
+
+      if (result.data && result.data.success === true) {
+        alert('Profile created successfully')
+        props.navigation.navigate('Login')
+      }
+    })
+  }
+
   return (
     <View style={styles.container}>
       <Avatar source={userDetail?.imageUrl} size={34} />
@@ -55,7 +80,15 @@ const GroupPostCommentListItem = ({data}) => {
           {moment(data.updatedAt).fromNow()}
         </Text>
         <TouchableOpacity style={{flexDirection:'row',marginTop:7}}
-        onPress={()=>console.log('hello')}>
+        onPress={()=> Alert.alert(
+          'Alert Title',
+          'My Alert Msg', // <- this part is optional, you can pass an empty string
+          [
+            {text: 'Cancel', onPress: () => console.log('OK Pressed')},
+            {text: 'OK', onPress: () => handleDeleteComment(data?.id)},
+          ],
+          {cancelable: false},
+        )}>
           <View style={styles.dot}/>
           <View style={styles.dot}/>
           <View style={styles.dot}/>

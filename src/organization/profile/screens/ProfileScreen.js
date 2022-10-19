@@ -60,7 +60,7 @@ const ProfileScreen = () => {
 
 	const _handleLogout = () => {
 		session.logout();
-		navigation.navigate("Login");
+		navigation.navigate("LandingScreen");
 	}
 
 	if (!record) return <></>

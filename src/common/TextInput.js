@@ -118,6 +118,7 @@ const styles = StyleSheet.create({
   },
   leftContainer: {
     marginRight: 8,
+    marginTop:3
   },
   rightContainer: {
     paddingHorizontal: 15,
