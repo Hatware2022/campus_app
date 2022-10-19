@@ -1,19 +1,19 @@
 import * as Colors from '../../../../config/colors'
 
-import {Avatar, Button, Tag, Text, Touchable, View} from '../../../../common'
-import {Image, StyleSheet} from 'react-native'
 import React, {useState} from 'react'
+import {Image, StyleSheet} from 'react-native'
+import {Avatar, Button, Tag, Text, Touchable, View} from '../../../../common'
 
-import Gap from '../../../../common/Gap'
-import MemberList from './MemberList'
-import ModalConfirm from '../../../../auth/components/Modal/modalconfirm'
-import a11y from '../../../../utils/accessibility'
-import eventService from '../../../../services/event'
-import keys from '../../../../store/keys'
 import moment from 'moment'
 import reactotron from 'reactotron-react-native'
+import ModalConfirm from '../../../../auth/components/Modal/modalconfirm'
+import Gap from '../../../../common/Gap'
+import eventService from '../../../../services/event'
+import keys from '../../../../store/keys'
 import session from '../../../../store/session'
+import a11y from '../../../../utils/accessibility'
 import utils from '../../../../utils/utils'
+import MemberList from './MemberList'
 
 /* =============================================================================
 <EventListItem />
@@ -110,9 +110,10 @@ const EventListItem = props => {
         {/* <View style={styles.bottomContainer}> */}
         <Gap height={16} />
         <View style={styles.tagContainer} {...a11y('list of event tags')}>
-          {data && data?.tags.length > 0 && data?.tags?.map(k => {
-            return <Tag text={k} key={k} redBorder />
-          })}
+          {data &&
+            data?.tags?.map(k => {
+              return <Tag text={k} key={k} redBorder />
+            })}
         </View>
         <Gap height={16} />
         <View horizontal justifyContent="space-between">

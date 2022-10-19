@@ -1,28 +1,28 @@
+import React, {useState} from 'react'
 import {
+  ScrollView,
   StyleSheet,
   Text,
-  View,
   TextInput,
-  ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  View
 } from 'react-native'
-import React, {useState} from 'react'
 
+import {useNavigation} from '@react-navigation/native'
+import FastImage from 'react-native-fast-image'
+import ImagePicker from 'react-native-image-crop-picker'
+import {launchImageLibrary} from 'react-native-image-picker'
 import {RFValue} from 'react-native-responsive-fontsize'
 import AntDesign from 'react-native-vector-icons/AntDesign'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import Entypo from 'react-native-vector-icons/Entypo'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import Octicons from 'react-native-vector-icons/Octicons'
-import * as Colors from '../../config/colors'
-import {useNavigation} from '@react-navigation/native'
-import {Touchable, SimpleRadioButton} from '../../common'
 import TiktokIcon from '../../assets/icons/icon-tiktok.svg'
-import ImagePicker from 'react-native-image-crop-picker'
-import ModalCreateProfile from '../../auth/components/Modal/modalcreateprofile'
-import userService from '../../services/user'
-import {launchImageLibrary} from 'react-native-image-picker'
-import FastImage from 'react-native-fast-image'
 import TrashIcon from '../../assets/icons/icon-trash-red.svg'
+import ModalCreateProfile from '../../auth/components/Modal/modalcreateprofile'
+import {SimpleRadioButton, Touchable} from '../../common'
+import * as Colors from '../../config/colors'
+import userService from '../../services/user'
 
 export default function CreateProfile(props) {
   const navigation = useNavigation()
@@ -108,25 +108,25 @@ export default function CreateProfile(props) {
   }
 
   const handleValidation = () => {
-    if (description === '') {
+    if (description && description === '') {
       alert('Bio cannot be empty')
-    } else if (majorSelected === '' || majorSelected === undefined) {
+    } else if (majorSelected && majorSelected === '') {
       alert('Major cannot be empty')
-    } else if (from === '' || from === undefined) {
+    } else if (from && from === '') {
       alert('From cannot be empty')
-    } else if (gradYear === '' || gradYear === undefined) {
+    } else if (gradYear && gradYear === '') {
       alert('Grand Year cannot be empty')
-    } else if (instagram === '' || instagram === undefined) {
+    } else if (instagram && instagram === '') {
       alert('Instragram cannot be empty')
-    } else if (tiktok === '' || tiktok === undefined) {
+    } else if (tiktok && tiktok === '') {
       alert('TikTok cannot be empty')
-    } else if (linkedin === '' || linkedin === undefined) {
+    } else if (linkedin && linkedin === '') {
       alert('Linkedin cannot be empty')
-    } else if (interetsSelected === '' || interetsSelected === undefined) {
+    } else if (interetsSelected && interetsSelected === '') {
       alert('Intrest cannot be empty')
     } else if (imagePath === '') {
       alert('Image cannot be empty')
-    } else if (downForSelected === '' || majorSelected === downForSelected) {
+    } else if (downForSelected && majorSelected === downForSelected) {
       alert('DownFor cannot be empty')
     } else {
       handleCreateProfile()

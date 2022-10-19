@@ -84,7 +84,7 @@ const ChatsScreen = () => {
   }
 
   useEffect(() => {
-    if (!filterTags || !filterTags.length) {
+    if (!filterTags?.length) {
       setFilteredRecords(_sortRecords(records))
     } else {
       const newFilteredRecords = records.filter(record => {

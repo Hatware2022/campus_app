@@ -1,34 +1,28 @@
 import React, {useEffect, useState} from 'react'
 import {
   FlatList,
+  RefreshControl,
   StatusBar,
   StyleSheet,
-  RefreshControl,
   TouchableOpacity
 } from 'react-native'
 import {useDispatch, useSelector} from 'react-redux'
-import {Container, TextInput, Title, View, TextArea} from '../../../common'
+import {Container, TextArea, TextInput, Title, View} from '../../../common'
 import Text from '../../../common/TextV2'
 
-// import ChatForm from '../components/Chats/ChatForm'
-// import ChatsFilter from '../components/Chats/ChatsFilter'
-// import ChatListItem from '../components/Chats/ChatListItem'
 import ClubListItem from '../components/Posts/ClubListItem'
 
-import SearchIcon from '../../../assets/icons/icon-search.svg'
-import FilterIcon from '../../../assets/icons/icon-filter.svg'
-import PlusIcon from '../../../assets/icons/icon-plus-circle-big.svg'
-import session from '../../../store/session'
-import keys from '../../../store/keys'
-import {setKey} from '../../../store/actions'
-import ArrowDownIcon from '../../../assets/icons/app-arrow-down.svg'
-import * as Colors from '../../../config/colors'
-// import CHATS from '../../../constants/chats'
-import postService from '../../../services/post'
+import {useIsFocused, useNavigation, useRoute} from '@react-navigation/native'
 import moment from 'moment'
-import {useNavigation, useIsFocused, useRoute} from '@react-navigation/native'
-import ModalFilter from '../../../auth/components/Modal/modalfilter'
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import ArrowDownIcon from '../../../assets/icons/app-arrow-down.svg'
+import PlusIcon from '../../../assets/icons/icon-plus-circle-big.svg'
+import ModalFilter from '../../../auth/components/Modal/modalfilter'
+import * as Colors from '../../../config/colors'
+import postService from '../../../services/post'
+import {setKey} from '../../../store/actions'
+import keys from '../../../store/keys'
+import session from '../../../store/session'
 
 /* =============================================================================
 <ClubScreen />
@@ -69,11 +63,11 @@ const ClubPostScreen = () => {
 
   useEffect(() => {
     setViewFilter(viewFilterFlag)
-  }, [viewFilterFlag]);
+  }, [viewFilterFlag])
 
-  useEffect(()=>{
+  useEffect(() => {
     reload()
-  },[isFocused,navigation])
+  }, [isFocused, navigation])
 
   useEffect(() => {
     if (!keyword) {
@@ -87,14 +81,14 @@ const ClubPostScreen = () => {
         )
       )
     }
-  }, [keyword, records,isFocused])
+  }, [keyword, records, isFocused])
 
   useEffect(() => {
     // const focus = navigation.addListener('focus', () => {
-      onRefresh()
+    onRefresh()
     // });
     // return focus;
-  }, [navigation,isFocused]);
+  }, [navigation, isFocused])
 
   const reload = () => {
     postService.getAllClub(session.get(keys.token)).then(result => {
@@ -125,7 +119,7 @@ const ClubPostScreen = () => {
       //   if (filters.interests.length > 0) {
       //     arr = arr.filter(k => k.tags.includes(filters.interests))
       //   }
-      // }
+      // } // need to filters things
 
       setRecords(arr)
     })
@@ -138,14 +132,14 @@ const ClubPostScreen = () => {
   }
 
   const _onPressCloseFilter = () => {
-    setViewFilter(false);
+    setViewFilter(false)
     dispatch(setKey(keys.postsShowModalFilter, false))
-  };
+  }
 
   const renderItem = ({item}) => <ClubListItem data={item} reload={reload} />
 
   return (
-    <Container  style={{}}>
+    <Container style={{}}>
       <StatusBar backgroundColor={Colors.primary} barStyle="light-content" />
 
       {/* <View horizontal>
@@ -168,7 +162,7 @@ const ClubPostScreen = () => {
         </TouchableOpacity>
       </View> */}
 
-      <FlatList 
+      <FlatList
         data={displayRecords}
         style={styles.list}
         renderItem={renderItem}
@@ -177,8 +171,8 @@ const ClubPostScreen = () => {
         ListHeaderComponent={
           <View style={styles.headerText}>
             <Text family="semi" size="big" customStyle={styles.textGroup}>
-            Posts
-              </Text>
+              Posts
+            </Text>
             <View horizontal>
               <TouchableOpacity
                 style={styles.iconPlus}
@@ -187,7 +181,7 @@ const ClubPostScreen = () => {
                 <Text size="medium" family="medium" color={Colors.primary}>
                   {'Create New  '}
                 </Text>
-                <PlusIcon width={24}/>
+                <PlusIcon width={24} />
               </TouchableOpacity>
             </View>
             {/* <ChatForm reload={reload} /> */}
@@ -243,8 +237,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     borderColor: Colors.white300,
-    flexDirection:'row',
-    alignItems:'center'
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   buttonPostTxt: {
     color: Colors.primary
@@ -263,7 +257,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 14,
     padding: 16
-  },
+  }
 })
 
 export default ClubPostScreen
