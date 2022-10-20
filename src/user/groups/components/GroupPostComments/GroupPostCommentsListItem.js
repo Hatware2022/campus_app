@@ -10,6 +10,7 @@ import keys from '../../../../store/keys'
 import * as Colors from '../../../../config/colors';
 import DotIcon from '../../../../assets/icons/icon-dot.svg';
 import moment from 'moment'
+import utils from '../../../../utils/utils';
 
 /* =============================================================================
 <GroupPostCommentListItem />
@@ -63,7 +64,7 @@ const GroupPostCommentListItem = ({data}) => {
       }
     })
   }
-
+  const tokenData = utils.decodeJwt(session.get(keys.token))
   return (
     <View style={styles.container}>
       <Avatar source={userDetail?.imageUrl} size={34} />
@@ -79,6 +80,7 @@ const GroupPostCommentListItem = ({data}) => {
           <Text size="small" customStyle={styles.time}>
           {moment(data.updatedAt).fromNow()}
         </Text>
+        {tokenData?.id === data?.createdBy &&
         <TouchableOpacity style={{flexDirection:'row',marginTop:7}}
         onPress={()=> Alert.alert(
           'Alert Title',
@@ -93,6 +95,7 @@ const GroupPostCommentListItem = ({data}) => {
           <View style={styles.dot}/>
           <View style={styles.dot}/>
         </TouchableOpacity>
+}
         </View>
         </View>
 
