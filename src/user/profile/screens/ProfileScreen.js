@@ -1,6 +1,7 @@
-import React, {useState, useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {StyleSheet} from 'react-native'
-import {View, Avatar, Content, Container, Button} from '../../../common'
+import {useDispatch} from 'react-redux'
+import {Avatar, Button, Container, Content, View} from '../../../common'
 import Text from '../../../common/TextV2'
 
 import UserImage from '../../../assets/images/user.png'
@@ -8,22 +9,22 @@ import SettingListItem from '../components/Profile/SettingListItem'
 
 import * as Colors from '../../../config/colors'
 
-import session from '../../../store/session'
-import keys from '../../../store/keys'
-import {useNavigation} from '@react-navigation/native'
+import {useIsFocused, useNavigation} from '@react-navigation/native'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
-import userService from '../../../services/user'
-import utils from '../../../utils/utils'
-import {useIsFocused} from '@react-navigation/native'
-import PeopleIcon from '../../../assets/icons/icon-people.svg'
+import BlockIcon from '../../../assets/icons/icon-block.svg'
 import CalendarIcon from '../../../assets/icons/icon-calendar.svg'
 import GroupIcon from '../../../assets/icons/icon-group.svg'
 import NotificationIcon from '../../../assets/icons/icon-notification.svg'
+import PeopleIcon from '../../../assets/icons/icon-people.svg'
 import StarIcon from '../../../assets/icons/icon-star.svg'
-import BlockIcon from '../../../assets/icons/icon-block.svg'
-import Gap from '../../../common/Gap'
-import ModalConfirm from '../../../auth/components/Modal/modalconfirm'
 import DemoImage from '../../../assets/images/empty-image.png'
+import ModalConfirm from '../../../auth/components/Modal/modalconfirm'
+import Gap from '../../../common/Gap'
+import userService from '../../../services/user'
+import {LOGOUT} from '../../../store/actions'
+import keys from '../../../store/keys'
+import session from '../../../store/session'
+import utils from '../../../utils/utils'
 
 /* =============================================================================
 <ProfileScreen />
@@ -35,6 +36,7 @@ const ProfileScreen = () => {
   const [record, setRecord] = useState(null)
   const [viewModal, setViewModal] = useState(false)
   const tokenData = utils.decodeJwt(session.get(keys.token)) || null
+  const dispatch = useDispatch()
 
   const _safeArea = {
     paddingTop: 16 + insets.top
@@ -52,7 +54,9 @@ const ProfileScreen = () => {
   }, [isFocused])
 
   const reload = () => {
-    if (!tokenData) return
+    if (!tokenData) {
+      return
+    }
     userService.getById(session.get(keys.token), tokenData.id).then(result => {
       if (result.data && result.data.success === true) {
         let r = result.data.data
@@ -62,11 +66,12 @@ const ProfileScreen = () => {
   }
 
   const _handleLogout = () => {
+    dispatch({type: LOGOUT})
     session.logout()
     setViewModal(false)
     navigation.reset({
       index: 0,
-      routes: [{name: 'AppIntro'}]
+      routes: [{name: 'LandingScreen'}]
     })
   }
 
@@ -154,7 +159,7 @@ const ProfileScreen = () => {
         />
       </Content>
       <ModalConfirm
-        titlemessage={'Are you sure want to log out?'}
+        titlemessage={'Are you sure you want to log out?'}
         isVisible={viewModal}
         onCloseModal={() => setViewModal(false)}
         onYes={_handleLogout}

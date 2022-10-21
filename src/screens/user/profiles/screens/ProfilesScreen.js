@@ -13,7 +13,7 @@ import keys from '../../../store/keys';
 import moment from 'moment';
 
 /* =============================================================================
-<ProfilesScreen />
+<ProfilesScreen /> NOT IN USED
 ============================================================================= */
 const ProfilesScreen = () => {
 

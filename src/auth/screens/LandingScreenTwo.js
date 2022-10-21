@@ -1,20 +1,10 @@
-import React, {useState} from 'react'
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-} from 'react-native'
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+
+import React from 'react'
 import {useNavigation} from '@react-navigation/native'
-import AntDesign from 'react-native-vector-icons/AntDesign'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-/* =============================================================================
-<LandingTwoScreen />
-============================================================================= */
+
 const LandingScreenTwo = () => {
   const navigation = useNavigation()
-  const [checkbox,setCheckbox]= useState(false)
 
   return (
     <View style={styles.container}>
@@ -23,23 +13,29 @@ const LandingScreenTwo = () => {
         style={styles.logoTxt}
       />
 
-    <Text style={styles.title}>See what’s happening on campus today</Text>
-
-
+      <Text style={styles.title}>
+        See what’s {'\n'}happening on {'\n'}campus today
+      </Text>
 
       <View style={styles.bottomContainer}>
-       
-        <TouchableOpacity style={styles.btnOne} onPress={()=>navigation.navigate('Login')}>
-          <Text style={styles.btnTxt}>Login with email</Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity style={{flexDirection:'row',marginTop:20,marginLeft:'20%'}} onPress={()=>setCheckbox(!checkbox)}>
-            <MaterialIcons name={!checkbox ? 'check-box-outline-blank' : 'check-box'} color={'#fff'} style={{alignSelf:'center',paddingHorizontal:5}} />
-        <Text style={{color:'#fff',fontSize:14,fontWeight:'400'}}>Login as a Club</Text>
+        <TouchableOpacity
+          style={[styles.bottomBtn, styles.loginBtn]}
+          onPress={() => navigation.navigate('Login')}
+        >
+          <Text style={[styles.btnTxt, styles.loginBtnTxt]}>Login</Text>
         </TouchableOpacity>
 
-        <Text style={styles.term}>By signing up, you agree to our Terms, Privacy Policy, and Cookie Use.</Text>
-       
+        <TouchableOpacity
+          style={[styles.bottomBtn, styles.registerBtn]}
+          onPress={() => navigation.navigate('Register')}
+        >
+          <Text style={[styles.btnTxt, styles.registerBtnTxt]}>Register</Text>
+        </TouchableOpacity>
+
+        <Text style={styles.term}>
+          By signing up, you agree to our Terms, {'\n'}Privacy Policy, and
+          Cookie Use.
+        </Text>
       </View>
     </View>
   )
@@ -54,23 +50,35 @@ const styles = StyleSheet.create({
   logoTxt: {
     alignSelf: 'center',
     marginTop: '10%',
-    width:220,
-    height:130
+    width: 220,
+    height: 130
   },
-
-  btnOne: {
+  bottomBtn: {
     width: '70%',
     height: 44,
-    backgroundColor: '#5AB7D2',
-    borderRadius: 20,
+    borderRadius: 28,
     alignSelf: 'center',
     marginTop: '3%'
   },
+  loginBtn: {
+    backgroundColor: '#FFFFFF'
+  },
+  registerBtn: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: '#E3E8EB'
+  },
   btnTxt: {
     alignSelf: 'center',
-    color: '#fff',
-    marginTop: 12,
+    marginTop: 14,
+    lineHeight: 18,
     fontWeight: '600'
+  },
+  loginBtnTxt: {
+    color: '#A70032'
+  },
+  registerBtnTxt: {
+    color: '#FFFFFF'
   },
   searchContainer: {
     flexDirection: 'row',
@@ -82,31 +90,31 @@ const styles = StyleSheet.create({
     marginTop: '10%'
   },
   searchIcon: {
-    marginTop: 10, 
+    marginTop: 10,
     marginLeft: 10
   },
   bottomContainer: {
-    position: 'absolute', 
-    bottom: 50,
-    width:'100%'
+    position: 'absolute',
+    bottom: 61,
+    width: '100%'
   },
   term: {
     alignSelf: 'center',
     textAlign: 'center',
-    width: '50%',
-    marginTop: 30,
-    lineHeight:12.1,
+    width: '60%',
+    lineHeight: 12,
+    marginTop: 37,
     fontSize: 10,
-    color:'#fff'
+    color: '#FFFFFF',
+    fontWeight: '400'
   },
-  title:{
-    fontSize:30,
-    width:'40%',
-    fontWeight:'500',
-    color:'#fff',
-    lineHeight:36,
-    marginLeft:'15%',
-    marginTop:'18%'
+  title: {
+    fontSize: 30,
+    fontWeight: '500',
+    color: '#FFFFFF',
+    lineHeight: 36,
+    marginLeft: '15%',
+    marginTop: '35%'
   }
 })
 

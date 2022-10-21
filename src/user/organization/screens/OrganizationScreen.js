@@ -1,12 +1,12 @@
 import React from 'react'
-import {TabView, SceneMap} from 'react-native-tab-view'
-import {StyleSheet, Dimensions, View} from 'react-native'
+import {Dimensions, StyleSheet, View} from 'react-native'
+import {SceneMap, TabView} from 'react-native-tab-view'
 import {useDispatch, useSelector} from 'react-redux'
 
 // import ChatsScreen from '../../chats/screens/ChatsScreen'
-import ChatsScreen from '../../clubsPost/screens/ClubPostScreen'
-import GroupsScreen from '../../groups/screens/GroupsScreen'
 import EventsScreen from '../../../organization/events/screens/EventsScreen'
+import ClubPostScreen from '../../clubsPost/screens/ClubPostScreen'
+import GroupsScreen from '../../groups/screens/GroupsScreen'
 // import EventsScreen from '../../events/screens/EventsScreen';
 import ClubsScreen from '../../../organization/clubs/screens/ClubsScreen'
 import PostsScreen from '../../../organization/posts/screens/PostsScreen'
@@ -18,7 +18,7 @@ import keys from '../../../store/keys'
 
 const renderScene = SceneMap({
   events: EventsScreen,
-  posts: ChatsScreen,
+  posts: ClubPostScreen,
   clubs: ClubsScreen
 })
 
@@ -49,7 +49,8 @@ const OrganizationScreen = () => {
 
   const getTabProps = (props, ndx) => {
     const tabProps = [
-      {...props, 
+      {
+        ...props,
         searchBarPlaceholder: 'Search Events here',
         searchBarKeyword: appState[keys.eventsSearchKeyword],
         searchBarChangeHandler: keyword => {
@@ -59,7 +60,8 @@ const OrganizationScreen = () => {
           dispatch(setKey(keys.eventsShowModalFilter, true))
         }
       },
-      {...props, 
+      {
+        ...props,
         searchBarPlaceholder: 'Search Posts here',
         searchBarKeyword: appState[keys.postsSearchKeyword],
         searchBarChangeHandler: keyword => {

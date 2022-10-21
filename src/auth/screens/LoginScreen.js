@@ -2,7 +2,6 @@ import React, {useState, useEffect, useContext} from 'react'
 import {StatusBar, Text, TextInput} from 'react-native'
 import {
   Container,
-  Card,
   View,
   Content,
   Button,
@@ -17,23 +16,17 @@ import * as Colors from '../../config/colors'
 import {useNavigation} from '@react-navigation/native'
 import userService from '../../services/user'
 import session from '../../store/session'
-import keys, {token} from '../../store/keys'
+import keys from '../../store/keys'
 import globalStyles from '../../styles/styles'
 import validator from 'validator'
-import utils from '../../utils/utils'
 import Header from '../../user/component/Header'
-import {useSafeAreaInsets} from 'react-native-safe-area-context'
-import BackIcon from '../../assets/icons/icon-back.svg'
 import EyeCloseIcon from '../../assets/icons/icon-eye-close.svg'
 import EyeOpenIcon from '../../assets/icons/icon-eye-open.svg'
-import Fonts from '../../config/fonts'
-import CampusContext from '../../CampusContext'
 
 /* =============================================================================
 <LoginScreen />
 ============================================================================= */
 const LoginScreen = () => {
-  const {setLoginAsClub} = useContext(CampusContext)
   const [rememberMe, setRememberMe] = useState(false)
   const navigation = useNavigation()
   const [email, setEmail] = useState('')
@@ -41,12 +34,7 @@ const LoginScreen = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [successMessage, setSuccessMessage] = useState(null)
   const [eye, setEye] = useState(true)
-  const insets = useSafeAreaInsets()
-
-  const _safeAreaStyle = {
-    paddingTop: insets.top
-    // paddingBottom: insets.bottom,
-  }
+  const [respData, setRespData] = useState(null)
 
   useEffect(() => {
     setSuccessMessage(null)
@@ -71,12 +59,12 @@ const LoginScreen = () => {
     setSuccessMessage(null)
     setErrorMessage(null)
     if (!email || !password) {
-      setErrorMessage(`Please provide all fields.`)
+      setErrorMessage('Please provide all fields.')
       return
     }
 
     if (!validator.isEmail(email)) {
-      setErrorMessage(`Please provide a valid email address.`)
+      setErrorMessage('Please provide a valid email address.')
       return
     }
 
@@ -86,11 +74,11 @@ const LoginScreen = () => {
         return
       }
       if (result.data && result.data.success === false) {
+        setRespData(result.data)
         setErrorMessage(result?.data?.message || '')
         return
       }
       if (result?.data && result?.data?.success === true) {
-        // alert(JSON.stringify(result.data?.userData))
         if (result.data?.userData.clubDetails === false) {
           session.set(keys.token, result.data.userData.token)
           session.set(keys.userId, result.data.userData.id)
@@ -104,25 +92,27 @@ const LoginScreen = () => {
           session.set(keys.loginType, 'organization')
           navigation.navigate('OrganizationTab')
         }
-        // let tokenData = utils.decodeJwt(result.data.userData.token);
-        // if (tokenData.role === 'user') {
-        //   if (rememberMe) {
-        //     console.log('trueee');
-        //     setLoginAsClub(true);
-        //   }
-        //   session.set(keys.loginType, 'user');
-        //   navigation.navigate('UserTab');
-        //   } else if (tokenData.role === 'organization') {
-        //   // } else if (result.data.clubDetails != undefined) {
-        //   navigation.navigate('Home');
-        // }
       }
+    })
+  }
+  const _handleResend = () => {
+    console.log('to follow', respData)
+
+    navigation.navigate('otpScreen', {
+      data: respData.data,
+      userId: respData.data.id,
+      email,
+      password
     })
   }
 
   return (
     <Container>
-      <StatusBar hidden={false} backgroundColor={Colors.primary} barStyle="light-content" />
+      <StatusBar
+        hidden={false}
+        backgroundColor={Colors.primary}
+        barStyle="light-content"
+      />
       <Header title={'Login'} />
       <Content>
         <View
@@ -135,6 +125,8 @@ const LoginScreen = () => {
               style={styles.lableinput}
               placeholder="Enter your email here"
               value={email}
+              autoCapitalize="none"
+              textContentType="emailAddress"
               onChangeText={value => {
                 setEmail(value)
               }}
@@ -164,9 +156,24 @@ const LoginScreen = () => {
             login={true}
           />
 
-          <Text style={{alignSelf:'center',marginTop:20,fontSize:12,color:'black'}} onPress={()=>navigation.navigate('Register')}>Didn't have an account? Register now</Text>
+          <Text
+            style={{
+              alignSelf: 'center',
+              marginTop: 20,
+              fontSize: 12,
+              color: 'black'
+            }}
+            onPress={() => navigation.navigate('Register')}
+          >
+            Didn't have an account? Register now
+          </Text>
           {errorMessage && (
-            <Text style={globalStyles.errorHelper}>{errorMessage}</Text>
+            <View style={globalStyles.loginErrorContainer}>
+              <Text style={globalStyles.errorHelper}>{errorMessage}</Text>
+              <Text style={globalStyles.resendText} onPress={_handleResend}>
+                Tap HERE to enter OTP
+              </Text>
+            </View>
           )}
           {successMessage && (
             <Text style={globalStyles.successHelper}>{successMessage}</Text>

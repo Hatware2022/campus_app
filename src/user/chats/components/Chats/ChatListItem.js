@@ -26,13 +26,12 @@ import utils from '../../../../utils/utils'
 ============================================================================= */
 const ChatListItem = props => {
   const navigation = useNavigation()
-  const [user, setUser] = useState(null)
   const [totalLikes, setTotalLikes] = useState()
   const [viewModal, setViewModal] = useState(false)
   const [currentUser, setCurrentUser] = useState(null)
 
   useEffect(() => {
-    setTotalLikes(props?.data?.likes)
+    setTotalLikes(props?.data?.likes?.length)
 
     const tokenData = utils.decodeJwt(session.get(keys.token))
     if (!tokenData) {
@@ -44,18 +43,6 @@ const ChatListItem = props => {
   const _moveToChatComments = () => {
     navigation.navigate('GroupPostComments', {post: props.data})
   }
-
-  // useEffect(() => {
-  //   if (!props.data) return;
-  //   userService
-  //     .getById(session.get(keys.token), props.data.id)
-  //     .then(result => {
-  //       if (result.data && result.data.success === true) {
-  //         let r = result.data.data;
-  //         setUser(r);
-  //       }
-  //     });
-  // }, []);
 
   const _handleLike = () => {
     const tokenData = utils.decodeJwt(session.get(keys.token))
@@ -168,17 +155,19 @@ const ChatListItem = props => {
     }
   }
 
-  function myDebounce(call,t){
-    let timmer;
-    return function (...arg){
-      if(timmer) clearTimeout(timmer)
-      timmer = setTimeout(()=>{
+  function myDebounce(call, t) {
+    let timmer
+    return function (...arg) {
+      if (timmer) {
+        clearTimeout(timmer)
+      }
+      timmer = setTimeout(() => {
         call()
-      },t)
+      }, t)
     }
   }
 
-  const BetterFunction=myDebounce(_moveToChatComments,1000);
+  const BetterFunction = myDebounce(_moveToChatComments, 1000)
 
   return (
     <>
@@ -328,7 +317,6 @@ const styles = StyleSheet.create({
     color: Colors.black400,
     marginTop: 12,
     marginLeft: 3
-    // alignSelf: 'center',
   },
   image: {
     width: '100%',

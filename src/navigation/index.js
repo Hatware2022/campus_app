@@ -34,6 +34,7 @@ import EventDetailsScreen from '../organization/events/screens/EventDetailsScree
 import EventCreateScreen from '../organization/events/screens/EventCreateScreen'
 import ClubDetailsScreen from '../organization/clubs/screens/ClubDetailsScreen'
 import PostCreateScreen from '../organization/posts/screens/PostCreateScreen'
+import ClubPostCreateScreen from '../organization/posts/screens/ClubPostCreateScreen'
 import PostCommentsScreen from '../organization/posts/screens/PostCommentsScreen'
 import EditOrganizationProfileScreen from '../organization/profile/screens/EditOrganizationProfileScreen'
 import OrganizationNotificationSettingsScreen from '../organization/profile/screens/OrganizationNotificationSettingsScreen'
@@ -123,6 +124,10 @@ const AppNavigation = () => {
           <Stack.Screen name="EventCreate" component={EventCreateScreen} />
           <Stack.Screen name="ClubDetails" component={ClubDetailsScreen} />
           <Stack.Screen name="PostCreate" component={PostCreateScreen} />
+          <Stack.Screen
+            name="ClubPostCreate"
+            component={ClubPostCreateScreen}
+          />
           <Stack.Screen name="PostComments" component={PostCommentsScreen} />
           <Stack.Screen
             name="EditOrganizationProfile"

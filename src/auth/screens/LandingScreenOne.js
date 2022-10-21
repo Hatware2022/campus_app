@@ -1,22 +1,33 @@
-import React, {useEffect} from 'react'
 import {
-  StyleSheet,
-  StatusBar,
-  Text,
-  View,
+  FlatList,
   Image,
-  TouchableOpacity,
+  StyleSheet,
+  Text,
   TextInput,
-  FlatList
+  TouchableOpacity,
+  View
 } from 'react-native'
-import {useNavigation} from '@react-navigation/native'
-import AntDesign from 'react-native-vector-icons/AntDesign'
-/* =============================================================================
-<LandingOneScreen />
-============================================================================= */
-const LandingScreenOne = props => {
-  const navigation = useNavigation()
 
+import AntDesign from 'react-native-vector-icons/AntDesign'
+import React from 'react'
+import UniversityChapmanLogo from '../../assets/icons/university-chapman-logo.svg'
+import UniversityStanfordLogo from '../../assets/icons/university-stanford-logo.svg'
+import {useNavigation} from '@react-navigation/native'
+
+const LandingScreenOne = () => {
+  const navigation = useNavigation()
+  const universitiesData = [
+    {
+      id: 1,
+      universityName: 'Chapman University',
+      universityLogo: <UniversityChapmanLogo height={38} width={38} />
+    },
+    {
+      id: 2,
+      universityName: 'Stanford University',
+      universityLogo: <UniversityStanfordLogo height={38} width={38} />
+    }
+  ]
   return (
     <View style={styles.container}>
       <Image
@@ -27,30 +38,27 @@ const LandingScreenOne = props => {
       <View style={styles.searchContainer}>
         <AntDesign
           name="search1"
-          color={'#5AB7D2'}
+          color="#5AB7D2"
           size={20}
           style={styles.searchIcon}
         />
         <TextInput
           placeholder={'Search universities here'}
-          style={{paddingLeft: 10}}
+          style={styles.searchTxtInput}
           onChangeText={e => console.log(e)}
         />
       </View>
 
       <FlatList
-        data={['', '']}
+        data={universitiesData}
         style={styles.flatlist}
-        renderItem={({item, index}) => (
+        renderItem={({item: {universityName, universityLogo}, index}) => (
           <TouchableOpacity
             style={styles.flatlistContainer}
-            onPress={() => props.navigation.navigate('LandingScreenTwo')}
+            onPress={() => navigation.navigate('LandingScreenTwo')}
           >
-            <Image
-              source={require('../../assets/images/Bondo.png')}
-              style={{width: 35, height: 35, marginTop: 8}}
-            />
-            <Text style={styles.title}>Chapman University</Text>
+            {universityLogo}
+            <Text style={styles.universityName}>{universityName}</Text>
             <View style={styles.selectContainer}>
               <Text style={styles.selectTxt}>Select</Text>
             </View>
@@ -83,9 +91,8 @@ const styles = StyleSheet.create({
   },
   logoTxt: {
     alignSelf: 'center',
-    marginTop: '10%'
+    marginTop: '15%'
   },
-
   btnOne: {
     width: '80%',
     height: 44,
@@ -115,9 +122,9 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     position: 'absolute',
-    bottom: 20,
-    width: '80%',
-    alignSelf:'center'
+    bottom: 61,
+    width: '90%',
+    alignSelf: 'center'
   },
   divider: {
     width: 100,
@@ -135,28 +142,32 @@ const styles = StyleSheet.create({
   term: {
     alignSelf: 'center',
     textAlign: 'center',
-    width: '80%',
-    lineHeight:12.1,
-    marginTop: 30,
-    fontSize: 12
+    width: '60%',
+    lineHeight: 12,
+    marginTop: 37,
+    fontSize: 10,
+    color: '#B3B3B3',
+    fontWeight: '400'
   },
   flatlist: {
-    width: '80%', 
-    alignSelf: 'center', 
+    width: '80%',
+    alignSelf: 'center',
     marginTop: '10%'
   },
   flatlistContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     height: 50,
     width: '100%',
     marginTop: 3
   },
-  title: {
+  universityName: {
     alignSelf: 'center',
-    fontWeight: 'bold',
-    fontSize: 16,
-    color: 'black'
+    fontWeight: '600',
+    fontSize: 14,
+    lineHeight: 18,
+    color: '#373C3E'
   },
   selectContainer: {
     width: 70,
@@ -164,12 +175,16 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     borderColor: '#5AB7D2',
     borderWidth: 1,
-    marginTop: 15,
-    marginRight: 10
+    marginRight: 10,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   selectTxt: {
-    alignSelf: 'center', 
+    alignSelf: 'center',
     color: '#5AB7D2'
+  },
+  searchTxtInput: {
+    paddingLeft: 10
   }
 })
 

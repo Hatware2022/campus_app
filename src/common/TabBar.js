@@ -85,7 +85,7 @@ const TabBar = ({
         </TouchableOpacity>
       </View>
 
-      <View horizontal>
+      <View horizontal style={styles.tabContainer}>
         {navigationState.routes.map((item, index) => {
           const active = index !== navigationState.index
           const activeStyle = {
@@ -139,12 +139,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   item: {
-    // flex: 1,
-    paddingTop: 15,
-    paddingLeft: 10,
-    marginLeft: 15,
-    marginRight: 35,
-    paddingHorizontal: 10
+    flex: 4,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   textContainer: {
     borderBottomWidth: 3,
@@ -174,6 +171,11 @@ const styles = StyleSheet.create({
   image: {
     heigt: 100,
     width: 125
+  },
+  tabContainer: {
+    display: 'flex',
+    width: '100%',
+    marginTop: 10
   }
 })
 

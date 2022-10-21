@@ -100,7 +100,7 @@ const ProfilesScreen = () => {
             k => k?.gradYear && k?.gradYear != null && k?.gradYear.toLowerCase() === filters.gradeYear.toLowerCase(),
           );
         }
-        if (filters?.downfor?.length > 0) {
+        if (filters.downfor.length > 0) {
           arr = arr.filter(record => {
             let returnValue
             (record.downFor || []).forEach(downforItem => {

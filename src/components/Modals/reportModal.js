@@ -9,6 +9,7 @@ import Fonts from '../../config/fonts'
 
 const ReportModal = ({
   isHidden,
+  isCurrentUser,
   onHide,
   onDelete,
   onReport,
@@ -65,14 +66,18 @@ const ReportModal = ({
               containerStyle={{flex: 1}}
             />
           </View>
-          <Gap height={5} />
-          <View horizontal>
-            <Button
-              title="Report"
-              onPress={() => setIsReport(true)}
-              containerStyle={{flex: 1}}
-            />
-          </View>
+          {isCurrentUser && (
+            <>
+              <Gap height={5} />
+              <View horizontal>
+                <Button
+                  title="Report"
+                  onPress={() => setIsReport(true)}
+                  containerStyle={{flex: 1}}
+                />
+              </View>
+            </>
+          )}
           <Gap height={10} />
           <View borderWidth={1} borderColor={Colors.white300} width={'125%'} />
           <Gap height={10} />

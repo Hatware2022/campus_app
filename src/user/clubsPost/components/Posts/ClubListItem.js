@@ -1,42 +1,46 @@
-import React, {useEffect, useState} from 'react'
-import {StyleSheet, Image} from 'react-native'
-import {Touchable, View, Avatar, Card} from '../../../../common'
-import Text from '../../../../common/TextV2'
-import * as Colors from '../../../../config/colors'
-import LikeIcon from '../../../../assets/icons/app-likes.svg'
-import CommentIcon from '../../../../assets/icons/app-comments.svg'
-import UserImage from '../../../../assets/images/user.png'
 import {useNavigation} from '@react-navigation/native'
-import userService from '../../../../services/user'
-import clubService from '../../../../services/club'
-import session from '../../../../store/session'
-import keys from '../../../../store/keys'
 import moment from 'moment'
-import utils from '../../../../utils/utils'
-import Gap from '../../../../common/Gap'
-import axios from 'axios'
-import constants from '../../../../utils/constants'
-import DemoImage from '../../../../assets/images/empty-image.png'
+import React, {useEffect, useState} from 'react'
+import {Image, StyleSheet} from 'react-native'
+import CommentIcon from '../../../../assets/icons/app-comments.svg'
+import LikeIcon from '../../../../assets/icons/app-likes.svg'
+import LikedIcon from '../../../../assets/icons/app-likes-filled.svg'
 import DotIcon from '../../../../assets/icons/icon-dot.svg'
+import {Avatar, Touchable, View} from '../../../../common'
+import Gap from '../../../../common/Gap'
+import Text from '../../../../common/TextV2'
 import ReportModal from '../../../../components/Modals/reportModal'
+import * as Colors from '../../../../config/colors'
+import clubService from '../../../../services/club'
+import userService from '../../../../services/user'
+import keys from '../../../../store/keys'
+import session from '../../../../store/session'
+import utils from '../../../../utils/utils'
 
 /* =============================================================================
 <ChatListItem />
 ============================================================================= */
 const ClubListItem = props => {
   const navigation = useNavigation()
-  const [user, setUser] = useState(null)
-  const [totalLikes, setTotalLikes] = useState()
+  const [totalLikes, setTotalLikes] = useState(0)
+  const [isLiked, setIsLiked] = useState(false)
   const [viewModal, setViewModal] = useState(false)
   const [currentUser, setCurrentUser] = useState(null)
 
   useEffect(() => {
-    setTotalLikes(props?.data?.likes)
+    setTotalLikes(props?.data?.likes?.length)
 
     const tokenData = utils.decodeJwt(session.get(keys.token))
     if (!tokenData) {
       return
     }
+    setTotalLikes(props?.data?.likes?.length)
+    if (props?.data?.likes?.some(like => like.userId === tokenData.id)) {
+      setIsLiked(true)
+    } else {
+      setIsLiked(false)
+    }
+
     setCurrentUser(tokenData)
   }, [props?.data])
 
@@ -44,62 +48,31 @@ const ClubListItem = props => {
     navigation.navigate('GroupPostComments', {post: props.data})
   }
 
-  // useEffect(() => {
-  //   if (!props.data) return;
-  //   userService
-  //     .getById(session.get(keys.token), props.data.id)
-  //     .then(result => {
-  //       if (result.data && result.data.success === true) {
-  //         let r = result.data.data;
-  //         setUser(r);
-  //       }
-  //     });
-  // }, []);
-
   const _handleLike = () => {
     const tokenData = utils.decodeJwt(session.get(keys.token))
     if (!tokenData) {
       return
     }
-
-    let arr = Array.from(props.data?.likes) || []
-    if (arr.find(k => k.userId === tokenData.id)) {
-      return
-    }
-
-    arr.push({
-      userId: tokenData.id,
-      date: moment().format()
-    })
-    let t = {
-      ...props.data,
-      likes: arr
-    }
-    let token = session.get(keys.token)
-    let loginType = session.get(keys.loginType) || null
     try {
-      let response = axios({
-        // url: `${constants.API_URL}/post/like/${props.data.id}`,
-        url:
-          loginType === 'organization'
-            ? `${constants.API_URL}/club/posts/${props.data.id}/like`
-            : `${constants.API_URL}/post/like/${props.data.id}`,
-        method: 'POST',
-        headers: {
-          Authorization: token
-          // 'Content-Type': 'application/json'
-        }
-      }).then(e => {
-        if (e.data && e.data.success === true) {
-          if (e.data?.code === 'REACTION_DELETED') {
-            setTotalLikes(totalLikes - 1)
-          } else {
-            setTotalLikes(totalLikes + 1)
+      clubService
+        .like(session.get(keys.token), props.data.id)
+        .then(resp => {
+          if (resp.data && resp.data.success === true) {
+            if (resp.data?.code === 'REACTION_DELETED') {
+              setTotalLikes(totalLikes - 1)
+            } else {
+              setTotalLikes(totalLikes + 1)
+              setIsLiked(true)
+            }
+            props.reload()
           }
-          props.reload()
-        }
-      })
-    } catch (error) {}
+        })
+        .catch(_err => {
+          console.log(_err)
+        })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const _handReportPost = (comment, id) => {
@@ -239,7 +212,7 @@ const ClubListItem = props => {
 
         <View style={styles.actionButtonContainer}>
           <Touchable style={styles.likeButton} onPress={_handleLike}>
-            <LikeIcon />
+            {isLiked ? <LikedIcon /> : <LikeIcon />}
             <Text customStyle={styles.likeButtonText}>{totalLikes || '0'}</Text>
           </Touchable>
           <Touchable
@@ -265,6 +238,7 @@ const ClubListItem = props => {
         onDelete={() => _deletePost(props.data)}
         onHide={() => _hidePost(props.data)}
         isHidden={props.data.isHidden}
+        isCurrentUser={currentUser === props.data.createdBy}
         onReport={comment => _handReportPost(comment, props.data.id)}
       />
     </>
@@ -273,16 +247,13 @@ const ClubListItem = props => {
 
 const styles = StyleSheet.create({
   container: {
-    // marginBottom: 16,
     padding: 16,
-    // borderRadius: 8,
     backgroundColor: Colors.background
   },
   topContainer: {
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
-    alignItems: 'center',
     marginRight: 10
   },
   userContainer: {
@@ -297,7 +268,6 @@ const styles = StyleSheet.create({
     color: Colors.black400,
     marginTop: 12,
     marginLeft: 3
-    // alignSelf: 'center',
   },
   image: {
     width: '100%',
@@ -336,14 +306,12 @@ const styles = StyleSheet.create({
     marginLeft: 8
   },
   tagContainer: {
-    // marginTop: 1,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     marginLeft: 5
   },
   tag: {
     height: 31,
-    // minWidth: 91,
     borderWidth: 1,
     borderRadius: 8,
     marginRight: 5,

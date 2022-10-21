@@ -44,6 +44,7 @@ const EventsScreen = () => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const isFocused = useIsFocused()
+  const loginType = session.get(keys.loginType)
   const {loginAsClub} = useContext(CampusContext)
   const [records, setRecords] = useState([])
   const [refreshing, setRefreshing] = useState(false)
@@ -187,17 +188,19 @@ const EventsScreen = () => {
           <Text family="semi" size="big" customStyle={styles.textGroup}>
           Events
             </Text>
+            {loginType != 'organization' &&
           <View horizontal>
             <TouchableOpacity
               style={styles.iconPlus}
               // onPress={_moveToCreatePost}
             >
               <Text size="medium" family="medium" color={Colors.primary}>
-                {'Host Event  '}
+                {'Host Event  '} 
               </Text>
               <PlusIcon />
             </TouchableOpacity>
           </View>
+}
           {/* <ChatForm reload={reload} /> */}
         </View>
 

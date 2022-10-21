@@ -1,19 +1,17 @@
-import React, {useEffect} from 'react'
 import {
-  StyleSheet,
-  StatusBar,
-  Text,
-  View,
   Image,
-  TouchableOpacity
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native'
-import {useNavigation} from '@react-navigation/native'
-/* =============================================================================
-<LandingScreen />
-============================================================================= */
-const LandingScreen = (props) => {
-  const navigation = useNavigation()
 
+import React from 'react'
+import {useNavigation} from '@react-navigation/native'
+
+const LandingScreen = () => {
+  const navigation = useNavigation()
   return (
     <View style={styles.container}>
       <StatusBar hidden />
@@ -25,17 +23,26 @@ const LandingScreen = (props) => {
         source={require('../../assets/images/Bondo.png')}
         style={styles.logo}
       />
-      <Text style={styles.title}>Connecting communities in a better way.</Text>
+      <Text style={styles.title}>Bonding communities in a better way.</Text>
 
-      <TouchableOpacity style={styles.btnOne} onPress={()=>props.navigation.navigate('LandingScreenOne')}>
-        <Text style={styles.btnTxt}>Join your university</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.btnTwo} onPress={()=>props.navigation.navigate('LandingScreenOne')}>
-        <Text style={styles.btnTxt}>Join your organization</Text>
-      </TouchableOpacity>
-      <Text style={styles.term}>
-          By signing up, you agree to our Terms, Privacy Policy, and Cookie Use.
+      <View style={styles.bottomContainer}>
+        <TouchableOpacity
+          style={styles.btnOne}
+          onPress={() => navigation.navigate('LandingScreenOne')}
+        >
+          <Text style={styles.btnTxt}>Join your university</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.btnTwo}
+          onPress={() => navigation.navigate('LandingScreenOne')}
+        >
+          <Text style={styles.btnTxt}>Join your organization</Text>
+        </TouchableOpacity>
+        <Text style={styles.term}>
+          By signing up, you agree to our Terms, {'\n'}Privacy Policy, and
+          Cookie Use.
         </Text>
+      </View>
     </View>
   )
 }
@@ -48,13 +55,13 @@ const styles = StyleSheet.create({
   },
   logoTxt: {
     alignSelf: 'center',
-    marginTop: '10%'
+    marginTop: '15%'
   },
   logo: {
-    width: 100,
-    height: 100,
+    width: 122,
+    height: 122,
     alignSelf: 'center',
-    marginTop: '20%'
+    marginTop: '25%'
   },
   title: {
     color: '#5AB7D2',
@@ -64,6 +71,12 @@ const styles = StyleSheet.create({
     marginTop: '25%',
     width: '80%',
     textAlign: 'center'
+  },
+  bottomContainer: {
+    position: 'absolute',
+    bottom: 61,
+    width: '100%',
+    alignSelf: 'center'
   },
   btnOne: {
     width: '65%',
@@ -91,9 +104,11 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     textAlign: 'center',
     width: '60%',
-    lineHeight:12.1,
-    marginTop: 30,
-    fontSize: 12
+    lineHeight: 12,
+    marginTop: 37,
+    fontSize: 10,
+    color: '#B3B3B3',
+    fontWeight: '400'
   }
 })
 

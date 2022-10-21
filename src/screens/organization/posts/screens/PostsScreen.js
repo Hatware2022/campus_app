@@ -13,7 +13,7 @@ import keys from '../../../store/keys';
 import moment from 'moment';
 
 /* =============================================================================
-<PostsScreen />
+<PostsScreen /> NOT IN USED
 ============================================================================= */
 const PostsScreen = () => {
 	const navigation = useNavigation();

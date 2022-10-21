@@ -82,25 +82,19 @@ const UpdateProfileScreen = props => {
   const validateFields = () => {
     if (!bio) {
       alert('Bio is required')
-    } else if (!major) {
-      alert('Major is required')
-    } else if (!gradYear) {
-      alert('Grand is required')
-    } else if (!gender) {
-      alert('Gender is required')
-    } else if (!location) {
-      alert('From is required')
-    } else if (!insta) {
-      alert('Instragram is required')
-    } else if (!tiktok) {
-      alert('TikTok is required')
-    } else if (!interetsSelected) {
-      alert('Interest is required')
-    } else if (!downForSelected) {
-      alert('Down For is required')
-    } else {
-      _update()
+      return
     }
+
+    if (!interetsSelected) {
+      alert('At least 1 Interest is required')
+      return
+    }
+
+    if (!downForSelected) {
+      alert('At least 1 Down For is required')
+      return
+    }
+    _update()
   }
 
   const _update = () => {
@@ -114,13 +108,11 @@ const UpdateProfileScreen = props => {
       country: 'US',
       city: 'California',
       address: location,
-      mobileNumber: userData?.mobileNumber,
       gradYear: gradYear,
       gender: gender,
-      dateOfBirth: userData?.dateOfBirth,
-      insta: insta,
-      tiktok: tiktok,
-      linkedin: linkedin,
+      insta: insta ? insta : 'none', // temp only until backend update
+      tiktok: tiktok ? tiktok : 'none',
+      linkedin: linkedin ? linkedin : 'none',
       interest: interetsSelected,
       imageUrl: imageUrl,
       downFor: downForSelected
@@ -133,12 +125,12 @@ const UpdateProfileScreen = props => {
       .update(session.get(keys.token), tokenData.id, data)
       .then(result => {
         if (result.error) {
-          setErrorMessage(result.error)
+          alert(result.error)
           return
         }
 
         if (result.data && result.data.success === false) {
-          setErrorMessage(result.data.message)
+          alert(result.data.message)
           return
         }
 
@@ -174,13 +166,15 @@ const UpdateProfileScreen = props => {
                 .update(session.get(keys.token), tokenData._id, {
                   imageUrl: result.data.url
                 })
-                .then(result => {
-                  setImageUrl(result.data.url)
+                .then(res => {
+                  setImageUrl(res.data.url)
                 })
             }
           })
         })
-        .catch(err => {})
+        .catch(err => {
+          console.log(err)
+        })
     } catch (err) {}
   }
 
@@ -236,17 +230,19 @@ const UpdateProfileScreen = props => {
     setDownForSelected(array)
   }
 
-  function myDebounce(call,t){
-    let timmer;
-    return function (...arg){
-      if(timmer) clearTimeout(timmer)
-      timmer =  setTimeout(()=>{
-        call();
-      },t)
+  function myDebounce(call, t) {
+    let timmer
+    return function (...arg) {
+      if (timmer) {
+        clearTimeout(timmer)
+      }
+      timmer = setTimeout(() => {
+        call()
+      }, t)
     }
   }
 
-  const BetterFunction=myDebounce(validateFields,1000);
+  const BetterFunction = myDebounce(validateFields, 1000)
 
   return (
     <Container>

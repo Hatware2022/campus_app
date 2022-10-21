@@ -21,9 +21,13 @@ const InboxListItem = ({data}) => {
 
   useEffect(() => {
     const tokenData = utils.decodeJwt(session.get(keys.token))
-    if (!tokenData) return
+    if (!tokenData) {
+      return
+    }
     let otherUser = data.members.find(k => k !== tokenData.id)
-    if (!otherUser) return
+    if (!otherUser) {
+      return
+    }
     userService.getById(session.get(keys.token), otherUser).then(result => {
       if (result.data && result.data.success === true) {
         let r = result.data.data
@@ -48,13 +52,13 @@ const InboxListItem = ({data}) => {
             {data?.senderName}
           </Text>
           <Text size="small" color={Colors.black400}>
-            {`${moment(data?.updatedAt).format('DD MMM')}`}
+            {`${moment(data?.latestMessage?.createdAt).format('DD MMM')}`}
           </Text>
         </View>
 
         <Gap height={4} />
         <Text numberOfLines={1} color={Colors.black500}>
-          {data?.latestMessage}
+          {data?.latestMessage?.text}
         </Text>
       </View>
     </Touchable>

@@ -1,7 +1,6 @@
 import * as Colors from '../../../config/colors'
 
-import {useIsFocused, useNavigation, useRoute} from '@react-navigation/native'
-import React, {useEffect, useState} from 'react'
+import {Container, Title, View} from '../../../common'
 import {
   FlatList,
   RefreshControl,
@@ -9,21 +8,19 @@ import {
   StyleSheet,
   TouchableOpacity
 } from 'react-native'
+import React, {useEffect, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import {Container, TextInput, Title, View} from '../../../common'
+import {useIsFocused, useNavigation} from '@react-navigation/native'
 
-import FilterIcon from '../../../assets/icons/icon-filter.svg'
-import PlusIcon from '../../../assets/icons/icon-plus-circle-big.svg'
-import SearchIcon from '../../../assets/icons/icon-search.svg'
-import ModalFilter from '../../../auth/components/Modal/modalfilter'
-import Text from '../../../common/TextV2'
-import postService from '../../../services/post'
-import {setKey} from '../../../store/actions'
-import keys from '../../../store/keys'
-import session from '../../../store/session'
-import a11y from '../../../utils/accessibility'
-import ChatForm from '../components/Chats/ChatForm'
 import ChatListItem from '../components/Chats/ChatListItem'
+import ModalFilter from '../../../auth/components/Modal/modalfilter'
+import PlusIcon from '../../../assets/icons/icon-plus-circle-big.svg'
+import Text from '../../../common/TextV2'
+import a11y from '../../../utils/accessibility'
+import keys from '../../../store/keys'
+import postService from '../../../services/post'
+import session from '../../../store/session'
+import {setKey} from '../../../store/actions'
 
 /* =============================================================================
 <ChatsScreen />
@@ -32,18 +29,14 @@ const ChatsScreen = () => {
   const dispatch = useDispatch()
   const isFocused = useIsFocused()
   const [records, setRecords] = useState([])
-  const [displayRecords, setDisplayRecords] = useState([])
   const [refreshing, setRefreshing] = useState(false)
   const [filteredRecords, setFilteredRecords] = useState([])
   const [forDisplay, setForDisplay] = useState([])
-  // const [keyword, setKeyword] = useState('')
   const [sortBy, setSortBy] = useState('Newest')
   const [filters, setFilters] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
-  const [successMessage, setSuccessMessage] = useState(null)
   const [filterTags, setFilterTags] = useState([])
   const navigation = useNavigation()
-  const route = useRoute()
   const [viewFilter, setViewFilter] = useState(false)
 
   const appSession = useSelector(state => state.session)
@@ -73,18 +66,16 @@ const ChatsScreen = () => {
     reload()
   }, [isFocused, navigation])
 
-  const _sortRecords = records => {
-    return records.sort((a, b) => {
+  const _sortRecords = rec => {
+    return rec.sort((a, b) => {
       if (sortBy === 'Most Popular') {
         return b.likes - a.likes
-      } else {
-        return new Date(a.createdAt).valueOf() < new Date(b.createdAt).valueOf()
       }
     })
   }
 
   useEffect(() => {
-    if (!filterTags || !filterTags.length) {
+    if (!filterTags?.length) {
       setFilteredRecords(_sortRecords(records))
     } else {
       const newFilteredRecords = records.filter(record => {
@@ -103,7 +94,7 @@ const ChatsScreen = () => {
 
   useEffect(() => {
     if (!keyword) {
-      setForDisplay(filteredRecords)
+      setForDisplay(records)
     } else {
       setForDisplay(
         filteredRecords.filter(
@@ -142,7 +133,7 @@ const ChatsScreen = () => {
 
   const handleSubmit = filterValues => {
     _onPressCloseFilter()
-    setFilterTags(filterValues.downfor)
+    setFilterTags(filterValues.tags)
   }
 
   const renderItem = ({item}) => <ChatListItem data={item} reload={reload} />
@@ -150,27 +141,6 @@ const ChatsScreen = () => {
   return (
     <Container style={{}}>
       <StatusBar backgroundColor={Colors.primary} barStyle="light-content" />
-
-      {/* <View horizontal>
-        <TextInput
-          left={<SearchIcon />}
-          value={keyword}
-          onChange={setKeyword}
-          style={{height: 35, paddingTop: 8}}
-          placeholder="Search posts here"
-        />
-        <TouchableOpacity
-          onPress={() => setViewFilter(true)}
-          style={{
-            marginLeft: 16,
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
-          <FilterIcon />
-        </TouchableOpacity>
-      </View> */}
-
       <FlatList
         data={forDisplay}
         style={styles.list}
@@ -197,7 +167,6 @@ const ChatsScreen = () => {
                 <PlusIcon width={24} />
               </TouchableOpacity>
             </View>
-            {/* <ChatForm reload={reload} /> */}
           </View>
         }
         ListEmptyComponent={

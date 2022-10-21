@@ -10,9 +10,10 @@ import Touchable from './Touchable'
 import View from './View'
 import a11y from '../utils/accessibility'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
+import Chapman from '../assets/icons/chapman.svg'
 
 /* =============================================================================
-<TabBar />
+<ClubTabBar />
 ============================================================================= */
 const ClubTabBar = ({
   jumpTo,
@@ -34,7 +35,45 @@ const ClubTabBar = ({
 
   return (
     <View style={[styles.container, _safeArea, containerStyle]}>
-      <View horizontal>
+      <View
+        horizontal
+        marginVertical={16}
+        marginHorizontal={16}
+        justifyContent="space-between"
+      >
+        <Chapman />
+      </View>
+      <View horizontal style={styles.mainFilterContainer}>
+        <TextInput
+          left={<SearchIcon />}
+          value={searchBarKeyword}
+          containerStyle={{
+            borderRadius: 30
+          }}
+          inputStyle={{height: 35, marginTop: 7}}
+          contentContainerStyle={{
+            borderRadius: 30,
+            height: 44
+          }}
+          headerSearch={true}
+          onChange={text => {
+            searchBarChangeHandler(text)
+          }}
+          placeholder={searchBarPlaceholder}
+          {...a11y(`${searchBarPlaceholder} text input`)}
+        />
+        <TouchableOpacity
+          onPress={filterPressHandler}
+          style={styles.filterIconContainer}
+        >
+          <Image
+            source={require('../assets/images/Filter.png')}
+            style={{width: 30, height: 30}}
+          />
+          {/* <FilterIcon /> */}
+        </TouchableOpacity>
+      </View>
+      <View horizontal style={styles.tabContainer}>
         {navigationState.routes.map((item, index) => {
           const active = index !== navigationState.index
           const activeStyle = {
@@ -69,37 +108,6 @@ const ClubTabBar = ({
           )
         })}
       </View>
-
-      <View horizontal style={styles.mainFilterContainer}>
-        <TextInput
-          left={<SearchIcon />}
-          value={searchBarKeyword}
-          containerStyle={{
-            borderRadius: 30
-          }}
-          inputStyle={{height: 35, marginTop: 7}}
-          contentContainerStyle={{
-            borderRadius: 30,
-            height: 44
-          }}
-          headerSearch={true}
-          onChange={text => {
-            searchBarChangeHandler(text)
-          }}
-          placeholder={searchBarPlaceholder}
-          {...a11y(`${searchBarPlaceholder} text input`)}
-        />
-        <TouchableOpacity
-          onPress={filterPressHandler}
-          style={styles.filterIconContainer}
-        >
-          <Image
-            source={require('../assets/images/Filter.png')}
-            style={{width: 30, height: 30}}
-          />
-          {/* <FilterIcon /> */}
-        </TouchableOpacity>
-      </View>
     </View>
   )
 }
@@ -120,12 +128,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   item: {
-    // flex: 1,
-    paddingTop: 15,
-    paddingLeft: 10,
-    marginLeft: 15,
-    marginRight: 35,
-    paddingHorizontal: 10
+    flex: 4,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   textContainer: {
     borderBottomWidth: 3,
@@ -155,6 +160,11 @@ const styles = StyleSheet.create({
   image: {
     heigt: 100,
     width: 125
+  },
+  tabContainer: {
+    display: 'flex',
+    width: '100%',
+    marginTop: 10
   }
 })
 

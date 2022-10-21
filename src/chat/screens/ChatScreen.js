@@ -1,8 +1,8 @@
 import React, {useState, useEffect, useRef} from 'react'
-import {Bubble, Day, GiftedChat, Message} from 'react-native-gifted-chat'
+import {Bubble, GiftedChat} from 'react-native-gifted-chat'
 import {useRoute, useNavigation} from '@react-navigation/native'
 import {Container, View, Avatar} from '../../common'
-import {ActivityIndicator, ScrollView, RefreshControl} from 'react-native'
+import {ActivityIndicator} from 'react-native'
 import Text from '../../common/TextV2'
 import Composer from '../components/Chat/Composer'
 import messageService from '../../services/message'
@@ -16,50 +16,55 @@ import {StyleSheet, TouchableOpacity} from 'react-native'
 import * as Colors from '../../config/colors'
 import BackIcon from '../../assets/icons/icon-back-black.svg'
 import InfoIcon from '../../assets/icons/info-circle-black.svg'
-import Gap from '../../common/Gap'
-import Underline from '../../user/component/Underline'
 import reactotron from 'reactotron-react-native'
 import {io} from 'socket.io-client'
-
-const renderMessage = props => {
-  return <Message {...props} />
-}
-const renderDay = props => {
-  return (
-    <Day
-      {...props}
-      dateFormat="MMMM d"
-      textStyle={{color: '#373C3E', fontWeight: 'bold'}}
-    />
-  )
-}
+import moment from 'moment'
 
 const renderBubble = props => {
+  const currentMessage = props.currentMessage
+  const tokenData = utils.decodeJwt(session.get(keys.token))
   return (
-    <Bubble
-      {...props}
-      wrapperStyle={{
-        right: {
-          backgroundColor: '#F1F3F4'
-        },
-        left: {
-          backgroundColor: '#FAFAFA'
-        }
-      }}
-      textStyle={{
-        right: {
-          fontFamily: 'SFProDisplay-Regular',
-          color: '#373C3E'
-        },
-        left: {
-          fontFamily: 'SFProDisplay-Regular',
-          color: '#373C3E'
-        }
-      }}
-    />
+    <View style={styles.bubbleContainer}>
+      {currentMessage.senderId !== tokenData.id && (
+        <>
+          <Bubble
+            {...props}
+            wrapperStyle={{
+              left: {
+                backgroundColor: '#FAFAFA'
+              }
+            }}
+            textStyle={{
+              left: {
+                fontFamily: 'SFProDisplay-Regular',
+                color: '#373C3E'
+              }
+            }}
+          />
+          <Text customStyle={styles.messageTimeSender}>
+            {moment(props.currentMessage.createdAt).format('LT')}
+          </Text>
+        </>
+      )}
+      {currentMessage.senderId === tokenData.id && (
+        <>
+          <Bubble
+            {...props}
+            textStyle={{
+              right: {
+                fontFamily: 'SFProDisplay-Regular',
+                color: '#FFF'
+              }
+            }}
+          />
+          <Text customStyle={styles.messageTime}>
+            {moment(props.currentMessage.createdAt).format('LT')}
+          </Text>
+        </>
+      )}
+    </View>
   )
 }
-
 /* =============================================================================
 <ChatScreen />
 ============================================================================= */
@@ -125,16 +130,16 @@ const ChatScreen = ({}) => {
   const reload = async () => {
     try {
       setState({...state, isRefreshing: true})
-
-      const tokenData = utils.decodeJwt(session.get(keys.token))
-      if (!chat || !tokenData) return
+      if (!chat || !tokenData) {
+        return
+      }
       const temp = {
         pagination: {
           page: params.page,
           perPage: params.perPage + 10
         }
       }
-      setParams({ page: params.page, perPage: params.perPage + 10 })
+      setParams({page: params.page, perPage: params.perPage + 10})
       if (chat.id) {
         messageService
           .getAll(session.get(keys.token), chat.id, temp)
@@ -168,16 +173,6 @@ const ChatScreen = ({}) => {
       reload()
     }
   }, [isFocused])
-
-  const renderAvatar = props => {
-    return (
-      <Avatar
-        {...props}
-        size={40}
-        source={chat?.imageUrl ? {uri: chat?.imageUrl} : null}
-      />
-    )
-  }
 
   const onPressViewProfile = () => {
     navigation.navigate('ProfileDetails', {
@@ -229,7 +224,6 @@ const ChatScreen = ({}) => {
 
       <GiftedChat
         ref={chatRef}
-        renderUsernameOnMessage
         alwaysShowSend={false}
         messages={messages}
         user={{
@@ -254,9 +248,6 @@ const ChatScreen = ({}) => {
         isLoadingEarlier={state.isRefreshing}
         renderTime={() => <></>}
         keyboardShouldPersistTaps="never"
-        renderDay={renderDay}
-        renderAvatar={renderAvatar}
-        renderMessage={renderMessage}
         renderBubble={renderBubble}
         minComposerHeight={60}
         renderInputToolbar={props => (
@@ -271,7 +262,7 @@ const ChatScreen = ({}) => {
         )}
         minInputToolbarHeight={60}
         onSend={_handleSend}
-        inverted
+        renderAvatar={null}
       />
     </Container>
   )
@@ -299,6 +290,21 @@ const styles = StyleSheet.create({
   textDate: {
     alignSelf: 'center',
     textAlign: 'center'
+  },
+  bubbleContainer: {
+    width: '100%'
+  },
+  messageTimeSender: {
+    color: '#ccc',
+    fontSize: 10,
+    textAlign: 'left',
+    marginTop: 5
+  },
+  messageTime: {
+    color: '#ccc',
+    fontSize: 10,
+    textAlign: 'right',
+    marginTop: 5
   }
 })
 

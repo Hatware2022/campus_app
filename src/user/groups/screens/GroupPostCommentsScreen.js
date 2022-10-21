@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {StyleSheet, FlatList} from 'react-native'
 import {Container} from '../../../common'
 import Header from '../../component/Header'
@@ -14,8 +14,9 @@ import {useRoute} from '@react-navigation/native'
 import commentService from '../../../services/comment'
 import session from '../../../store/session'
 import keys from '../../../store/keys'
-import userService from '../../../services/user'
 import moment from 'moment'
+
+import useGetUserById from '../../../hooks/useGetUserById'
 
 /* =============================================================================
 <GroupPostCommentsScreen />
@@ -24,7 +25,6 @@ const GroupPostCommentsScreen = () => {
   const isFocused = useIsFocused()
   const route = useRoute()
   const post = route.params?.post || {}
-  const [record, setRecord] = useState(null)
   const apiPath = route.params?.apiPath || 'post/comment'
   const [allComments, setAllComments] = useState(
     route.params?.post?.comments || []
@@ -33,30 +33,7 @@ const GroupPostCommentsScreen = () => {
     route.params?.post?.comments.length
   )
   const tokenData = utils.decodeJwt(session.get(keys.token)) || null
-
-  useEffect(() => {
-    let isMounted = true
-    if (isMounted) {
-      reload()
-    }
-
-    return () => {
-      isMounted = false
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFocused])
-
-  const reload = () => {
-    if (!tokenData) {
-      return
-    }
-    userService.getById(session.get(keys.token), tokenData.id).then(result => {
-      if (result.data && result.data.success === true) {
-        let r = result.data.data
-        setRecord(r)
-      }
-    })
-  }
+  const [record] = useGetUserById(tokenData?.id, [isFocused])
 
   const handleSendComment = e => {
     let data = {
@@ -68,17 +45,20 @@ const GroupPostCommentsScreen = () => {
       .then(result => {
         if (result.data && result.data.success === true) {
           setTotalComments(totalcomments + 1)
-          allComments.push({
-            id: record.id,
-            createdBy: record.id,
-            comment: e,
-            postId: post.id,
-            isDeleted: false,
-            commenterImageUrl: record?.imageUrl,
-            commenterName: record?.name,
-            createdAt: record?.createdAt,
-            updatedAt: moment(new Date())
-          })
+          setAllComments([
+            ...allComments,
+            {
+              id: record.id,
+              createdBy: record.id,
+              comment: e,
+              postId: post.id,
+              isDeleted: false,
+              commenterImageUrl: record?.imageUrl,
+              commenterName: record?.name,
+              createdAt: record?.createdAt,
+              updatedAt: moment(new Date())
+            }
+          ])
         }
       })
   }
@@ -102,7 +82,9 @@ const GroupPostCommentsScreen = () => {
         }
       />
 
-      <GroupPostCommentForm sendMsg={e => handleSendComment(e)} />
+      {session.get(keys.loginType) !== 'organization' && (
+        <GroupPostCommentForm sendMsg={e => handleSendComment(e)} />
+      )}
     </Container>
   )
 }

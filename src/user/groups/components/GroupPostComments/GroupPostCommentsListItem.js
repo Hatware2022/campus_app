@@ -1,15 +1,15 @@
-import React, {useState, useEffect} from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
-import {View, Avatar, Touchable} from '../../../../common';
-import Text from '../../../../common/TextV2';
+import React, {useEffect, useState} from 'react'
+import {Alert, StyleSheet, TouchableOpacity} from 'react-native'
+import {Avatar, Touchable, View} from '../../../../common'
+import Text from '../../../../common/TextV2'
 
 import userService from '../../../../services/user'
-import session from '../../../../store/session'
 import keys from '../../../../store/keys'
+import session from '../../../../store/session'
 
-import * as Colors from '../../../../config/colors';
-import DotIcon from '../../../../assets/icons/icon-dot.svg';
 import moment from 'moment'
+import DotIcon from '../../../../assets/icons/icon-dot.svg'
+import * as Colors from '../../../../config/colors'
 
 /* =============================================================================
 <GroupPostCommentListItem />
@@ -39,6 +39,26 @@ const GroupPostCommentListItem = ({data}) => {
     }
   }, [data.createdBy])
 
+  const handleDeleteComment = id => {
+    let token = session.get(keys.token)
+    userService.deleteComment(token, id).then(result => {
+      if (result.error) {
+        alert(JSON.stringify(result.error))
+        return
+      }
+
+      if (result.data && result.data.success === false) {
+        alert('comment delete successfully')
+        return
+      }
+
+      if (result.data && result.data.success === true) {
+        alert('Profile created successfully')
+        props.navigation.navigate('Login')
+      }
+    })
+  }
+
   return (
     <View style={styles.container}>
       <Avatar source={userDetail?.imageUrl} size={34} />
@@ -50,69 +70,68 @@ const GroupPostCommentListItem = ({data}) => {
           <Text size="small" color={Colors.black400}>
             {data.time}
           </Text>
-          <View style={{flexDirection:'row'}}>
-          <Text size="small" customStyle={styles.time}>
-          {moment(data.updatedAt).fromNow()}
-        </Text>
-        <TouchableOpacity style={{flexDirection:'row',marginTop:7}}
-        onPress={()=>console.log('hello')}>
-          <View style={styles.dot}/>
-          <View style={styles.dot}/>
-          <View style={styles.dot}/>
-        </TouchableOpacity>
-        </View>
+          <View style={{flexDirection: 'row'}}>
+            <Text size="small" customStyle={styles.time}>
+              {moment(data.updatedAt).fromNow()}
+            </Text>
+            <TouchableOpacity
+              style={{flexDirection: 'row', marginTop: 7}}
+              onPress={() =>
+                Alert.alert(
+                  'Alert Title',
+                  'My Alert Msg', // <- this part is optional, you can pass an empty string
+                  [
+                    {text: 'Cancel', onPress: () => console.log('OK Pressed')},
+                    {text: 'OK', onPress: () => handleDeleteComment(data?.id)}
+                  ],
+                  {cancelable: false}
+                )
+              }
+            >
+              <DotIcon />
+            </TouchableOpacity>
+          </View>
         </View>
 
         <Text customStyle={styles.comment}>{data?.comment}</Text>
-
-        {/* <View horizontal marginBottom={20}>
-          <Touchable
-            flex={1}
-            onPress={() => {}}>
-            <Text family="semi" color={Colors.black500}>
-              Reply
-            </Text>
-          </Touchable>
-          <DotIcon />
-        </View> */}
       </View>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'flex-start'
   },
   right: {
-    flex: 1,
+    flex: 1
   },
   timeContainer: {
     flex: 1,
-    alignItems: 'flex-end',
+    alignItems: 'flex-end'
   },
   commentCard: {
     padding: 10,
     marginTop: 5,
-    marginLeft: 8,
+    marginLeft: 8
   },
   comment: {
     marginTop: 4,
-    marginBottom: 8,
+    marginBottom: 8
   },
   time: {
     color: Colors.black400,
     alignSelf: 'center',
-    marginRight:5
+    marginRight: 5
   },
-  dot:  {  
-  width:3,
-  height:3,
-  backgroundColor:'grey',
-  borderRadius:20,
-  marginLeft:1.5
-},
-});
+  dot: {
+    width: 3,
+    height: 3,
+    backgroundColor: 'grey',
+    borderRadius: 20,
+    marginLeft: 1.5
+  }
+})
 
-export default GroupPostCommentListItem;
+export default GroupPostCommentListItem

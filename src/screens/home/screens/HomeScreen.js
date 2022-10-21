@@ -7,7 +7,7 @@ import keys from '../../store/keys';
 import * as Colors from '../../config/colors';
 
 /* =============================================================================
-<HomeScreen />
+<HomeScreen /> NOT IN USED PLEASE VERIFY
 ============================================================================= */
 const HomeScreen = () => {
 	const navigation = useNavigation();

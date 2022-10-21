@@ -60,12 +60,10 @@ export default class {
       .post(`${constants.API_URL}/users/login`, data)
       .then(resp => {
         if (resp.status === 200) {
-          // console.log("resp: ", JSON.stringify(resp));
           result.data = resp.data
         }
       })
       .catch(err => {
-        // console.log("err: ", JSON.stringify(err));
         result.error = err.response.data
       })
 
@@ -115,20 +113,24 @@ export default class {
     const data = {
       name: userName,
       email: email,
-      password: password,
-      dateOfBirth: dateOfBirth,
-      mobileNumber: '1239028214'
+      password: password
     }
 
     await axios
       .post(`${constants.API_URL}/registration/signup`, data)
       .then(resp => {
+        console.log('resp', resp)
         if (resp.status === 201) {
           result.data = resp
         }
       })
       .catch(err => {
-        result.error = err.response.data
+        if (err.response.data.code === 'VALIDATION_ERROR') {
+          result.error = err.response.data.error.details
+          console.log(err.response.data.error.details)
+        } else {
+          result.error = err.response.data
+        }
       })
 
     return result
@@ -177,7 +179,12 @@ export default class {
         }
       })
       .catch(err => {
-        result.error = err.response.data
+        if (err.response.data.code === 'VALIDATION_ERROR') {
+          console.log(err.response.data.error.details)
+          result.error = err.response.data.error.details
+        } else {
+          result.error = err.response.data
+        }
       })
 
     return result
@@ -226,12 +233,10 @@ export default class {
       .post(`${constants.API_URL}/users/login`, data)
       .then(resp => {
         if (resp.status === 200) {
-          // console.log("resp: ", JSON.stringify(resp));
           result.data = resp.data
         }
       })
       .catch(err => {
-        // console.log("err: ", JSON.stringify(err));
         result.error = err.response.data
       })
 
@@ -252,12 +257,10 @@ export default class {
       .post(`${constants.API_URL}/registration/verifyRegistration`, data)
       .then(resp => {
         if (resp.status === 201) {
-          // console.log("resp: ", JSON.stringify(resp));
           result.data = resp.data
         }
       })
       .catch(err => {
-        // console.log("err: ", JSON.stringify(err));
         result.error = err.response.data
       })
 
@@ -270,11 +273,6 @@ export default class {
       error: null
     }
 
-    // const data = {
-    //     currentPassword,
-    //     newPassword
-    // };
-    // 'https://staging-api.bondo.app/api/users/createProfile/1'
     await axios
       .put(`${constants.API_URL}/users/createProfile/${id}`, data, {
         headers: {Authorization: token}
@@ -282,6 +280,10 @@ export default class {
       .then(resp => {
         if (resp.status === 200) {
           result.data = resp.data
+        }
+
+        if (resp.status === 406) {
+          result.data = resp.data.message
         }
       })
       .catch(err => {
@@ -329,10 +331,32 @@ export default class {
       })
       .catch(err => {
         if (err.response.data.code === 'VALIDATION_ERROR') {
-          result.error = err.response.data.message
+          result.error = err.response.data.error.details
         } else {
           result.error = err.response.data
         }
+      })
+
+    return result
+  }
+
+
+  static deleteComment = async (token, id,) => {
+    let result = {
+      data: null,
+      error: null
+    }
+    await axios
+      .put(`${constants.API_URL}/post/comments/delete/${id}`, {
+        headers: {Authorization: token}
+      })
+      .then(resp => {
+        if (resp.status === 200) {
+          result.data = resp.data
+        }
+      })
+      .catch(err => {
+        result.error = err.response.data
       })
 
     return result
